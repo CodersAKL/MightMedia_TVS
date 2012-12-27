@@ -1,0 +1,32 @@
+<?php
+
+$config = array(
+	"dev" => 8,
+	"ec2-54-246-82-92.eu-west-1.compute.amazonaws.com" =>8,
+	"dev:8080" => 8,
+	"localhost" => 8,
+	"www.greitai.lt" => 8,
+	"demo.greitai.lt" => 31,
+	"www.flysiesta.com" => 10,
+	"www.flyhi.bg" => 11,
+	"www.flyhi.cz" => 12,
+	"www.flyhi.fi" => 13,
+	"www.flyhi.sk" => 14,
+	"www.flysiesta.lv" => 20,
+	"www.flysiesta.pl" => 21,
+	"www.bookinghouse.ee" => 22,
+	"www.flysiesta.ru" => 23,
+	"www.aviagid.com.ua" => 24,
+	"www.flyhi.ro" => 25,
+	"www.flyhi.hu" => 26,
+	"www.2fly.lt" => 27,
+	"booking.topfly.lt" => 29,
+	"www.eticket.fi" => 32,
+	"fly.adva.lt" => 33,
+	"www.perkuskrendu.lt" => 34,
+	"www.flyhi.se" => 35,
+	"www.travelshop.az" => 36,
+	"www.superflights.nl" => 37,
+	"booking.skrydziaipigiau.lt" => 38,
+	"www.aukstai.lt" => 39
+);

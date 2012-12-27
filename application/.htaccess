@@ -1,0 +1,11 @@
+SetEnvIf Request_URI /resources/ ispublic=1
+Order Deny,Allow
+Deny from all
+Allow from env=ispublic
+
+<FilesMatch "\.(gif|jpe?g|png|css|js|scss)$">
+    Allow from All
+</FilesMatch>
+#If you want to be even more restrictive, you can tweak the /public/ regex to include depth, for example, only 1 directory deep into modules:
+
+#SetEnvIf Request_URI ^/[^/]+/resources/ ispublic=1

@@ -1,0 +1,9 @@
+$flags-sprite-dimensions:true;
+@import "modules/payment_module/views/resources/img/*.png";
+
+/* Generate sprite images */
+@each $file in lt, ru, gb, pl, fi, se, ro, bg, ua, en {
+	.flags.#{$file} {
+		@include flags-sprite($file);
+	}
+}
