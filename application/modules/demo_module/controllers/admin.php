@@ -20,6 +20,11 @@ class Admin extends MY_Controller
 	{
 		echo 'Admin of demo module';
 	}
+
+	public function add()
+	{
+		echo 'ad item';
+	}
 }
 
 /* End of file welcome.php */
