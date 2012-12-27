@@ -15,7 +15,8 @@ class MY_Lang extends CI_Lang
 	// special URIs (not localized)
 	var $special = array(
 			"resources",
-			"application/themes"
+			"application/themes",
+			"auth"
 		);
 	
 	// CodeIgniter object
