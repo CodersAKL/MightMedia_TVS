@@ -7,6 +7,8 @@
 - [PyroCMS Documentation](https://github.com/pyrocms/pyrocms-docs)
 - [MarkdownPad editor](http://markdownpad.com/ "MarkdownPad is a full-featured Markdown editor for Windows.") for easy markdown editing
 - Modified [CodeIgniter 2.1 internationalization i18n](https://github.com/EllisLab/CodeIgniter/wiki/CodeIgniter-2.1-internationalization-i18n/ "CodeIgniter 2.1 internationalization i18n")
+- [Auth library](https://github.com/philsturgeon/codeigniter-oauth2)
+- [CRUD](https://github.com/segersjens/CodeIgniter-My-Model)
 # TODO #
 
 
