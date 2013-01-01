@@ -65,6 +65,7 @@ echo form_open( 'user_module/form', $aFormData );
 </form>
 
 <script>
+	{ignore_pre}
 	$(function () {
 		$("div#error").hide();
 
@@ -134,4 +135,5 @@ echo form_open( 'user_module/form', $aFormData );
 			min :         $.format("Prašau įvesti reikšmę didesnę arba lygią {0}.")
 		});
 	});
+	{/ignore_pre}
 </script>
