@@ -57,6 +57,18 @@ class MY_Lang extends CI_Lang
 		}
 	}
 
+	function load($langfile = '', $idiom = '', $return = FALSE, $add_suffix = TRUE, $alt_path = '') {
+		// Default/current language
+		if ( empty( $idiom ) ) {
+			$idiom = $this->lang();
+		}
+		// Detect module
+		if ( $sModule = strstr( $langfile, '/', true ) ) {
+			$alt_path = APPPATH . 'modules/' . $sModule .'/';
+		}
+		return parent::load( basename($langfile), $idiom, $return, $add_suffix, $alt_path );
+	}
+
 	// get current language
 	// ex: return 'en' if language in CI config is 'english' 
 	function lang()
@@ -65,7 +77,7 @@ class MY_Lang extends CI_Lang
 
 		if ( isset( $this->languages[$language] ) ) {
 			
-			return $language;
+			return $this->languages[$language];
 		}
 		
 		return null; // this should not happen
@@ -138,7 +150,7 @@ class MY_Lang extends CI_Lang
 			// - that's a link to a file
 		}
 		else {
-			$uri = $this->lang().'/'.$uri;
+			$uri = LANG.'/'.$uri;
 		}
 
 		return $uri;

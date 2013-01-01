@@ -65,12 +65,8 @@
 
 						<div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
 							<!-- Login form here -->
-							<form action="[YOUR ACTION]" method="post" accept-charset="UTF-8">
-								<input id="user_username" style="margin-bottom: 15px;" type="text" name="user[orderCode]" size="30" placeholder="Order Code"/>
-								<input id="user_password" style="margin-bottom: 15px;" type="email" name="user[email]" size="30" placeholder="Your eMail"/>
+							<?=$this->load->controller('user/auth/login');?>
 
-								<input class="btn btn-block btn-primary" type="submit" name="commit" value="Log In"/>
-							</form>
 						</div>
 					</li>
 				</ul>

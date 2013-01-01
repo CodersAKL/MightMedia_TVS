@@ -10,6 +10,7 @@ class Auth extends MY_Controller {
 		$this->load->library('session');
 		$this->load->library('form_validation');
 		$this->load->helper('url');
+		$this->lang->load('user/user' );
 
 		$this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
 	}
@@ -95,7 +96,7 @@ class Auth extends MY_Controller {
 			);
 
 		}
-		$this->load->view('user/login', $this->data);
+		echo $this->template->view('user/login', $this->data);
 	}
 
 	//log the user out
