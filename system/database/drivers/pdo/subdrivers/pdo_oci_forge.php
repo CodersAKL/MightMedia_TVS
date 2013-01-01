@@ -21,19 +21,19 @@
  * @copyright	Copyright (c) 2008 - 2013, EllisLab, Inc. (http://ellislab.com/)
  * @license		http://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * @link		http://codeigniter.com
- * @since		Version 1.0
+ * @since		Version 2.1.0
  * @filesource
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Oracle Forge Class
+ * PDO Oracle Forge Class
  *
  * @category	Database
  * @author		EllisLab Dev Team
  * @link		http://codeigniter.com/user_guide/database/
  */
-class CI_DB_oci8_forge extends CI_DB_forge {
+class CI_DB_pdo_oci_forge extends CI_DB_pdo_forge {
 
 	/**
 	 * CREATE DATABASE statement
@@ -50,11 +50,11 @@ class CI_DB_oci8_forge extends CI_DB_forge {
 	protected $_drop_database	= FALSE;
 
 	/**
-	 * DROP TABLE IF statement
+	 * CREATE TABLE IF statement
 	 *
 	 * @var	string
 	 */
-	protected $_drop_table_if	= FALSE;
+	protected $_create_table_if	= 'CREATE TABLE IF NOT EXISTS';
 
 	/**
 	 * UNSIGNED support
@@ -129,5 +129,5 @@ class CI_DB_oci8_forge extends CI_DB_forge {
 
 }
 
-/* End of file oci8_forge.php */
-/* Location: ./system/database/drivers/oci8/oci8_forge.php */
+/* End of file pdo_oci_forge.php */
+/* Location: ./system/database/drivers/pdo/subdrivers/pdo_oci_forge.php */

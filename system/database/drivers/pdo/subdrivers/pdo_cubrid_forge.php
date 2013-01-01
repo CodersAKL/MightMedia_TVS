@@ -21,19 +21,19 @@
  * @copyright	Copyright (c) 2008 - 2013, EllisLab, Inc. (http://ellislab.com/)
  * @license		http://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  * @link		http://codeigniter.com
- * @since		Version 2.1
+ * @since		Version 2.1.0
  * @filesource
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * CUBRID Forge Class
+ * PDO CUBRID Forge Class
  *
  * @category	Database
- * @author		Esen Sagynov
+ * @author		EllisLab Dev Team
  * @link		http://codeigniter.com/user_guide/database/
  */
-class CI_DB_cubrid_forge extends CI_DB_forge {
+class CI_DB_pdo_cubrid_forge extends CI_DB_pdo_forge {
 
 	/**
 	 * CREATE DATABASE statement
@@ -41,6 +41,13 @@ class CI_DB_cubrid_forge extends CI_DB_forge {
 	 * @var	string
 	 */
 	protected $_create_database	= FALSE;
+
+	/**
+	 * DROP DATABASE statement
+	 *
+	 * @var	string
+	 */
+	protected $_drop_database	= FALSE;
 
 	/**
 	 * CREATE TABLE keys flag
@@ -53,18 +60,11 @@ class CI_DB_cubrid_forge extends CI_DB_forge {
 	protected $_create_table_keys	= TRUE;
 
 	/**
-	 * DROP DATABASE statement
+	 * DROP TABLE IF statement
 	 *
 	 * @var	string
 	 */
-	protected $_drop_database	= FALSE;
-
-	/**
-	 * CREATE TABLE IF statement
-	 *
-	 * @var	string
-	 */
-	protected $_create_table_if	= FALSE;
+	protected $_drop_table_if	= 'DROP TABLE IF EXISTS';
 
 	/**
 	 * UNSIGNED support
@@ -215,5 +215,5 @@ class CI_DB_cubrid_forge extends CI_DB_forge {
 
 }
 
-/* End of file cubrid_forge.php */
-/* Location: ./system/database/drivers/cubrid/cubrid_forge.php */
+/* End of file pdo_cubrid_forge.php */
+/* Location: ./system/database/drivers/pdo/subdrivers/pdo_cubrid_forge.php */
