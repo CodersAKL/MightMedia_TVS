@@ -1,34 +1,43 @@
-<?php echo form_open("user/auth/login");?>
-	<input id="user_username" style="margin-bottom: 15px;" type="text" name="user[orderCode]" size="30" placeholder="Order Code"/>
-	<input id="user_password" style="margin-bottom: 15px;" type="email" name="user[email]" size="30" placeholder="Your eMail"/>
+<div id="login_form_wrap">
 
-	<input class="btn btn-block btn-primary" type="submit" name="commit" value="Log In"/>
-<?php echo form_close();?>
+	<?php echo $message;?>
+	<?php echo form_open("user/auth/login",'id="login_form"');?>
+		<div class="input-prepend">
+			<span class="add-on">@</span>
+			<?php echo form_input($identity,'','placeholder="'._('user_email_username').'"');?>
+		</div>
+		<div class="input-prepend">
+			<span class="add-on">
+				<i class="icon-lock"></i>
+			</span>
+			<?php echo form_input($password, '', 'placeholder="'._('user_password').'"');?>
+		</div>
+		<label class="checkbox">
+			<?php echo form_checkbox('remember', '1', FALSE, 'id="remember"');?>
+			<?=_('Remember Me')?>
+		</label>
+		<?php echo form_submit('submit', _('user_login'), 'class="btn btn-block btn-primary"');?>
 
-<h1><?=_('user_password')?></h1>
-<p>Please login with your email/username and password below.</p>
-	
-<div id="infoMessage"><?php echo $message;?></div>
+		<?php echo anchor('user/auth/forgot_password', _('Forgot your password?')) ;?>
+	<?php echo form_close();?>
 
-<?php echo form_open("user/auth/login");?>
-  	
-  <p>
-    <label for="identity">Email/Username:</label>
-    <?php echo form_input($identity,'','style="margin-bottom: 15px;" placeholder="Email/Username:"');?>
-  </p>
-
-  <p>
-    <label for="password">Password:</label>
-    <?php echo form_input($password);?>
-  </p>
-
-  <p>
-    <label for="remember">Remember Me:</label>
-    <?php echo form_checkbox('remember', '1', FALSE, 'id="remember"');?>
-  </p>
-    
-<?php echo form_submit('submit', 'Login', 'class="btn btn-block btn-primary"');?>
-    
-<?php echo form_close();?>
-
-<p><a href="forgot_password">Forgot your password?</a></p>
+	<script type="text/javascript">
+		$(function(){
+			$( '#login_form' ).submit(function(){
+				var
+					url = $( this ).attr('action' ),
+					data = $( this ).serialize(),
+					method = $( this ).attr('method')
+				;
+				$.ajax({
+					url : url,
+					type: method,
+					data : data
+				} ).done( function( data ) {
+					$('#login_form_wrap' ).html( data );
+				} );
+				return false;
+			});
+		});
+	</script>
+</div>

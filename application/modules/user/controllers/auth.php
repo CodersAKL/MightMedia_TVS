@@ -97,6 +97,7 @@ class Auth extends MY_Controller {
 
 		}
 		echo $this->template->view('user/login', $this->data);
+//		$this->load->view('user/login', $this->data);
 	}
 
 	//log the user out
