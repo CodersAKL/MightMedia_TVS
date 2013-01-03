@@ -196,6 +196,13 @@ class Template
 	 */
 	public function build( $view, $data = array(), $return = FALSE, $IE_cache = TRUE )
 	{
+
+		if ( $sModule = strstr( $view, '/', true ) ) {
+			$sModuleReset = $this->_module;
+			$this->set_module( $sModule );
+			$view = basename( $view );
+		}
+
 		// Set whatever values are given. These will be available to all view files
 		is_array( $data ) || $data = (array)$data;
 
@@ -279,12 +286,17 @@ class Template
 			$this->_body = self::_load_view(
 				$this->_layout_subdir . $this->_layout, $this->_data, TRUE, self::_find_view_folder()
 			);
-//			$this->_body = self::_load_view( $this->_layout, $this->_data, true, self::_find_view_folder() );
+//			$this->_body = self::_load_view( $this->_layout_subdir . $this->_layout, $this->_data, true, self::_find_view_folder() );
 		}
 
 		// Want it returned or output to browser?
 		if ( !$return ) {
 			$this->_ci->output->set_output( $this->_body );
+		}
+
+		// Reset module
+		if ( !empty( $sModule ) ) {
+			$this->set_module( $sModuleReset );
 		}
 
 		return $this->_body;
