@@ -200,7 +200,7 @@ class Template
 		if ( $sModule = strstr( $view, '/', true ) ) {
 			$sModuleReset = $this->_module;
 			$this->set_module( $sModule );
-			$view = basename( $view );
+//			$view = basename( $view );
 		}
 
 		// Set whatever values are given. These will be available to all view files
