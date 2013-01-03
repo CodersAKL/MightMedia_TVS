@@ -18,6 +18,7 @@ if ( !defined( 'BASEPATH' ) )
 // ------------------------------------------------------------------------
 /**
  * MY Parser Class
+ * http://ellislab.com/forums/viewthread/68878/P45/#744970
  *
  * Added a feature so when a template is passed, if all the variable
  * replacement tags are not replaced they are removed from the
@@ -40,7 +41,7 @@ class MY_Parser extends CI_Parser
 	var $options = array
 		(
 		// convert delimiters in data to entities. { = &#123; } = &#125;
-		'convert_delimiters' => array(true, '&#123;', '&#125;')
+		'convert_delimiters' => array(false, '&#123;', '&#125;')
 	);
 
 	// --------------------------------------------------------------------
@@ -383,7 +384,8 @@ class MY_Parser extends CI_Parser
 						if ( !is_array( $val ) ) {
 							$temp = $this->_parse_single( $key, $val, $temp );
 						} else {
-							$temp = $this->_parse_pair( $key, array($key => $val), $temp );
+//							$temp = $this->_parse_pair( $key, array($key => $val), $temp );
+							$temp = $this->_parse_pair($key, $val, $temp);
 						}
 					}
 					$str .= $temp;

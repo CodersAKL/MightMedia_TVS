@@ -107,7 +107,7 @@ $autoload['drivers'] = array('session');
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('debug', 'url', 'template', 'language');
+$autoload['helper'] = array('debug', 'url', 'text', 'template', 'language');
 
 
 /*
