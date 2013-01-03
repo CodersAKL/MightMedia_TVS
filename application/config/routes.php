@@ -77,6 +77,7 @@ $route['admin/([a-zA-Z_-]+)'] = '$1/admin/index';
 $route['admin'] = 'admin';*/
 
 // Default
+$route['^([a-z]{2})/(:any)/?'] = '$2/index';
 $route['^([a-z]{2})/(.*)'] = '$2';
 $route['^([a-z]{2})'] = $route['default_controller'];
 //############################################################################
