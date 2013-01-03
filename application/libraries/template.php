@@ -196,6 +196,13 @@ class Template
 	 */
 	public function build( $view, $data = array(), $return = FALSE, $IE_cache = TRUE )
 	{
+
+		if ( $sModule = strstr( $view, '/', true ) ) {
+			$sModuleReset = $this->_module;
+			$this->set_module( $sModule );
+//			$view = basename( $view );
+		}
+
 		// Set whatever values are given. These will be available to all view files
 		is_array( $data ) || $data = (array)$data;
 
@@ -279,12 +286,17 @@ class Template
 			$this->_body = self::_load_view(
 				$this->_layout_subdir . $this->_layout, $this->_data, TRUE, self::_find_view_folder()
 			);
-//			$this->_body = self::_load_view( $this->_layout, $this->_data, true, self::_find_view_folder() );
+//			$this->_body = self::_load_view( $this->_layout_subdir . $this->_layout, $this->_data, true, self::_find_view_folder() );
 		}
 
 		// Want it returned or output to browser?
 		if ( !$return ) {
 			$this->_ci->output->set_output( $this->_body );
+		}
+
+		// Reset module
+		if ( !empty( $sModule ) ) {
+			$this->set_module( $sModuleReset );
 		}
 
 		return $this->_body;
@@ -842,7 +854,7 @@ class Template
 			$location    = $this->get_theme_path();
 			if ( !empty( $this->_module ) ) {
 				$theme_views[] = $this->get_views_path( TRUE ) . 'modules/' . $this->_module . '/views/' . $view;
-				$theme_views[] = $this->get_views_path( TRUE ) . 'modules/' . $view;
+				$theme_views[] = $this->get_views_path( TRUE ) . 'modules/' . $this->_module . '/' . $view;
 			}
 			$theme_views[] = $this->get_views_path( TRUE ) . 'views/' . $view;
 			// This allows build('pages/page') to still overload same as build('page')
@@ -952,7 +964,18 @@ class Template
 	 */
 	public function view( $view, array $data, $return = TRUE )
 	{
-		$content = $this->_load_view( $view, $data, $this->_parser_enabled );
+		if ( $sModule = strstr( $view, '/', true ) ) {
+			$sModuleReset = $this->_module;
+			$this->set_module( $sModule );
+			$view = basename( $view );
+		}
+
+		$content = $this->_find_view( $view, $data, $this->_parser_enabled );
+
+		if ( !empty( $sModule ) ) {
+			$this->set_module( $sModuleReset );
+		}
+
 		if ( !$return ) {
 
 			return $this->_ci->output->set_output( $content );

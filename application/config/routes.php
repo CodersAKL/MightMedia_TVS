@@ -67,16 +67,17 @@
 $route['default_controller'] = 'welcome';
 $route['404_override'] = '';
 
-$route['^([a-z]{2})/xhr/([a-z-]+)/([A-Z0-9]{7})(/.*)?'] = '$2_module/$2_index/index/$3';
+//$route['^([a-z]{2})/xhr/([a-z-]+)/([A-Z0-9]{7})(/.*)?'] = '$2_module/$2_index/index/$3';
 $route['^([a-z]{2}/)?([a-z-]+)/([A-Z0-9]{7})'] = '$2/index/$3';
 
-$route['admin/([a-zA-Z_-]+)/(:any)'] = '$1/admin/$2';
+/*$route['admin/([a-zA-Z_-]+)/(:any)'] = '$1/admin/$2';
 $route['admin/login'] = 'admin/login';
 $route['admin/logout'] = 'admin/logout';
 $route['admin/([a-zA-Z_-]+)'] = '$1/admin/index';
-$route['admin'] = 'admin';
+$route['admin'] = 'admin';*/
 
 // Default
+$route['^([a-z]{2})/(:any)/?'] = '$2/index';
 $route['^([a-z]{2})/(.*)'] = '$2';
 $route['^([a-z]{2})'] = $route['default_controller'];
 //############################################################################

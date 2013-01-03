@@ -44,11 +44,11 @@ class Welcome extends CI_Controller {
 	 */
 	public function index()
 	{
-		$aData['sForm'] = $this->load->controller('user_module/form');
+//		$aData['sForm'] = $this->load->controller('user_module/form');
 
 		$this->template
 			->title('test')
-			->build('welcome_message', $aData );
+			->build('welcome_message' );
 		;
 
 		//echo 'controllers/welcome.php<br/>';

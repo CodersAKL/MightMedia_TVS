@@ -37,17 +37,17 @@ class OAuth2_Provider_Paypal extends OAuth2_Provider
             'oauth_token' => $token->access_token
         ));
 
-        $user = json_decode(file_get_contents($url));
-		$user = $user->identity;
+        $user = json_decode(file_get_contents($url),true);
+		$user = $user['identity'];
 
 		return array(
             'uid' => $user['userId'],
-            'nickname' => url_title($user['fullName'], '_', true),
+            'nickname' => url_title( convert_accented_characters( $user['fullName'] ), '_', true),
             'name' => $user['fullName'],
             'first_name' => $user['firstName'],
             'last_name' => $user['lastName'],
             'email' => $user['emails'][0],
-            'location' => $user->addresses[0],
+//            'location' => $user['addresses'][0],
             'image' => null,
             'description' => null,
             'urls' => array(

@@ -1021,6 +1021,7 @@ class CI_Loader {
 	 */
 	public function _ci_load($_ci_data)
 	{
+		$searchedin = array();
 		// Set the default data variables
 		foreach (array('_ci_view', '_ci_vars', '_ci_path', '_ci_return') as $_ci_val)
 		{
@@ -1036,6 +1037,7 @@ class CI_Loader {
 			$_ci_file = end($parts);
 			unset($parts);
 			$_ci_exists = file_exists($_ci_path);
+			$searchedin[] = $_ci_path .' ['.__LINE__.']';
 		}
 		else
 		{
@@ -1043,6 +1045,7 @@ class CI_Loader {
 			$_ci_file = (pathinfo($_ci_view, PATHINFO_EXTENSION) === '') ? $_ci_view.'.php' : $_ci_view;
 
 			// Check view path first
+			$searchedin[] = $this->_ci_view_path.$_ci_file .' ['.__LINE__.']';
 			if (file_exists($this->_ci_view_path.$_ci_file))
 			{
 				$_ci_path = $this->_ci_view_path.$_ci_file;
@@ -1053,6 +1056,7 @@ class CI_Loader {
 				// Search MVC package paths
 				foreach ($this->_ci_mvc_paths as $_ci_mvc => $_ci_cascade)
 				{
+					$searchedin[] = $_ci_mvc.'views/'.$_ci_file .' ['.__LINE__.']';
 					if (file_exists($_ci_mvc.'views/'.$_ci_file))
 					{
 						// Set path, mark existing, and quit
@@ -1084,10 +1088,12 @@ class CI_Loader {
 					unset($_ci_slash);
 
 					// Search module paths for view
+
 					foreach ($this->_ci_module_paths as $_ci_mod_path)
 					{
 						// Does the view exist in the module?
 						$_ci_subdir = preg_replace('/([^\/]+)/', '$1/views', $_ci_subdir, 1);
+						$searchedin[] = $_ci_mod_path.$_ci_subdir.$_ci_file .' ['.__LINE__.']';
 						if (file_exists($_ci_mod_path.$_ci_subdir.$_ci_file))
 						{
 							// Set path, mark existing, and quit
@@ -1103,7 +1109,10 @@ class CI_Loader {
 		// Verify file existence
 		if ( ! $_ci_exists)
 		{
-			show_error('Unable to load the requested file: '.$_ci_file);
+			foreach ( $searchedin as &$item ) {
+				$item = str_replace( dirname( APPPATH ), '', $item );
+			}
+			show_error('Unable to load the requested file: '.$_ci_file. '<code style="white-space:pre-wrap;">'.print_r($searchedin,true).'</code>');
 		}
 
 		// This allows anything loaded using $this->load (libraries, models, etc.)
