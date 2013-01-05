@@ -44,7 +44,7 @@
 						<ul class="dropdown-menu">
 							<!-- dropdown language links -->
 							<li>
-								<a href="#"><img src="http://dev/vytenis/wl/resources/images/flags/small/lt.png" alt="lt"/>
+								<a href="#"><img src="<?=get_res_path('language_module/flags/small/lt.png')?>" alt="lt"/>
 									Lietuviškai</a></li>
 							<li>
 								<a href="#"><img src="http://dev/vytenis/wl/resources/images/flags/small/ru.png" alt="ru"/>
@@ -65,7 +65,7 @@
 
 						<div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
 							<!-- Login form here -->
-							<?=$this->load->controller('user/auth/login');?>
+							<?=$this->load->controller('user/login/small');?>
 
 						</div>
 					</li>

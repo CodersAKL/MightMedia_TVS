@@ -42,57 +42,9 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="span3 sidebar-nav bs-sidebar">
-				<ul class="nav nav-list bs-sidenav">
-					<li class="nav-header">Frontend</li>
-					<li class="active"><a href="#">HTML 4.01</a></li>
-					<li><a href="#">HTML5</a></li>
-					<li><a href="#">CSS</a></li>
-					<li><a href="#">JavaScript</a></li>
-					<li><a href="#">Twitter Bootstrap</a></li>
-					<li><a href="#">Firebug</a></li>
-					<li class="nav-header">Backend</li>
-					<li><a href="#">PHP</a></li>
-					<li><a href="#">SQL</a></li>
-					<li><a href="#">MySQL</a></li>
-					<li><a href="#">PostgreSQL</a></li>
-					<li><a href="#">MongoDB</a></li>
-				</ul>
-			<!--/.well -->
-		</div>
-		<div class="span9">
+		<div class="span12">
 			<div class="row-fluid">
 				<?php echo $template['body']; ?>
-			</div>
-			<div class="row-fluid">
-				<h3>Most recent</h3>
-
-				<div class="span4">
-					<div>
-						<h2>Heading</h2>
-
-						<p>
-							Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus
-							ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo
-							sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed
-							odio dui.
-						</p>
-					</div>
-					<a class="btn" href="#">View details »</a>
-				</div>
-				<div class="span4">
-					<div>
-						<h2>Heading</h2>
-
-						<p>
-							Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus
-							ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo
-							sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed
-							odio dui.
-						</p>
-					</div>
-					<a class="btn" href="#">View details »</a>
-				</div>
 			</div>
 		</div>
 	</div>

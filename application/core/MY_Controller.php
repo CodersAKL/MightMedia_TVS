@@ -43,6 +43,7 @@
  * @property CI_Security $security
  * @property CI_Migration $migration
  * @property ion_auth $ion_auth
+ * @property template $template
  */
 
 class MY_Controller extends CI_Controller {

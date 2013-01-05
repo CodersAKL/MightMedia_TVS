@@ -867,7 +867,11 @@ class Template
 				}
 				else if ( file_exists( VIEWPATH . $theme_view . self::_ext( $theme_view ) ) ) {
 
-					return self::_load_view( $theme_view, $this->_data + $data, $parse_view );
+					return self::_load_view( $theme_view, $this->_data + $data, $parse_view, VIEWPATH );
+				}
+				else if ( file_exists( APPPATH . $theme_view . self::_ext( $theme_view ) ) ) {
+
+					return self::_load_view( $theme_view, $this->_data + $data, $parse_view, APPPATH );
 				}
 			}
 		}
@@ -909,10 +913,11 @@ class Template
 		$sResDir      = strtolower( $aFileInfo['extension'] );
 
 		if ( in_array( $sResDir, array( 'png', 'jpg', 'gif' ) ) ) {
-			$sResDir = 'img';
+			$sResDir = 'img/' . strstr($aFileInfo['dirname'], '/');
+//			$sResDir = 'img';
 		}
 
-		if ( !empty( $aFileInfo['extension'] ) && in_array( strtolower( $aFileInfo['extension'] ), array( 'css', 'js' ) ) ) {
+		if ( !empty( $aFileInfo['extension'] ) && in_array( strtolower( $aFileInfo['extension'] ), array( 'css', 'js', 'png', 'jpg', 'gif' ) ) ) {
 
 			// IF production
 			if ( ENVIRONMENT != 'development' ) {
