@@ -26,19 +26,7 @@
 <div class="container">
 	<div class="row" data-spy="scroll" data-target=".bs-sidebar">
 		<div class="span12">
-			<ul class="breadcrumb">
-				<li class="">
-					<a href="#">Playlists</a>
-				</li>
-				<span class="divider"> / </span>
-				<li class="">
-					<a href="#">Office</a>
-				</li>
-				<span class="divider"> / </span>
-				<li class="">
-					<a href="#">Rick Astley</a>
-				</li>
-			</ul>
+			<?=$this->load->controller('breadcrumb_module/breadcrumb_module/index');?>
 		</div>
 	</div>
 	<div class="row">
