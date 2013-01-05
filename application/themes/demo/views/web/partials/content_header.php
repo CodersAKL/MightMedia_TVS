@@ -36,29 +36,8 @@
 
 				<!-- The drop down menu -->
 				<ul class="nav pull-right">
-					<li class="dropdown">
-						<a class="dropdown-toggle" href="/users/sign_up" data-toggle="dropdown">
-							<img src="http://dev/vytenis/wl/resources/images/flags/small/gb.png"/>
-							<strong class="caret"></strong>
-						</a>
-						<ul class="dropdown-menu">
-							<!-- dropdown language links -->
-							<li>
-								<a href="#"><img src="<?=get_res_path('language_module/flags/small/lt.png')?>" alt="lt"/>
-									Lietuviškai</a></li>
-							<li>
-								<a href="#"><img src="http://dev/vytenis/wl/resources/images/flags/small/ru.png" alt="ru"/>
-									По-русски</a></li>
-							<li>
-								<a href="#"><img src="http://dev/vytenis/wl/resources/images/flags/small/pl.png" alt="pl"/>
-									Po polsku</a></li>
-							<li>
-								<a href="#"><img src="http://dev/vytenis/wl/resources/images/flags/small/ua.png" alt="ua"/>
-									По-українськи</a></li>
-							<li class="divider"></li>
-							<li><a href="#">Translate to your language</a></li>
-						</ul>
-					</li>
+						<?=$this->load->controller('language_module/menu/index')?>
+
 					<li class="divider-vertical"></li>
 					<li class="dropdown">
 						<a class="dropdown-toggle" href="#" data-toggle="dropdown">Savitarna<strong class="caret"></strong></a>

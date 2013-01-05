@@ -434,7 +434,8 @@ $config['proxy_ips'] = '';
 
 $config['locales'] = array(
 	'lt' => 'lithuanian',
-	'en' => 'english'
+	'en' => 'english',
+	'ru' => 'russian'
 );
 
 

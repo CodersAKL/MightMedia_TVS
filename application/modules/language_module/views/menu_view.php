@@ -10,14 +10,28 @@
  * © 2012
  */
 ?>
-<div class="o-h m-b10">
-	<ul>
+
+<li class="dropdown">
+	<a class="dropdown-toggle" href="<?=current_url()?>" data-toggle="dropdown">
+		<img src="<?=get_res_path('language_module/'.LANG.'.png')?>"/>
+		<?=_( 'In_'.strtoupper( LANG ) )?>
+		<strong class="caret"></strong>
+	</a>
+
+
+	<ul class="dropdown-menu">
+		<!-- dropdown language links -->
 		<?foreach($languages as $sLang => $sLanguage):?>
-		<li class="f-r m-l sb_languages_list_item_current">
-			<a href="<?=site_url( $this->lang->switch_uri( $sLang ) );?>" title="<?=lang( 'In_'.strtoupper( $sLang ) )?>" class="<?if( $sLang == LANG ):?>no-dec<?endif?>">
-				<img src="<?=get_res_path()?>img/layout/spacer.png" alt="<?=$sLang?>" class="flags <?=$sLang?> m-r5 v-m" /><span><?=$sLanguage?></span>
-			</a>
-		</li>
+			<?if( $sLang != LANG ):?>
+				<li>
+					<a href="<?=site_url( $this->lang->switch_uri( $sLang ) );?>" title="<?=_( 'In_'.strtoupper( $sLang ) )?>">
+						<img src="<?=get_res_path('language_module/'.$sLang.'.png')?>" alt="lt"/>
+						<?=_( 'In_'.strtoupper( $sLang ) )?>
+					</a>
+				</li>
+			<?endif?>
 		<?endforeach?>
+		<li class="divider"></li>
+		<li><a href="#">Translate to your language</a></li>
 	</ul>
-</div>
+</li>

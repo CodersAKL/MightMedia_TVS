@@ -26,6 +26,7 @@ class Menu extends MY_Controller
 			$this->cache->save('aLanguages_' . APPPATH, $aData, 60*60*24 );
 		}*/
 		$aData['languages'] = $this->config->item('locales');
+		$this->load->language( 'language_module/language' );
 
 		return $this->template->view( 'language_module/menu_view', $aData );
 	}
