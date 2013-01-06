@@ -52,7 +52,7 @@
 			<div class="input-prepend input-append">
 				<span class="add-on"><i class="icon-lock"></i></span>
 				<?php echo form_input($password, '', 'placeholder="'._('Password').'"');?>
-				<span class="add-on pointer" Onmousedown="$(this).prev().get(0).type='text';$('i',this).toggleClass('icon-eye-close')" Onmouseup="$(this).prev().get(0).type='password';$('i',this).toggleClass('icon-eye-close')"><i class="icon-eye-open"></i></span>
+				<span class="add-on pointer" Onmousedown="$(this).prev().get(0).type='text';$('i',this).toggleClass('icon-eye-open icon-eye-close')" Onmouseup="$(this).prev().get(0).type='password';$('i',this).toggleClass('icon-eye-open icon-eye-close')"><i class="icon-eye-close"></i></span>
 			</div>
 		</div>
 	</div>
@@ -62,7 +62,7 @@
 			<div class="input-prepend input-append">
 				<span class="add-on"><i class="icon-lock"></i></span>
 				<?php echo form_input($password_confirm, '', 'placeholder="'._('Confirm Password').'"');?>
-				<span class="add-on pointer" Onmousedown="$(this).prev().get(0).type='text';$('i',this).toggleClass('icon-eye-close')" Onmouseup="$(this).prev().get(0).type='password';$('i',this).toggleClass('icon-eye-close')"><i class="icon-eye-open"></i></span>
+				<span class="add-on pointer" Onmousedown="$(this).prev().get(0).type='text';$('i',this).toggleClass('icon-eye-open icon-eye-close')" Onmouseup="$(this).prev().get(0).type='password';$('i',this).toggleClass('icon-eye-open icon-eye-close')"><i class="icon-eye-close"></i></span>
 			</div>
 		</div>
 	</div>
