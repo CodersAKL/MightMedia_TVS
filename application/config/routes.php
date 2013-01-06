@@ -76,6 +76,8 @@ $route['admin/logout'] = 'admin/logout';
 $route['admin/([a-zA-Z_-]+)'] = '$1/admin/index';
 $route['admin'] = 'admin';*/
 
+$route['^([a-z]{2})/user/reset_password/(:any)'] = 'user/reset_password/index/$2';
+
 // Default
 $route['^([a-z]{2})/(:any)/?'] = '$2/index';
 $route['^([a-z]{2})/(.*)'] = '$2';
