@@ -18,7 +18,7 @@
 		</label>
 		<?php echo form_submit('submit', _('user_login'), 'class="btn btn-block btn-primary"');?>
 
-		<?php echo anchor('user/auth/forgot_password', _('Forgot your password?')) ;?>
+		<?php echo anchor('user/forgot_password', _('Forgot your password?')) ;?>
 	<?php echo form_close();?>
 
 	<script type="text/javascript">

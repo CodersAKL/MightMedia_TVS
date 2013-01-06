@@ -7,30 +7,46 @@
 
 <div id="infoMessage"><?php echo $message;?></div>
 
-<?php echo form_open( "user/login" ); ?>
+<?php echo form_open( current_url(), 'class="form-horizontal"' ); ?>
 
-<p>
-	<label for="identity"><?=_( 'Email/Username' )?>:</label>
-	<?php echo form_input( $identity );?>
-</p>
-
-<p>
-	<label for="password"><?=_( 'Password' )?>:</label>
-	<?php echo form_input( $password );?>
-</p>
-
-<p>
-	<label for="remember" class="checkbox">
-		<?=_( 'Remember Me' )?>
-		<?php echo form_checkbox( 'remember', '1', FALSE, 'id="remember"' );?>
-	</label>
-</p>
+<div class="control-group">
+	<label class="control-label" for="identity"><?=_('Email/Username')?></label>
+	<div class="controls">
+		<div class="input-prepend">
+			<span class="add-on"><i class="icon-envelope"></i></span>
+			<?php echo form_input($identity, '', 'placeholder="'._('Email/Username').'" class=""');?>
+		</div>
+	</div>
+</div>
+<div class="control-group">
+	<label class="control-label" for="password"><?=_('Password')?></label>
+	<div class="controls">
+		<div class="input-prepend input-append">
+			<span class="add-on"><i class="icon-lock"></i></span>
+			<?php echo form_input($password, '', 'placeholder="'._('Password').'"');?>
+			<span class="add-on pointer" Onmousedown="$(this).prev().get(0).type='text';$('i',this).toggleClass('icon-eye-open icon-eye-close')" Onmouseup="$(this).prev().get(0).type='password';$('i',this).toggleClass('icon-eye-open icon-eye-close')"><i class="icon-eye-close"></i></span>
+		</div>
+	</div>
+</div>
+<div class="control-group">
+	<div class="controls">
+		<label class="checkbox" for="remember">
+			<?php echo form_checkbox( 'remember', '1', FALSE, 'id="remember"' );?>
+			<?=_( 'Remember Me' )?>
+		</label>
+	</div>
+</div>
 
 <div class="form-actions">
-	<?php echo form_submit( 'submit', _( 'Login' ), 'class="btn btn-primary btn-large"' );?>
+		<span class="span3">
+			<?php echo form_submit( 'submit', _( 'Login' ), 'class="btn btn-primary btn-large"' );?>
+		</span>
+		<span class="span9">
+			<?=anchor( 'user/forgot_password', _( 'Forgot your password?' ) )?><br/>
+			<?=anchor( 'user/register', _( 'Not a member yet? Register here!' ) )?>
+		</span>
+
 </div>
 
 <?php echo form_close(); ?>
 
-<p><?=anchor( 'user/forgot_password', _( 'Forgot your password?' ) )?></p>
-<p><?=anchor( 'user/register', _( 'Not a member yet? Register here!' ) )?></p>

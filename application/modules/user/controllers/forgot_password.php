@@ -29,12 +29,13 @@ class forgot_password extends MY_Controller
 
 	public function index()
 	{
-		$this->form_validation->set_rules('email', 'Email Address', 'required');
+		$this->form_validation->set_rules('email', _('Email Address'), 'required');
 		if ($this->form_validation->run() == false)
 		{
 			//setup the input
-			$this->data['email'] = array('name' => 'email',
-			                             'id' => 'email',
+			$this->data['email'] = array(
+				'name' => 'email',
+			    'id' => 'email'
 			);
 
 			if ( $this->config->item('identity', 'ion_auth') == 'username' ){
@@ -64,12 +65,12 @@ class forgot_password extends MY_Controller
 			{
 				//if there were no errors
 				$this->session->set_flashdata('message', $this->ion_auth->messages());
-				redirect("auth/login", 'refresh'); //we should display a confirmation page here instead of the login page
+				redirect('user/login'); //we should display a confirmation page here instead of the login page
 			}
 			else
 			{
 				$this->session->set_flashdata('message', $this->ion_auth->errors());
-				redirect("auth/forgot_password", 'refresh');
+				redirect('user/forgot_password');
 			}
 		}
 
@@ -89,8 +90,8 @@ class forgot_password extends MY_Controller
 		{
 			//if the code is valid then display the password reset form
 
-			$this->form_validation->set_rules('new', 'New Password', 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[new_confirm]');
-			$this->form_validation->set_rules('new_confirm', 'Confirm New Password', 'required');
+			$this->form_validation->set_rules('new', _('New Password'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[new_confirm]');
+			$this->form_validation->set_rules('new_confirm', _('Confirm New Password'), 'required');
 
 			if ($this->form_validation->run() == false)
 			{
@@ -122,7 +123,7 @@ class forgot_password extends MY_Controller
 				$this->data['code'] = $code;
 
 				//render
-				$this->load->view('auth/reset_password', $this->data);
+				$this->template->build('user/reset_password', $this->data);
 			}
 			else
 			{
@@ -152,7 +153,7 @@ class forgot_password extends MY_Controller
 					else
 					{
 						$this->session->set_flashdata('message', $this->ion_auth->errors());
-						redirect('auth/reset_password/' . $code, 'refresh');
+						redirect('user/reset_password/' . $code);
 					}
 				}
 			}
@@ -161,7 +162,7 @@ class forgot_password extends MY_Controller
 		{
 			//if the code is invalid then send them back to the forgot password page
 			$this->session->set_flashdata('message', $this->ion_auth->errors());
-			redirect("auth/forgot_password", 'refresh');
+			redirect('user/forgot_password');
 		}
 	}
 
