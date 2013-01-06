@@ -3,7 +3,7 @@
 
 <div id="infoMessage"><?php echo $message;?></div>
 
-<?php echo form_open("user/auth/forgot_password");?>
+<?php echo form_open(current_url());?>
 
       <p>
       	<?php echo $identity_label; ?>: <br />

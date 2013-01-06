@@ -14,8 +14,8 @@
 <p>
 	Some text about us and why us....
 	<div>
-	<?=anchor('user/login','Login')?>
-	or
-	<?=anchor('user/register','Register')?>
+	<?=anchor('user/login',_('Login'))?>
+	<?=_('or')?>
+	<?=anchor('user/register',_('Register'))?>
 	</div>
 </p>

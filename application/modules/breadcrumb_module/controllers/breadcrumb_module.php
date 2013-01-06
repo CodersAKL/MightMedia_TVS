@@ -18,6 +18,8 @@ class breadcrumb_module extends MY_Controller
 
 	public function index()
 	{
+		// Load languages
+		$this->load->language('breadcrumb_module/breadcrumb');
 
 		// Get path array
 		$aBread = $this->uri->segment_array();
