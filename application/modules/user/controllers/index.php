@@ -14,6 +14,7 @@ class index extends MY_Controller
     function __construct()
     {
         parent::__construct();
+	    $this->load->language('user/user');
     }
 
 	public function index()

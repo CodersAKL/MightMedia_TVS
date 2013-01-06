@@ -1,10 +1,10 @@
 <div id="login_form_wrap">
 
 	<?php echo $message;?>
-	<?php echo form_open("user/auth/login",'id="login_form"');?>
+	<?php echo form_open("user/login",'id="login_form"');?>
 		<div class="input-prepend">
 			<span class="add-on">@</span>
-			<?php echo form_input($identity,'','placeholder="'._('user_email_username').'"');?>
+			<?php echo form_input($identity,'','placeholder="'.$identity_label.'"');?>
 		</div>
 		<div class="input-prepend">
 			<span class="add-on">

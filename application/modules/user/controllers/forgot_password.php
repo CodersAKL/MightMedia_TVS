@@ -39,14 +39,12 @@ class forgot_password extends MY_Controller
 			);
 
 			if ( $this->config->item('identity', 'ion_auth') == 'username' ){
-				$this->data['identity_label'] = 'Username';
+				$this->data['identity_label'] = _('Username');
 			}
 			else
 			{
-				$this->data['identity_label'] = 'Email';
+				$this->data['identity_label'] = _('Email');
 			}
-
-
 
 			//set any errors and display the form
 			$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');

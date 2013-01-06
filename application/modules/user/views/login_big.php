@@ -10,11 +10,11 @@
 <?php echo form_open( current_url(), 'class="form-horizontal"' ); ?>
 
 <div class="control-group">
-	<label class="control-label" for="identity"><?=_('Email/Username')?></label>
+	<label class="control-label" for="identity"><?=$identity_label?></label>
 	<div class="controls">
 		<div class="input-prepend">
 			<span class="add-on"><i class="icon-envelope"></i></span>
-			<?php echo form_input($identity, '', 'placeholder="'._('Email/Username').'" class=""');?>
+			<?php echo form_input($identity, '', 'placeholder="'.$identity_label.'" class=""');?>
 		</div>
 	</div>
 </div>
