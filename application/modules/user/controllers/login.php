@@ -20,7 +20,6 @@ class login extends MY_Controller
 	    $this->load->library('session');
 	    $this->load->library('form_validation');
 	    $this->load->helper('url');
-//	    $this->lang->load('user/user' );
 	    $this->load->language('user/user');
 	    $this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
     }
@@ -30,8 +29,8 @@ class login extends MY_Controller
 		$this->data['title'] = "Login";
 
 		//validate form input
-		$this->form_validation->set_rules('identity', 'Identity', 'required');
-		$this->form_validation->set_rules('password', 'Password', 'required');
+		$this->form_validation->set_rules('identity', __('Identity'), 'required');
+		$this->form_validation->set_rules('password', __('Password'), 'required');
 
 		if ($this->form_validation->run() == true)
 		{
@@ -63,23 +62,25 @@ class login extends MY_Controller
 			//set the flash data error message if there is one
 			$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
 
-			$this->data['identity'] = array('name' => 'identity',
-			                                'id' => 'identity',
-			                                'type' => 'text',
-			                                'value' => $this->form_validation->set_value('identity'),
+			$this->data['identity'] = array(
+				'name' => 'identity',
+                'id' => 'identity',
+                'type' => 'text',
+                'value' => $this->form_validation->set_value('identity'),
 			);
-			$this->data['password'] = array('name' => 'password',
-			                                'id' => 'password',
-			                                'type' => 'password',
+			$this->data['password'] = array(
+				'name' => 'password',
+                'id' => 'password',
+                'type' => 'password',
 			);
 
 		}
 		if ( $this->config->item('identity', 'ion_auth') == 'username' ){
-			$this->data['identity_label'] = _('Username');
+			$this->data['identity_label'] = __('Username');
 		}
 		else
 		{
-			$this->data['identity_label'] = _('Email');
+			$this->data['identity_label'] = __('Email');
 		}
 
 		if ( $this->input->is_ajax_request()) {
@@ -96,8 +97,8 @@ class login extends MY_Controller
 		$this->data['title'] = "Login";
 
 		//validate form input
-		$this->form_validation->set_rules('identity', 'Identity', 'required');
-		$this->form_validation->set_rules('password', 'Password', 'required');
+		$this->form_validation->set_rules('identity', __('Identity'), 'required');
+		$this->form_validation->set_rules('password', __('Password'), 'required');
 
 		if ($this->form_validation->run() == true)
 		{
@@ -129,24 +130,26 @@ class login extends MY_Controller
 			//set the flash data error message if there is one
 			$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
 
-			$this->data['identity'] = array('name' => 'identity',
-			                                'id' => 'identity',
-			                                'type' => 'text',
-			                                'value' => $this->form_validation->set_value('identity'),
+			$this->data['identity'] = array(
+				'name' => 'identity',
+                'id' => 'identity',
+                'type' => 'text',
+                'value' => $this->form_validation->set_value('identity'),
 			);
-			$this->data['password'] = array('name' => 'password',
-			                                'id' => 'password',
-			                                'type' => 'password',
+			$this->data['password'] = array(
+				'name' => 'password',
+                'id' => 'password',
+                'type' => 'password',
 			);
 
 		}
 
 		if ( $this->config->item('identity', 'ion_auth') == 'username' ){
-			$this->data['identity_label'] = _('Username');
+			$this->data['identity_label'] = __('Username');
 		}
 		else
 		{
-			$this->data['identity_label'] = _('Email');
+			$this->data['identity_label'] = __('Email');
 		}
 
 		echo $this->template->view('user/login', $this->data);

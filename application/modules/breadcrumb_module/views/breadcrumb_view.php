@@ -24,7 +24,7 @@
 	<?foreach( $aBreads as $iIndex => $sBread ):?>
 		<span class="divider"> / </span>
 		<li class="">
-			<a href="<?=site_url( implode( '/', array_slice( $aBreads, 0, $iIndex+1 ) ) )?>"><?=_( ucfirst( $sBread ) )?></a>
+			<a href="<?=site_url( implode( '/', array_slice( $aBreads, 0, $iIndex+1 ) ) )?>"><?=__( ucfirst( $sBread ) )?></a>
 		</li>
 	<?endforeach?>
 </ul>

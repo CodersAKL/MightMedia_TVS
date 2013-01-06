@@ -37,15 +37,15 @@ class register extends MY_Controller
 		//}
 
 		//validate form input
-		$this->form_validation->set_rules('first_name', _('First Name'), 'required|xss_clean');
-		$this->form_validation->set_rules('last_name', _('Last Name'), 'required|xss_clean');
-		$this->form_validation->set_rules('email', _('Email Address'), 'required|valid_email');
-		$this->form_validation->set_rules('phone1', _('First Part of Phone'), 'required|xss_clean|min_length[3]|max_length[3]');
-		$this->form_validation->set_rules('phone2', _('Second Part of Phone'), 'required|xss_clean|min_length[3]|max_length[3]');
-		$this->form_validation->set_rules('phone3', _('Third Part of Phone'), 'required|xss_clean|min_length[4]|max_length[5]');
-		$this->form_validation->set_rules('company', _('Company Name'), 'required|xss_clean');
-		$this->form_validation->set_rules('password', _('Password'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
-		$this->form_validation->set_rules('password_confirm', _('Password Confirmation'), 'required');
+		$this->form_validation->set_rules('first_name', __('First Name'), 'required|xss_clean');
+		$this->form_validation->set_rules('last_name', __('Last Name'), 'required|xss_clean');
+		$this->form_validation->set_rules('email', __('Email Address'), 'required|valid_email');
+		$this->form_validation->set_rules('phone1', __('First Part of Phone'), 'required|xss_clean|min_length[3]|max_length[3]');
+		$this->form_validation->set_rules('phone2', __('Second Part of Phone'), 'required|xss_clean|min_length[3]|max_length[3]');
+		$this->form_validation->set_rules('phone3', __('Third Part of Phone'), 'required|xss_clean|min_length[4]|max_length[5]');
+		$this->form_validation->set_rules('company', __('Company Name'), 'required|xss_clean');
+		$this->form_validation->set_rules('password', __('Password'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
+		$this->form_validation->set_rules('password_confirm', __('Password Confirmation'), 'required');
 
 		if ($this->form_validation->run() == true)
 		{
@@ -65,7 +65,7 @@ class register extends MY_Controller
 			//check to see if we are creating the user
 			//redirect them back to the admin page
 			$this->session->set_flashdata('message', $this->ion_auth->messages());
-			redirect('user/auth');
+			redirect('user/login');
 		}
 		else
 		{

@@ -1,7 +1,7 @@
-<h3><?=_( 'Login' )?></h3>
+<h3><?=__( 'Login' )?></h3>
 <?php if ( empty( $message ) ): ?>
 	<p>
-		<?= _( 'Please login with your email/username and password below.' ) ?>
+		<?= __( 'Please login with your email/username and password below.' ) ?>
 	</p>
 <?php endif ?>
 
@@ -19,11 +19,11 @@
 	</div>
 </div>
 <div class="control-group">
-	<label class="control-label" for="password"><?=_('Password')?></label>
+	<label class="control-label" for="password"><?=__('Password')?></label>
 	<div class="controls">
 		<div class="input-prepend input-append">
 			<span class="add-on"><i class="icon-lock"></i></span>
-			<?php echo form_input($password, '', 'placeholder="'._('Password').'"');?>
+			<?php echo form_input($password, '', 'placeholder="'.__('Password').'"');?>
 			<span class="add-on pointer" Onmousedown="$(this).prev().get(0).type='text';$('i',this).toggleClass('icon-eye-open icon-eye-close')" Onmouseup="$(this).prev().get(0).type='password';$('i',this).toggleClass('icon-eye-open icon-eye-close')"><i class="icon-eye-close"></i></span>
 		</div>
 	</div>
@@ -32,18 +32,18 @@
 	<div class="controls">
 		<label class="checkbox" for="remember">
 			<?php echo form_checkbox( 'remember', '1', FALSE, 'id="remember"' );?>
-			<?=_( 'Remember Me' )?>
+			<?=__( 'Remember Me' )?>
 		</label>
 	</div>
 </div>
 
 <div class="form-actions">
 		<span class="span3">
-			<?php echo form_submit( 'submit', _( 'Login' ), 'class="btn btn-primary btn-large"' );?>
+			<?php echo form_submit( 'submit', __( 'Login' ), 'class="btn btn-primary btn-large"' );?>
 		</span>
 		<span class="span9">
-			<?=anchor( 'user/forgot_password', _( 'Forgot your password?' ) )?><br/>
-			<?=anchor( 'user/register', _( 'Not a member yet? Register here!' ) )?>
+			<?=anchor( 'user/forgot_password', __( 'Forgot your password?' ) )?><br/>
+			<?=anchor( 'user/register', __( 'Not a member yet? Register here!' ) )?>
 		</span>
 
 </div>

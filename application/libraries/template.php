@@ -914,7 +914,7 @@ class Template
 
 		if ( in_array( $sResDir, array( 'png', 'jpg', 'gif' ) ) ) {
 			$sResDir = 'img/' . strstr($aFileInfo['dirname'], '/');
-//			$sResDir = 'img';
+			$sResDir = rtrim( $sResDir, '/' );
 		}
 
 		if ( !empty( $aFileInfo['extension'] ) && in_array( strtolower( $aFileInfo['extension'] ), array( 'css', 'js', 'png', 'jpg', 'gif' ) ) ) {

@@ -37,7 +37,7 @@
 
 // ------------------------------------------------------------------------
 
-if ( ! function_exists('_'))
+if ( ! function_exists('__'))
 {
 	/**
 	 * Lang
@@ -48,7 +48,7 @@ if ( ! function_exists('_'))
 	 * @param	string	the id of the form element
 	 * @return	string
 	 */
-	function _($line, $id = '')
+	function __($line, $id = '')
 	{
 		$CI =& get_instance();
 		$sReturn = $CI->lang->line( $line );

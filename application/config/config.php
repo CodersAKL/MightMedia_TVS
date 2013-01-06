@@ -390,7 +390,7 @@ $config['compress_output'] = false;
 | code less readable.
 |
 */
-$config['minify_output'] = false;
+$config['minify_output'] = (ENVIRONMENT !== 'development');
 
 /*
 |--------------------------------------------------------------------------

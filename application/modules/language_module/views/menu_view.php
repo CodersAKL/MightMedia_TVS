@@ -14,7 +14,7 @@
 <li class="dropdown">
 	<a class="dropdown-toggle" href="<?=current_url()?>" data-toggle="dropdown">
 		<img src="<?=get_res_path('language_module/'.LANG.'.png')?>"/>
-		<?=_( 'In_'.strtoupper( LANG ) )?>
+		<?=__( 'In_'.strtoupper( LANG ) )?>
 		<strong class="caret"></strong>
 	</a>
 
@@ -24,9 +24,9 @@
 		<?foreach($languages as $sLang => $sLanguage):?>
 			<?if( $sLang != LANG ):?>
 				<li>
-					<a href="<?=site_url( $this->lang->switch_uri( $sLang ) );?>" title="<?=_( 'In_'.strtoupper( $sLang ) )?>">
+					<a href="<?=site_url( $this->lang->switch_uri( $sLang ) );?>" title="<?=__( 'In_'.strtoupper( $sLang ) )?>">
 						<img src="<?=get_res_path('language_module/'.$sLang.'.png')?>" alt="lt"/>
-						<?=_( 'In_'.strtoupper( $sLang ) )?>
+						<?=__( 'In_'.strtoupper( $sLang ) )?>
 					</a>
 				</li>
 			<?endif?>

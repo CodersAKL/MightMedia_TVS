@@ -10,15 +10,15 @@
 			<span class="add-on">
 				<i class="icon-lock"></i>
 			</span>
-			<?php echo form_input($password, '', 'placeholder="'._('user_password').'"');?>
+			<?php echo form_input($password, '', 'placeholder="'.__('user_password').'"');?>
 		</div>
 		<label class="checkbox">
 			<?php echo form_checkbox('remember', '1', FALSE, 'id="remember"');?>
-			<?=_('Remember Me')?>
+			<?=__('Remember Me')?>
 		</label>
-		<?php echo form_submit('submit', _('user_login'), 'class="btn btn-block btn-primary"');?>
+		<?php echo form_submit('submit', __('user_login'), 'class="btn btn-block btn-primary"');?>
 
-		<?php echo anchor('user/forgot_password', _('Forgot your password?')) ;?>
+		<?php echo anchor('user/forgot_password', __('Forgot your password?')) ;?>
 	<?php echo form_close();?>
 
 	<script type="text/javascript">

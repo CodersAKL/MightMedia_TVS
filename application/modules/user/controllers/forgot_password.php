@@ -21,6 +21,8 @@ class forgot_password extends MY_Controller
 	    $this->load->library('session');
 	    $this->load->library('form_validation');
 	    $this->load->helper('url');
+	    $this->load->language('user/user');
+	    $this->load->language('user/ion_auth');
 	    $this->template->set_layout('full_width_layout');
 
 	    $this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
@@ -29,7 +31,7 @@ class forgot_password extends MY_Controller
 
 	public function index()
 	{
-		$this->form_validation->set_rules('email', _('Email Address'), 'required');
+		$this->form_validation->set_rules('email', __('Email Address'), 'required');
 		if ($this->form_validation->run() == false)
 		{
 			//setup the input
@@ -39,11 +41,11 @@ class forgot_password extends MY_Controller
 			);
 
 			if ( $this->config->item('identity', 'ion_auth') == 'username' ){
-				$this->data['identity_label'] = _('Username');
+				$this->data['identity_label'] = __('Username');
 			}
 			else
 			{
-				$this->data['identity_label'] = _('Email');
+				$this->data['identity_label'] = __('Email');
 			}
 
 			//set any errors and display the form
@@ -88,8 +90,8 @@ class forgot_password extends MY_Controller
 		{
 			//if the code is valid then display the password reset form
 
-			$this->form_validation->set_rules('new', _('New Password'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[new_confirm]');
-			$this->form_validation->set_rules('new_confirm', _('Confirm New Password'), 'required');
+			$this->form_validation->set_rules('new', __('New Password'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[new_confirm]');
+			$this->form_validation->set_rules('new_confirm', __('Confirm New Password'), 'required');
 
 			if ($this->form_validation->run() == false)
 			{

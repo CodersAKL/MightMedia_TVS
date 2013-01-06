@@ -24,8 +24,8 @@
 			<div class="nav-collapse collapse">
 
 				<ul class="nav">
-					<li<?if($this->uri->segment(2) == 'user'):?> class="active"<?endif?>><a href="<?=site_url('user')?>"><?=_('Why us?')?></a></li>
-					<li<?if($this->uri->segment(2) == 'blog'):?> class="active"<?endif?>><a href="<?=site_url('blog')?>"><?=_('Blog')?></a></li>
+					<li<?if($this->uri->segment(2) == 'user'):?> class="active"<?endif?>><a href="<?=site_url('user')?>"><?=__('Why us?')?></a></li>
+					<li<?if($this->uri->segment(2) == 'blog'):?> class="active"<?endif?>><a href="<?=site_url('blog')?>"><?=__('Blog')?></a></li>
 				</ul>
 
 				<!-- The drop down menu -->
@@ -35,7 +35,7 @@
 
 					<li class="divider-vertical"></li>
 					<li class="dropdown">
-						<a class="dropdown-toggle" href="#" data-toggle="dropdown"><?=_('Login')?><strong class="caret"></strong></a>
+						<a class="dropdown-toggle" href="#" data-toggle="dropdown"><?=__('Login')?><strong class="caret"></strong></a>
 
 						<div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
 							<!-- Login form here -->
