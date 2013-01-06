@@ -1,6 +1,8 @@
 <h3><?=_( 'Login' )?></h3>
 <?php if ( empty( $message ) ): ?>
-	<?= _( 'Please login with your email/username and password below.' ) ?>
+	<p>
+		<?= _( 'Please login with your email/username and password below.' ) ?>
+	</p>
 <?php endif ?>
 
 <div id="infoMessage"><?php echo $message;?></div>
@@ -24,8 +26,9 @@
 	</label>
 </p>
 
-
-<p><?php echo form_submit( 'submit', _( 'Login' ), 'class="btn btn-primary btn-large"' );?></p>
+<div class="form-actions">
+	<?php echo form_submit( 'submit', _( 'Login' ), 'class="btn btn-primary btn-large"' );?>
+</div>
 
 <?php echo form_close(); ?>
 

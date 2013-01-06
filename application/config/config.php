@@ -438,6 +438,7 @@ $config['locales'] = array(
 	'ru' => 'russian'
 );
 
+$config['site_name'] = 'Site Name';
 
 /* End of file config.php */
 /* Location: ./application/config/config.php */

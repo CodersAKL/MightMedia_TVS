@@ -19,28 +19,23 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</a>
-			<a class="brand" href="#" id="brand_logo">WebStrip</a>
+			<a class="brand" href="<?=base_url()?>" id="brand_logo"><?=$this->config->item('site_name');?></a>
 
 			<div class="nav-collapse collapse">
-				<ul class="nav">
-					<li class="active"><a href="#">Why us?</a></li>
-					<li><a href="#about">About us</a></li>
-					<li><a href="#contact">What people say about us</a></li>
-					<li><a href="#contact">Contact us</a></li>
-					<li><a href="#contact">Help us</a></li>
-				</ul>
 
-				<form class="navbar-search pull-left">
-					<input type="text" class="search-query" placeholder="Search">
-				</form>
+				<ul class="nav">
+					<li<?if($this->uri->segment(2) == 'user'):?> class="active"<?endif?>><a href="<?=site_url('user')?>"><?=_('Why us?')?></a></li>
+					<li<?if($this->uri->segment(2) == 'blog'):?> class="active"<?endif?>><a href="<?=site_url('blog')?>"><?=_('Blog')?></a></li>
+				</ul>
 
 				<!-- The drop down menu -->
 				<ul class="nav pull-right">
-						<?=$this->load->controller('language_module/menu/index')?>
+
+					<?=$this->load->controller('language_module/menu/index')?>
 
 					<li class="divider-vertical"></li>
 					<li class="dropdown">
-						<a class="dropdown-toggle" href="#" data-toggle="dropdown">Savitarna<strong class="caret"></strong></a>
+						<a class="dropdown-toggle" href="#" data-toggle="dropdown"><?=_('Login')?><strong class="caret"></strong></a>
 
 						<div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
 							<!-- Login form here -->
