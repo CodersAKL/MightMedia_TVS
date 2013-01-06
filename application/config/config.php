@@ -79,7 +79,7 @@ $config['uri_protocol'] = 'AUTO';
 | http://codeigniter.com/user_guide/general/urls.html
 */
 
-$config['url_suffix'] = '';
+$config['url_suffix'] = '.html';
 
 /*
 |--------------------------------------------------------------------------
@@ -390,7 +390,7 @@ $config['compress_output'] = false;
 | code less readable.
 |
 */
-$config['minify_output'] = false;
+$config['minify_output'] = (ENVIRONMENT !== 'development');
 
 /*
 |--------------------------------------------------------------------------
@@ -434,9 +434,11 @@ $config['proxy_ips'] = '';
 
 $config['locales'] = array(
 	'lt' => 'lithuanian',
-	'en' => 'english'
+	'en' => 'english',
+	'ru' => 'russian'
 );
 
+$config['site_name'] = 'Site Name';
 
 /* End of file config.php */
 /* Location: ./application/config/config.php */

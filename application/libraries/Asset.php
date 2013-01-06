@@ -1328,7 +1328,7 @@ class Asset {
 		}
 		$filename = md5(implode('', $bits).($minify ? 'min' : '').$last_mod).'.'.$type;
 
-		$filepath = self::$cache_path.'/'.$filename;
+		$filepath = FCPATH.self::$cache_path.'/'.$filename;
 		$needs_update = (!file_exists($filepath));
 
 		if ($needs_update)
@@ -1374,7 +1374,8 @@ class Asset {
 					}
 				}
 			}
-			file_put_contents(FCPATH.$filepath, $content, LOCK_EX);
+			file_put_contents($filepath, $content, LOCK_EX);
+			$mtime = time(); // @todo Not used variable.
 		}
 
 		return $filename;

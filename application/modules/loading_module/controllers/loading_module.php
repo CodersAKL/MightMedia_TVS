@@ -22,7 +22,7 @@ class Loading_module extends MY_Controller
 			->add_js( 'loading_module/main.js' )
 			->add_css( 'loading_module/main.css' );
 		$aData = array(
-			'sDefaultLoadingText' => _('Please wait 2')
+			'sDefaultLoadingText' => __('Please wait 2')
 		);
 
 		return $this->load->view( 'loading_module/loading_view', $aData, true );

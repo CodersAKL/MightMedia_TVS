@@ -3,13 +3,9 @@
 }
 /**
  * CodeIgniter
- *
  * An open source application development framework for PHP 5.2.4 or newer
- *
  * NOTICE OF LICENSE
- *
  * Licensed under the Academic Free License version 3.0
- *
  * This source file is subject to the Academic Free License (AFL 3.0) that is
  * bundled with this package in the files license_afl.txt / license_afl.rst.
  * It is also available through the world wide web at this URL:
@@ -17,7 +13,6 @@
  * If you did not receive a copy of the license and are unable to obtain it
  * through the world wide web, please send an email to
  * licensing@ellislab.com so we can send you a copy immediately.
- *
  * @package        CodeIgniter
  * @author         EllisLab Dev Team
  * @copyright      Copyright (c) 2008 - 2012, EllisLab, Inc. (http://ellislab.com/)
@@ -78,27 +73,27 @@
 */
 
 $active_group  = ENVIRONMENT;
-$query_builder = TRUE;
-$active_record = TRUE;
+$query_builder = true;
+$active_record = true;
 
 $db['production']  = array(
 	'dsn'      => '',
 	'hostname' => 'localhost',
-	'username' => '',
-	'password' => '',
-	'database' => '',
+	'username' => 'ammber_pac',
+	'password' => 'krXq3MNl',
+	'database' => 'ammber_pac',
 	'dbdriver' => 'mysql',
-	'dbprefix' => '',
-	'pconnect' => TRUE,
-	'db_debug' => TRUE,
-	'cache_on' => FALSE,
+	'dbprefix' => 'mm_',
+	'pconnect' => true,
+	'db_debug' => false,
+	'cache_on' => false,
 	'cachedir' => '',
 	'char_set' => 'utf8',
 	'dbcollat' => 'utf8_general_ci',
 	'swap_pre' => '',
-	'autoinit' => TRUE,
-	'compress' => TRUE,
-	'stricton' => FALSE,
+	'autoinit' => true,
+	'compress' => true,
+	'stricton' => false,
 	'failover' => array()
 );
 $db['development'] = array(
@@ -109,16 +104,16 @@ $db['development'] = array(
 	'database' => 'uranas',
 	'dbdriver' => 'mysql',
 	'dbprefix' => 'mm_',
-	'pconnect' => TRUE,
-	'db_debug' => TRUE,
-	'cache_on' => FALSE,
+	'pconnect' => true,
+	'db_debug' => true,
+	'cache_on' => false,
 	'cachedir' => '',
 	'char_set' => 'utf8',
 	'dbcollat' => 'utf8_general_ci',
 	'swap_pre' => '',
-	'autoinit' => TRUE,
-	'compress' => TRUE,
-	'stricton' => FALSE,
+	'autoinit' => true,
+	'compress' => true,
+	'stricton' => false,
 	'failover' => array()
 );
 
