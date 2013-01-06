@@ -13,6 +13,7 @@
 $this
 	->add_css( 'bootstrap.css' )
 	->add_css( 'bootstrap-responsive.css' )
+	->add_css( 'main.css' )
 	->add_js( 'jquery.js' )
 	->add_js( 'bootstrap.js' )
 	->set_partial( 'header', 'partials/header' )

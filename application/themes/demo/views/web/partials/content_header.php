@@ -19,53 +19,27 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</a>
-			<a class="brand" href="#" id="brand_logo">WebStrip</a>
+			<a class="brand" href="<?=base_url()?>" id="brand_logo"><?=$this->config->item('site_name');?></a>
 
 			<div class="nav-collapse collapse">
-				<ul class="nav">
-					<li class="active"><a href="#">Why us?</a></li>
-					<li><a href="#about">About us</a></li>
-					<li><a href="#contact">What people say about us</a></li>
-					<li><a href="#contact">Contact us</a></li>
-					<li><a href="#contact">Help us</a></li>
-				</ul>
 
-				<form class="navbar-search pull-left">
-					<input type="text" class="search-query" placeholder="Search">
-				</form>
+				<ul class="nav">
+					<li<?if($this->uri->segment(2) == 'user'):?> class="active"<?endif?>><a href="<?=site_url('user')?>"><?=__('Why us?')?></a></li>
+					<li<?if($this->uri->segment(2) == 'blog'):?> class="active"<?endif?>><a href="<?=site_url('blog')?>"><?=__('Blog')?></a></li>
+				</ul>
 
 				<!-- The drop down menu -->
 				<ul class="nav pull-right">
-					<li class="dropdown">
-						<a class="dropdown-toggle" href="/users/sign_up" data-toggle="dropdown">
-							<img src="http://dev/vytenis/wl/resources/images/flags/small/gb.png"/>
-							<strong class="caret"></strong>
-						</a>
-						<ul class="dropdown-menu">
-							<!-- dropdown language links -->
-							<li>
-								<a href="#"><img src="http://dev/vytenis/wl/resources/images/flags/small/lt.png" alt="lt"/>
-									Lietuviškai</a></li>
-							<li>
-								<a href="#"><img src="http://dev/vytenis/wl/resources/images/flags/small/ru.png" alt="ru"/>
-									По-русски</a></li>
-							<li>
-								<a href="#"><img src="http://dev/vytenis/wl/resources/images/flags/small/pl.png" alt="pl"/>
-									Po polsku</a></li>
-							<li>
-								<a href="#"><img src="http://dev/vytenis/wl/resources/images/flags/small/ua.png" alt="ua"/>
-									По-українськи</a></li>
-							<li class="divider"></li>
-							<li><a href="#">Translate to your language</a></li>
-						</ul>
-					</li>
+
+					<?=$this->load->controller('language_module/menu/index')?>
+
 					<li class="divider-vertical"></li>
 					<li class="dropdown">
-						<a class="dropdown-toggle" href="#" data-toggle="dropdown">Savitarna<strong class="caret"></strong></a>
+						<a class="dropdown-toggle" href="#" data-toggle="dropdown"><?=__('Login')?><strong class="caret"></strong></a>
 
 						<div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
 							<!-- Login form here -->
-							<?=$this->load->controller('user/auth/login');?>
+							<?=$this->load->controller('user/login/small');?>
 
 						</div>
 					</li>

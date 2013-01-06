@@ -26,19 +26,7 @@
 <div class="container">
 	<div class="row" data-spy="scroll" data-target=".bs-sidebar">
 		<div class="span12">
-			<ul class="breadcrumb">
-				<li class="">
-					<a href="#">Playlists</a>
-				</li>
-				<span class="divider"> / </span>
-				<li class="">
-					<a href="#">Office</a>
-				</li>
-				<span class="divider"> / </span>
-				<li class="">
-					<a href="#">Rick Astley</a>
-				</li>
-			</ul>
+			<?=$this->load->controller('breadcrumb_module/breadcrumb_module/index');?>
 		</div>
 	</div>
 	<div class="row">
@@ -61,8 +49,6 @@
 			<!--/.well -->
 		</div>
 		<div class="span9">
-			<h3>Page Title</h3>
-
 			<div class="row-fluid">
 				<?php echo $template['body']; ?>
 			</div>
@@ -100,23 +86,7 @@
 	</div>
 </div>
 
-<hr />
-<footer class="footer container-fluid">
-	<div class="row-fluid">
-		<div class="container-fluid">
-			<p>Designed and built with all the love in the world by <a href="http://twitter.com/mdo" target="_blank">@mdo</a> and <a href="http://twitter.com/fat" target="_blank">@fat</a>.</p>
-			<p>Code licensed under <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License v2.0</a>, documentation under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
-			<p><a href="http://glyphicons.com">Glyphicons Free</a> licensed under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
-			<ul class="footer-links inline">
-				<li><a href="http://blog.getbootstrap.com">Blog</a></li>
-				<li class="muted">·</li>
-				<li><a href="https://github.com/twitter/bootstrap/issues?state=open">Issues</a></li>
-				<li class="muted">·</li>
-				<li><a href="https://github.com/twitter/bootstrap/wiki">Roadmap and changelog</a></li>
-			</ul>
-		</div>
-	</div>
-</footer>
+<?php echo $template['partials']['footer'];?>
 
 </body>
 

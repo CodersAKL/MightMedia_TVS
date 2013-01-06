@@ -1,15 +1,22 @@
-<h1>Forgot Password</h1>
+<h3><?=__('Forgot Password')?></h3>
 <p>Please enter your <?php echo $identity_label; ?> so we can send you an email to reset your password.</p>
 
 <div id="infoMessage"><?php echo $message;?></div>
 
-<?php echo form_open("user/auth/forgot_password");?>
+<?php echo form_open(current_url(), 'class="form-horizontal"');?>
 
-      <p>
-      	<?php echo $identity_label; ?>: <br />
-      	<?php echo form_input($email);?>
-      </p>
-      
-      <p><?php echo form_submit('submit', 'Submit');?></p>
+<div class="control-group">
+	<label class="control-label" for="email"><?=__('Email Address')?></label>
+	<div class="controls">
+		<div class="input-prepend">
+			<span class="add-on"><i class="icon-envelope"></i></span>
+			<?php echo form_input($email, '', 'placeholder="'.__('Email Address').'" class=""');?>
+		</div>
+	</div>
+</div>
+
+<div class="form-actions">
+	<?php echo form_submit('submit', __('Submit'), 'class="btn btn-primary btn-large"');?>
+</div>
       
 <?php echo form_close();?>

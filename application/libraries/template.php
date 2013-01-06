@@ -196,8 +196,8 @@ class Template
 	 */
 	public function build( $view, $data = array(), $return = FALSE, $IE_cache = TRUE )
 	{
-
-		if ( $sModule = strstr( $view, '/', true ) ) {
+		$sModule = strstr( $view, '/', true );
+		if ( !empty( $sModule) ) {
 			$sModuleReset = $this->_module;
 			$this->set_module( $sModule );
 //			$view = basename( $view );
@@ -283,10 +283,10 @@ class Template
 			}
 
 			// Find the main body and 3rd param means parse if its a theme view (only if parser is enabled)
-			$this->_body = self::_load_view(
-				$this->_layout_subdir . $this->_layout, $this->_data, TRUE, self::_find_view_folder()
-			);
-//			$this->_body = self::_load_view( $this->_layout_subdir . $this->_layout, $this->_data, true, self::_find_view_folder() );
+//			$this->_body = self::_load_view(
+//				$this->_layout_subdir . $this->_layout, $this->_data, TRUE, self::_find_view_folder()
+//			);
+			$this->_body = self::_load_view( $this->_layout_subdir . $this->_layout, $this->_data, true, self::_find_view_folder() );
 		}
 
 		// Want it returned or output to browser?
@@ -867,7 +867,11 @@ class Template
 				}
 				else if ( file_exists( VIEWPATH . $theme_view . self::_ext( $theme_view ) ) ) {
 
-					return self::_load_view( $theme_view, $this->_data + $data, $parse_view );
+					return self::_load_view( $theme_view, $this->_data + $data, $parse_view, VIEWPATH );
+				}
+				else if ( file_exists( APPPATH . $theme_view . self::_ext( $theme_view ) ) ) {
+
+					return self::_load_view( $theme_view, $this->_data + $data, $parse_view, APPPATH );
 				}
 			}
 		}
@@ -909,10 +913,11 @@ class Template
 		$sResDir      = strtolower( $aFileInfo['extension'] );
 
 		if ( in_array( $sResDir, array( 'png', 'jpg', 'gif' ) ) ) {
-			$sResDir = 'img';
+			$sResDir = 'img/' . strstr($aFileInfo['dirname'], '/');
+			$sResDir = rtrim( $sResDir, '/' );
 		}
 
-		if ( !empty( $aFileInfo['extension'] ) && in_array( strtolower( $aFileInfo['extension'] ), array( 'css', 'js' ) ) ) {
+		if ( !empty( $aFileInfo['extension'] ) && in_array( strtolower( $aFileInfo['extension'] ), array( 'css', 'js', 'png', 'jpg', 'gif' ) ) ) {
 
 			// IF production
 			if ( ENVIRONMENT != 'development' ) {
@@ -962,7 +967,7 @@ class Template
 	 * @param bool  $return
 	 * @return mixed
 	 */
-	public function view( $view, array $data, $return = TRUE )
+	public function view( $view, array $data = array(), $return = TRUE )
 	{
 		if ( $sModule = strstr( $view, '/', true ) ) {
 			$sModuleReset = $this->_module;

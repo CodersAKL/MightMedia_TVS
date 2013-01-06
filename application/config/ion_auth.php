@@ -90,7 +90,7 @@ $config['admin_group']            = 'admin'; // Default administrators group, us
 $config['identity']               = 'email'; // A database column which is used to login with
 $config['min_password_length']    = 8; // Minimum Required Length of Password
 $config['max_password_length']    = 20; // Maximum Allowed Length of Password
-$config['email_activation']       = false; // Email Activation for registration
+$config['email_activation']       = true; // Email Activation for registration
 $config['manual_activation']      = false; // Manual Activation for registration
 $config['remember_users']         = true; // Allow users to be remembered and enable auto-login
 $config['user_expire']            = 86500; // How long to remember the user (seconds). Set to zero for no expiration
@@ -109,7 +109,7 @@ $config['forgot_password_expiration'] = 86400; // The number of seconds after wh
  | 	  'file' = Use the default CI config or use from a config file
  | 	  array  = Manually set your email config settings
  */
-$config['use_ci_email'] = false; // Send Email using the builtin CI email class, if false it will return the code and the identity
+$config['use_ci_email'] = true; // Send Email using the builtin CI email class, if false it will return the code and the identity
 $config['email_config'] = array(
 	'mailtype' => 'html',
 );

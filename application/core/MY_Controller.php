@@ -42,15 +42,15 @@
  * @property CI_Utf8 $utf8
  * @property CI_Security $security
  * @property CI_Migration $migration
- * @property ion_auth $ion_auth
+ * @property Ion_auth $ion_auth
+ * @property template $template
  */
 
 class MY_Controller extends CI_Controller {
 	public function __construct() {
 		parent::__construct();
 
-		if ( !empty( $this->input ) && !$this->input->is_ajax_request() ) {
-
+		if ( !empty( $this->input ) && !$this->input->is_ajax_request() && ENVIRONMENT == 'development' ) {
 			$this->output->enable_profiler( true );
 		}
 	}
