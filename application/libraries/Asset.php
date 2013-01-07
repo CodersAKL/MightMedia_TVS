@@ -1328,7 +1328,7 @@ class Asset {
 		}
 		$filename = md5(implode('', $bits).($minify ? 'min' : '').$last_mod).'.'.$type;
 
-		$filepath = FCPATH.self::$cache_path.'/'.$filename;
+		$filepath = FCPATH.self::$cache_path.$filename;
 		$needs_update = (!file_exists($filepath));
 
 		if ($needs_update)
