@@ -47,6 +47,8 @@ class Welcome extends CI_Controller {
 //		$aData['sForm'] = $this->load->controller('user_module/form');
 
 		$this->template
+			->set_theme('bandom')
+			->add_css( 'user/main.css' )
 			->title('test')
 			->build('welcome_message' );
 		;

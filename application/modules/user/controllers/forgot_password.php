@@ -37,7 +37,8 @@ class forgot_password extends MY_Controller
 			//setup the input
 			$this->data['email'] = array(
 				'name' => 'email',
-			    'id' => 'email'
+			    'id' => 'email',
+				'type' => 'email'
 			);
 
 			if ( $this->config->item('identity', 'ion_auth') == 'username' ){

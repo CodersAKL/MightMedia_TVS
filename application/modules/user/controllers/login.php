@@ -65,7 +65,7 @@ class login extends MY_Controller
 			$this->data['identity'] = array(
 				'name' => 'identity',
                 'id' => 'identity',
-                'type' => 'text',
+                'type' => 'email',
                 'value' => $this->form_validation->set_value('identity'),
 			);
 			$this->data['password'] = array(
@@ -84,7 +84,7 @@ class login extends MY_Controller
 		}
 
 		if ( $this->input->is_ajax_request()) {
-			echo $this->template->view('user/login', $this->data);
+			$this->load->view('user/login', $this->data);
 		} else {
 			$this->template
 			->set_layout( 'full_width_layout' )
@@ -152,6 +152,7 @@ class login extends MY_Controller
 			$this->data['identity_label'] = __('Email');
 		}
 
+		$this->template->append_css('user:css/main.css');
 		echo $this->template->view('user/login', $this->data);
 	}
 }

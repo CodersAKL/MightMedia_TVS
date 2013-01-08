@@ -26,7 +26,7 @@
  * )
  */
 	$config['asset_paths'] = array(
-		'core' => basename( APPPATH ).'/resources/',
+		'core' => 'resources/',
 	);
 
 /**

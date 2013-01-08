@@ -11,12 +11,14 @@
  */
 
 $this
+//	->add_css( 'bootstrap.css' )
+//	->add_css( 'bootstrap-responsive.css' )
+//	->add_css( 'main.css' )
+	->add_css( 'user/main.css' )
 	->add_css( 'bootstrap.css' )
-	->add_css( 'bootstrap-responsive.css' )
-	->add_css( 'main.css' )
-	->add_js( 'jquery.js' )
-	->add_js( 'bootstrap.js' )
+	->append_js( 'application/themes/demo/views/web/resources/js/jquery.js' )
+	->append_js( 'application/themes/demo/views/web/resources/js/bootstrap.js' )
 	->set_partial( 'header', 'partials/header' )
 	->set_partial( 'content_header', 'partials/content_header' )
 	->set_partial( 'footer', 'partials/footer' )
-	->set_layout( 'main_layout', 'layouts' );
+	->set_layout( 'main_layout' );

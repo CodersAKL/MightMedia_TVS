@@ -20,7 +20,6 @@
 </head>
 
 <body>
-
 <?php echo $template['partials']['content_header'];?>
 
 <div class="container">

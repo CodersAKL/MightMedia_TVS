@@ -28,7 +28,7 @@ class Menu extends MY_Controller
 		$aData['languages'] = $this->config->item('locales');
 		$this->load->language( 'language_module/language' );
 
-		return $this->template->view( 'language_module/menu_view', $aData );
+		$this->load->view( 'language_module/menu_view', $aData );
 	}
 	
 }

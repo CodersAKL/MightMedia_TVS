@@ -33,7 +33,7 @@ class breadcrumb_module extends MY_Controller
 
 		// Print
 		if ( sizeof( $aBread ) > 0 ) {
-			return $this->template->view( 'breadcrumb_module/breadcrumb_view', $aData );
+			$this->load->view( 'breadcrumb_module/breadcrumb_view', $aData );
 		}
 	}
 }

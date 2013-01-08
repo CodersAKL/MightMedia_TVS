@@ -1,6 +1,7 @@
 		<p>Welcome, {sUserName}</p>
 
 		<p>If you would like to edit this page you'll find it located at:</p>
+		<code><?=get_res_path()?></code><br/>
 		<code>application/views/welcome_message.php</code>
 
 		<p>The corresponding controller for this page is found at:</p>

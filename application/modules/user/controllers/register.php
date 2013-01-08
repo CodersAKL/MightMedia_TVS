@@ -88,7 +88,7 @@ class register extends MY_Controller
 			$this->data['email'] = array(
 				'name'  => 'email',
 				'id'    => 'email',
-				'type'  => 'text',
+				'type'  => 'email',
 				'value' => $this->form_validation->set_value('email'),
 			);
 			$this->data['company'] = array(

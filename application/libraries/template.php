@@ -16,15 +16,13 @@ class Template
 	private $_controller = '';
 	private $_method = '';
 
-	private $_theme = NULL;
-	private $_theme_path = NULL;
-	private $_layout = FALSE; // By default, don't wrap the view with anything
+	private $_theme = null;
+	private $_theme_path = null;
+	private $_layout = false; // By default, dont wrap the view with anything
 	private $_layout_subdir = ''; // Layouts and partials will exist in views/layouts
 	// but can be set to views/foo/layouts with a subdirectory
 
 	private $_title = '';
-	private $_body = '';
-
 	private $_metadata = array();
 
 	private $_partials = array();
@@ -33,13 +31,13 @@ class Template
 
 	private $_title_separator = ' | ';
 
-	private $_parser_enabled = TRUE;
-	private $_parser_body_enabled = TRUE;
-	private $_minify_enabled = FALSE;
+	private $_parser_enabled = true;
+	private $_parser_body_enabled = true;
+	private $_minify_enabled = false;
 
 	private $_theme_locations = array();
 
-	private $_is_mobile = FALSE;
+	private $_is_mobile = false;
 
 	// Seconds that cache will be alive for
 	private $cache_lifetime = 0; //7200;
@@ -52,7 +50,7 @@ class Template
 	 * Constructor - Sets Preferences
 	 * The constructor can be passed an array of config values
 	 */
-	function __construct( $config = array() )
+	public function __construct( $config = array() )
 	{
 		$this->_ci =& get_instance();
 
@@ -71,13 +69,13 @@ class Template
 	 * @param    array    $config
 	 * @return   void
 	 */
-	function initialize( $config = array() )
+	public function initialize( $config = array() )
 	{
 		foreach ( $config as $key => $val ) {
-			if ( $key == 'theme' && $val != '' ) {
-				$this->set_theme( $val );
-				continue;
-			}
+//			if ( $key == 'theme' and $val != '' ) {
+//				$this->set_theme( $val );
+//				continue;
+//			}
 
 			$this->{'_' . $key} = $val;
 		}
@@ -90,11 +88,11 @@ class Template
 		// No locations set in config?
 		if ( $this->_theme_locations === array() ) {
 			// Let's use this obvious default
-			$this->_theme_locations = array( 'themes/' );
+			$this->_theme_locations = array( APPPATH . 'themes/' );
 		}
 
 		// If the parse is going to be used, best make sure it's loaded
-		if ( $this->_parser_enabled === TRUE ) {
+		if ( $this->_parser_enabled === true ) {
 			$this->_ci->load->library( 'parser' );
 		}
 
@@ -140,7 +138,7 @@ class Template
 	 */
 	public function __get( $name )
 	{
-		return isset( $this->_data[$name] ) ? $this->_data[$name] : NULL;
+		return isset( $this->_data[$name] ) ? $this->_data[$name] : null;
 	}
 
 	// --------------------------------------------------------------------
@@ -166,10 +164,10 @@ class Template
 	 * @param    mixed  $value
 	 * @return   object $this
 	 */
-	public function set( $name, $value = NULL )
+	public function set( $name, $value = null )
 	{
 		// Lots of things! Set them all
-		if ( is_array( $name ) || is_object( $name ) ) {
+		if ( is_array( $name ) or is_object( $name ) ) {
 			foreach ( $name as $item => $value ) {
 				$this->_data[$item] = $value;
 			}
@@ -192,15 +190,14 @@ class Template
 	 * @param    array  $data
 	 * @param    bool   $return
 	 * @param    bool   $IE_cache
+	 * @param    bool   $pre_parsed_view
 	 * @return   string
 	 */
-	public function build( $view, $data = array(), $return = FALSE, $IE_cache = TRUE )
+	public function build( $view, $data = array(), $return = false, $IE_cache = true, $pre_parsed_view = false )
 	{
-		$sModule = strstr( $view, '/', true );
-		if ( !empty( $sModule) ) {
-			$sModuleReset = $this->_module;
-			$this->set_module( $sModule );
-//			$view = basename( $view );
+
+		if ( is_file( $this->_theme_path . 'views/'. ($this->_is_mobile ? 'mobile' : 'web' ) . '/theme.php' ) ) {
+			include_once $this->_theme_path . 'views/'. ($this->_is_mobile ? 'mobile' : 'web' ) . '/theme.php';
 		}
 
 		// Set whatever values are given. These will be available to all view files
@@ -217,11 +214,11 @@ class Template
 		}
 
 		// Output template variables to the template
-		$template['title']       = $this->_title;
+		$template['title']       = strip_tags( $this->_title );
+		$template['page_title']  = $this->_title;
 		$template['breadcrumbs'] = $this->_breadcrumbs;
-		//$template['metadata']  = implode( "\n\t\t", $this->_metadata );
-		$template['metadata'] = $this->get_metadata()
-			. Asset::render( 'global' )
+		$template['metadata']    = $this->get_metadata()
+			. Asset::render( 'extra' )
 			. Asset::render_css_inline()
 			. Asset::render_js_inline()
 			. $this->get_metadata( 'late_header' );
@@ -236,14 +233,14 @@ class Template
 
 			// If it uses a view, load it
 			if ( isset( $partial['view'] ) ) {
-				$template['partials'][$name] = $this->_find_view( $partial['view'], $partial['data'] );
+				$template['partials'][$name] = $this->_find_view( $partial['view'], $partial['data'], true, true );
 			}
 
 			// Otherwise the partial must be a string
 			else {
-				if ( $this->_parser_enabled === TRUE ) {
+				if ( $this->_parser_enabled === true ) {
 					$partial['string'] = $this->_ci->parser->parse_string(
-						$partial['string'], $this->_data + $partial['data'], TRUE, TRUE
+						$partial['string'], $this->_data + $partial['data'], true, true
 					);
 				}
 
@@ -264,8 +261,15 @@ class Template
 		// Let CI do the caching instead of the browser
 		$this->cache_lifetime > 0 && $this->_ci->output->cache( $this->cache_lifetime );
 
-		// Test to see if this file
-		$this->_body = $this->_find_view( $view, array(), $this->_parser_body_enabled );
+		// Set the _body var. If we have pre-parsed our
+		// view, then our work is done. Otherwise, we will
+		// find the view and parse it.
+		if ( $pre_parsed_view ) {
+			$this->_body = $view;
+		}
+		else {
+			$this->_body = $this->_find_view( $view, array(), $this->_parser_body_enabled );
+		}
 
 		// Want this file wrapped with a layout file?
 		if ( $this->_layout ) {
@@ -283,20 +287,18 @@ class Template
 			}
 
 			// Find the main body and 3rd param means parse if its a theme view (only if parser is enabled)
-//			$this->_body = self::_load_view(
-//				$this->_layout_subdir . $this->_layout, $this->_data, TRUE, self::_find_view_folder()
-//			);
-			$this->_body = self::_load_view( $this->_layout_subdir . $this->_layout, $this->_data, true, self::_find_view_folder() );
+			$this->_body = self::_load_view(
+				$this->_layout_subdir . 'layouts/' . $this->_layout, $this->_data, true, self::_find_view_folder()
+			);
+		}
+
+		if ( $this->_minify_enabled && function_exists( 'process_data_jmr1' ) ) {
+			$this->_body = process_data_jmr1( $this->_body );
 		}
 
 		// Want it returned or output to browser?
 		if ( !$return ) {
 			$this->_ci->output->set_output( $this->_body );
-		}
-
-		// Reset module
-		if ( !empty( $sModule ) ) {
-			$this->set_module( $sModuleReset );
 		}
 
 		return $this->_body;
@@ -372,54 +374,16 @@ class Template
 	 * @param string    $group
 	 * @return object   $this
 	 */
-	public function append_css( $files, $min_file = FALSE, $group = 'global' )
+	public function append_css( $files, $min_file = false, $group = 'extra' )
 	{
-		if ( empty( $files ) ) {
-
-			echo "CSS: $files<br/>";
-			debug_print_backtrace();
-		}
-
 		Asset::css( $files, $min_file, $group );
 
 		return $this;
 	}
 
-	/**
-	 * @param           $files
-	 * @param bool|null $min_file
-	 * @param string    $group
-	 * @return Template
-	 */
-	public function append_js( $files, $min_file = FALSE, $group = 'global' )
+	public function append_js( $files, $min_file = false, $group = 'extra' )
 	{
-		if ( empty( $files ) ) {
-
-			dbx("JS: $files<br/>");
-		}
 		Asset::js( $files, $min_file, $group );
-
-		return $this;
-	}
-
-	/**
-	 * @param $content
-	 * @return Template
-	 */
-	public function inline_js( $content )
-	{
-		Asset::js_inline( $content );
-
-		return $this;
-	}
-
-	/**
-	 * @param $content
-	 * @return Template
-	 */
-	public function inline_css( $content )
-	{
-		Asset::css_inline( $content );
 
 		return $this;
 	}
@@ -431,51 +395,30 @@ class Template
 	 * @param    string $name    keywords, description, etc
 	 * @param    string $content The content of meta data
 	 * @param    string $type    Meta-data comes in a few types, links for example
-	 * @param    bool   $bReturn
 	 * @return   object $this
 	 */
-	public function set_metadata( $name, $content, $type = 'meta', $bReturn = FALSE )
+	public function set_metadata( $name, $content, $type = 'meta' )
 	{
 		$name    = htmlspecialchars( strip_tags( $name ) );
-		$content = htmlspecialchars( strip_tags( $content ) );
+		$content = trim( htmlspecialchars( strip_tags( $content ) ) );
 
 		// Keywords with no comments? ARG! comment them
-		if ( $name == 'keywords' && !strpos( $content, ',' ) ) {
+		if ( $name == 'keywords' and !strpos( $content, ',' ) ) {
 			$content = preg_replace( '/[\s]+/', ', ', trim( $content ) );
 		}
 
 		switch ( $type ) {
 		case 'meta':
-			$this->_metadata[$name] = '<meta name="' . $name . '" content="' . $content . '" />';
+			$this->_metadata['header'][$name] = '<meta name="' . $name . '" content="' . $content . '" />';
 			break;
 
 		case 'link':
-			$this->_metadata[$content] = '<link rel="' . $name . '" href="' . $content . '" />';
+			$this->_metadata['header'][$content] = '<link rel="' . $name . '" href="' . $content . '" />';
 			break;
 
-		case 'script':
-			//$this->_metadata[$content] = '<script src="'.$content.'" type="text/javascript" ></script>';
-			if ( $bReturn ) {
-				echo '<script src="' . site_url() . $content . '" type="text/javascript" ></script>';
-			}
-			$this->append_js( $content );
-			break;
-
-		case 'style':
-			if ( $bReturn ) {
-				echo '<link rel="stylesheet" href="' . site_url() . $content . '" type="text/css" media="all" />';
-			}
-			$this->append_css( $content );
-			break;
-
-		case 'css':
-			//$this->_metadata[$content] = '<style type="text/css" rel="'.$name.'">'.$content.'</style>';
-			$this->inline_css( $content );
-			break;
-
-		case 'js':
-			//$this->_metadata[$content] = '<script src="'.$content.'" type="text/javascript" ></script>';
-			$this->inline_js( $content );
+		case 'og':
+			$this->_metadata['header'][md5( $name . $content )]
+				= '<meta property="' . $name . '" content="' . $content . '" />';
 			break;
 		}
 
@@ -489,28 +432,13 @@ class Template
 	 * @param  string $theme Set a theme for the template library to use
 	 * @return object $this
 	 */
-	public function set_theme( $theme = NULL )
+	public function set_theme( $theme = null )
 	{
 		$this->_theme = $theme;
 		foreach ( $this->_theme_locations as $location ) {
 			if ( $this->_theme && file_exists( $location . $this->_theme ) ) {
 				$this->_theme_path = rtrim( $location . $this->_theme . '/' );
-				// Would they like the mobile version?
-				if ( $this->_is_mobile === TRUE && is_dir( $this->_theme_path . 'mobile/' ) ) {
-					// Use mobile as the base location for views
-					$this->_theme_path .= 'views/mobile/';
-				}
 
-				// Use the web version
-				else if ( is_dir( $this->_theme_path . 'views/web/' ) ) {
-					$this->_theme_path .= 'views/web/';
-				}
-
-				// Include theme php file
-				if ( is_file( $this->_theme_path . 'theme.php' ) ) {
-
-					include_once $this->_theme_path . 'theme.php';
-				}
 				break;
 			}
 		}
@@ -522,15 +450,13 @@ class Template
 	 * Get the current theme path
 	 * Relative is used for css and jss correct paths
 	 * @access public
-	 * @param  bool $relative
+	 * @internal param bool $relative
 	 * @return string The current theme path
 	 */
-	public function get_theme_path( $relative = FALSE )
+	public function get_theme_path( $relative = false )
 	{
-		return $relative ? substr( $this->get_theme_path(), strlen( realpath( APPPATH . '../' ) . '/' ) )
+		return $relative ? substr( $this->_find_view_folder(), strlen( realpath( APPPATH . '../' ) . '/' ) )
 			: $this->_theme_path;
-
-		return $this->_theme_path;
 	}
 
 	/**
@@ -539,7 +465,7 @@ class Template
 	 * @param  bool   $relative if Set should be returned the view path full (with theme path) or the view relative the theme path
 	 * @return string  The current view path
 	 */
-	public function get_views_path( $relative = FALSE )
+	public function get_views_path( $relative = false )
 	{
 		return $relative ? substr( $this->_find_view_folder(), strlen( $this->get_theme_path() ) )
 			: $this->_find_view_folder();
@@ -552,22 +478,23 @@ class Template
 	 * @param  string $layout_subdir
 	 * @return object $this
 	 */
-	public function set_layout( $view, $layout_subdir = '' )
+	public function set_layout( $view, $layout_subdir = null )
 	{
 		$this->_layout = $view;
 
-		$layout_subdir && $this->_layout_subdir = rtrim( $layout_subdir, '/' ) . '/';
+		if ( $layout_subdir !== null ) {
+			$this->_layout_subdir = $layout_subdir;
+		}
 
 		return $this;
 	}
 
 	/**
 	 * Set a view partial
-	 * @access public
-	 * @param  string $name
-	 * @param  string $view
-	 * @param  array  $data
-	 * @return object $this
+	 * @param    string    $name
+	 * @param    string    $view
+	 * @param    array     $data
+	 * @return    object    $this
 	 */
 	public function set_partial( $name, $view, $data = array() )
 	{
@@ -577,20 +504,11 @@ class Template
 	}
 
 	/**
-	 * @return array
-	 */
-	public function get_partial()
-	{
-		return $this->_partials;
-	}
-
-	/**
 	 * Set a view partial
-	 * @access public
-	 * @param  string $name
-	 * @param  string $string
-	 * @param  array  $data
-	 * @return object $this
+	 * @param    string    $name
+	 * @param    string    $string
+	 * @param    array     $data
+	 * @return    object    $this
 	 */
 	public function inject_partial( $name, $string, $data = array() )
 	{
@@ -608,7 +526,7 @@ class Template
 	 * @param  bool   $reset
 	 * @return object $this
 	 */
-	public function set_breadcrumb( $name, $uri = '', $reset = FALSE )
+	public function set_breadcrumb( $name, $uri = '', $reset = false )
 	{
 		// perhaps they want to start over
 		if ( $reset ) {
@@ -622,9 +540,8 @@ class Template
 
 	/**
 	 * Set a the cache lifetime
-	 * @access public
-	 * @param  int    $seconds
-	 * @return object $this
+	 * @param    int        $seconds
+	 * @return    object    $this
 	 */
 	public function set_cache( $seconds = 0 )
 	{
@@ -635,6 +552,7 @@ class Template
 
 
 	/**
+	 * enable_minify
 	 * Should be minify used or the output html files just delivered normally?
 	 * @access public
 	 * @param  bool   $bool
@@ -649,6 +567,7 @@ class Template
 
 
 	/**
+	 * enable_parser
 	 * Should be parser be used or the view files just loaded normally?
 	 * @access public
 	 * @param  bool    $bool
@@ -662,6 +581,7 @@ class Template
 	}
 
 	/**
+	 * enable_parser_body
 	 * Should be parser be used or the body view files just loaded normally?
 	 * @access public
 	 * @param  bool   $bool
@@ -686,6 +606,7 @@ class Template
 	}
 
 	/**
+	 * add_theme_location
 	 * Set another location for themes to be looked in
 	 * @access public
 	 * @param  string $location
@@ -697,25 +618,27 @@ class Template
 	}
 
 	/**
+	 * theme_exists
 	 * Check if a theme exists
 	 * @access public
 	 * @param  string $theme
 	 * @return bool
 	 */
-	public function theme_exists( $theme = NULL )
+	public function theme_exists( $theme = null )
 	{
 		$theme || $theme = $this->_theme;
 
 		foreach ( $this->_theme_locations as $location ) {
 			if ( is_dir( $location . $theme ) ) {
-				return TRUE;
+				return true;
 			}
 		}
 
-		return FALSE;
+		return false;
 	}
 
 	/**
+	 * get_layouts
 	 * Get all current layouts (if using a theme you'll get a list of theme layouts)
 	 * @access public
 	 * @return array
@@ -738,16 +661,17 @@ class Template
 	public function get_metadata( $place = 'header' )
 	{
 		return isset( $this->_metadata[$place] ) && is_array( $this->_metadata[$place] )
-			? implode( "\n\t\t", $this->_metadata[$place] ) : NULL;
+			? implode( "\n\t\t", $this->_metadata[$place] ) : null;
 	}
 
 	/**
+	 * get_layouts
 	 * Get all current layouts (if using a theme you'll get a list of theme layouts)
 	 * @access public
 	 * @param  string $theme
 	 * @return array
 	 */
-	public function get_theme_layouts( $theme = NULL )
+	public function get_theme_layouts( $theme = null )
 	{
 		$theme || $theme = $this->_theme;
 
@@ -775,6 +699,7 @@ class Template
 	}
 
 	/**
+	 * layout_exists
 	 * Check if a theme layout exists
 	 * @access   public
 	 * @param    string    $layout
@@ -784,7 +709,7 @@ class Template
 	{
 		// If there is a theme, check it exists in there
 		if ( !empty( $this->_theme ) && in_array( $layout, self::get_theme_layouts() ) ) {
-			return TRUE;
+			return true;
 		}
 
 		// Otherwise look in the normal places
@@ -793,6 +718,7 @@ class Template
 
 
 	/**
+	 * layout_is
 	 * Check if the current theme layout is equal the $layout argument
 	 * @access   public
 	 * @param    string    $layout
@@ -819,11 +745,11 @@ class Template
 
 		// Using a theme? Put the theme path in before the view folder
 		if ( !empty( $this->_theme ) ) {
-			$view_folder = $this->_theme_path;
+			$view_folder = $this->_theme_path . 'views/';
 		}
 
 		// Would they like the mobile version?
-		if ( $this->_is_mobile === TRUE && is_dir( $view_folder . 'mobile/' ) ) {
+		if ( $this->_is_mobile === true and is_dir( $view_folder . 'mobile/' ) ) {
 			// Use mobile as the base location for views
 			$view_folder .= 'mobile/';
 		}
@@ -833,9 +759,10 @@ class Template
 			$view_folder .= 'web/';
 		}
 
-		// If using themes store this for later, available to all views
-		$this->_ci->load->vars( 'template_views', $view_folder );
-
+		// Things like views/admin/web/view admin = subdir
+		if ( $this->_layout_subdir ) {
+			$view_folder .= $this->_layout_subdir . '/';
+		}
 		return $view_folder;
 	}
 
@@ -846,32 +773,22 @@ class Template
 	 * @param bool  $parse_view
 	 * @return mixed
 	 */
-	private function _find_view( $view, array $data, $parse_view = TRUE )
+	private function _find_view( $view, array $data, $parse_view = true )
 	{
 		// Only bother looking in themes if there is a theme
 		if ( !empty( $this->_theme ) ) {
 			$theme_views = array();
 			$location    = $this->get_theme_path();
 			if ( !empty( $this->_module ) ) {
-				$theme_views[] = $this->get_views_path( TRUE ) . 'modules/' . $this->_module . '/views/' . $view;
-				$theme_views[] = $this->get_views_path( TRUE ) . 'modules/' . $this->_module . '/' . $view;
+				$theme_views[] = $this->get_views_path( true ) . 'modules/' . $this->_module . '/' . basename( $view );
 			}
-			$theme_views[] = $this->get_views_path( TRUE ) . 'views/' . $view;
 			// This allows build('pages/page') to still overload same as build('page')
-			$theme_views[] = $this->get_views_path( TRUE ) . $view;
+			$theme_views[] = $this->get_views_path( true ) . 'modules/' . $view;
+			$theme_views[] = $this->get_views_path( true ) . $view;
 
 			foreach ( $theme_views as $theme_view ) {
 				if ( file_exists( $location . $theme_view . self::_ext( $theme_view ) ) ) {
-
 					return self::_load_view( $theme_view, $this->_data + $data, $parse_view, $location );
-				}
-				else if ( file_exists( VIEWPATH . $theme_view . self::_ext( $theme_view ) ) ) {
-
-					return self::_load_view( $theme_view, $this->_data + $data, $parse_view, VIEWPATH );
-				}
-				else if ( file_exists( APPPATH . $theme_view . self::_ext( $theme_view ) ) ) {
-
-					return self::_load_view( $theme_view, $this->_data + $data, $parse_view, APPPATH );
 				}
 			}
 		}
@@ -880,139 +797,20 @@ class Template
 		return self::_load_view( $view, $this->_data + $data, $parse_view );
 	}
 
-	/**
-	 * @param      $mCssFiles
-	 * @param bool $bReturn
-	 * @return Template
-	 */
-	public function add_css( $mCssFiles, $bReturn = FALSE )
-	{
-		$mCssFiles = (array)$mCssFiles;
-		if ( !empty( $mCssFiles ) ) {
-
-			foreach ( $mCssFiles as $sCssFile ) {
-				// Find path to css file
-				$sCssPath = $this->find_resource_file( $sCssFile );
-				if ( !empty( $sCssPath ) ) {
-					$this->set_metadata( basename( $sCssFile ), $sCssPath, 'style', $bReturn );
-				}
-			}
-		}
-
-		return $this;
-	}
-
-	/**
-	 * @param $sFile
-	 * @return string
-	 */
-	public function find_resource_file( $sFile = '' )
-	{
-		$aModulesDirs = $this->_ci->config->item( 'module_path' );
-		$aFileInfo    = pathinfo( $sFile );
-		$sResDir      = strtolower( $aFileInfo['extension'] );
-
-		if ( in_array( $sResDir, array( 'png', 'jpg', 'gif' ) ) ) {
-			$sResDir = 'img/' . strstr($aFileInfo['dirname'], '/');
-			$sResDir = rtrim( $sResDir, '/' );
-		}
-
-		if ( !empty( $aFileInfo['extension'] ) && in_array( strtolower( $aFileInfo['extension'] ), array( 'css', 'js', 'png', 'jpg', 'gif' ) ) ) {
-
-			// IF production
-			if ( ENVIRONMENT != 'development' ) {
-				// TODO: overwrite site_url() with a amazon's url
-				//return site_url().'resources/theme/'.$this->_theme.'/'.$sType.'/'.$sFile;
-			}
-			// ELSE if development
-
-			// Modules views/resources dir
-			if ( !empty( $aFileInfo['dirname'] ) && $aFileInfo['dirname'] != '.' ) {
-
-				// Check if requested file is in modules directory
-				foreach ( $aModulesDirs as $sModuleDir ) {
-
-					// First check the themes views/resources dir
-					if ( is_file( $this->get_theme_path() . $sModuleDir . '/' . $aFileInfo['dirname'] . '/resources/' . $sResDir . '/' . basename( $sFile ) ) ) {
-
-						return basename( APPPATH ) . '/' . $this->get_theme_path( TRUE ) . $sModuleDir . '/' . $aFileInfo['dirname'] . '/resources/' . $sResDir . '/' . basename( $sFile );
-					}
-
-					// Check if exists module and resources directory
-					if ( is_file( APPPATH . $sModuleDir . '/' . $aFileInfo['dirname'] . '/views/resources/' . $sResDir . '/' . basename( $sFile ) ) ) {
-
-						// If requested file is "demo_module/example.css" result is: /home/www/application/modules/demo_module/resources/css/example.css
-						return basename( APPPATH ) . '/' . $sModuleDir . '/' . $aFileInfo['dirname'] . '/views/resources/' . $sResDir . '/' . basename( $sFile );
-					}
-				}
-			}
-			// If requested file is a in root dir search it in themes resources directory
-			else {
-
-				return $this->get_theme_path( TRUE ) . 'resources/' . $sResDir . '/' . basename( $sFile );
-			}
-		}
-		else {
-			// Return path to the current theme resource dir
-			return $this->get_theme_path( TRUE ) . 'resources/';
-		}
-
-		return null;
-	}
-
-
-	/**
-	 * @param       $view
-	 * @param array $data
-	 * @param bool  $return
-	 * @return mixed
-	 */
-	public function view( $view, array $data = array(), $return = TRUE )
-	{
-		if ( $sModule = strstr( $view, '/', true ) ) {
-			$sModuleReset = $this->_module;
-			$this->set_module( $sModule );
-			$view = basename( $view );
-		}
-
-		$content = $this->_find_view( $view, $data, $this->_parser_enabled );
-
-		if ( !empty( $sModule ) ) {
-			$this->set_module( $sModuleReset );
-		}
-
-		if ( !$return ) {
-
-			return $this->_ci->output->set_output( $content );
-		}
-		else {
-
-			return $content;
-		}
-	}
-
-	/**
-	 * @param       $view
-	 * @param array $data
-	 * @param bool  $parse_view
-	 * @param null  $override_view_path
-	 * @return mixed
-	 */
-	private function _load_view( $view, array $data, $parse_view = TRUE, $override_view_path = NULL )
+	private function _load_view( $view, array $data, $parse_view = true, $override_view_path = null )
 	{
 		// Sevear hackery to load views from custom places AND maintain compatibility with Modular Extensions
-		if ( $override_view_path !== NULL ) {
-			if ( $this->_parser_enabled === TRUE && $parse_view === TRUE ) {
+		if ( $override_view_path !== null ) {
+			if ( $this->_parser_enabled === true and $parse_view === true ) {
 				// Load content and pass through the parser
 				$content = $this->_ci->parser->parse_string(
-
 					$this->_ci->load->_ci_load(
 						array(
 							'_ci_path'   => $override_view_path . $view . self::_ext( $view ),
 							'_ci_vars'   => $data,
-							'_ci_return' => TRUE
+							'_ci_return' => true
 						)
-					), $data, TRUE
+					), $data, true
 				);
 			}
 
@@ -1022,7 +820,7 @@ class Template
 					array(
 						'_ci_path'   => $override_view_path . $view . self::_ext( $view ),
 						'_ci_vars'   => $data,
-						'_ci_return' => TRUE
+						'_ci_return' => true
 					)
 				);
 			}
@@ -1031,13 +829,13 @@ class Template
 		// Can just run as usual
 		else {
 			// Grab the content of the view (parsed or loaded)
-			$content = ( $this->_parser_enabled === TRUE && $parse_view === TRUE )
+			$content = ( $this->_parser_enabled === true && $parse_view === true )
 
 				// Parse that bad boy
-				? $this->_ci->parser->parse( $view, $data, TRUE )
+				? $this->_ci->parser->parse( $view, $data, true )
 
 				// None of that fancy stuff for me!
-				: $this->_ci->load->view( $view, $data, TRUE );
+				: $this->_ci->load->view( $view, $data, true );
 		}
 
 		return $content;
@@ -1064,7 +862,7 @@ class Template
 		}
 
 		// Is there a module? Make sure it is not named the same as the method or controller
-		if ( !empty( $this->_module ) && !in_array( $this->_module, $title_parts ) ) {
+		if ( !empty( $this->_module ) and !in_array( $this->_module, $title_parts ) ) {
 			$title_parts[] = $this->_module;
 		}
 
@@ -1080,27 +878,54 @@ class Template
 	 */
 	private function _ext( $file )
 	{
-		$ext = pathinfo( $file, PATHINFO_EXTENSION );
-
-		return empty( $ext ) ? '.php' : '.' . $ext;
+		return pathinfo( $file, PATHINFO_EXTENSION ) ? '' : '.php';
 	}
 
 	/**
-	 * @param      $mJsFiles
+	 * @param       $view
+	 * @param array $data
+	 * @param bool  $return
+	 * @return mixed
+	 */
+	public function view( $view, array $data = array(), $return = TRUE )
+	{
+		$sModule = strstr( $view, '/', true );
+		if ( !empty( $sModule ) ) {
+			$sModuleReset = $this->_module;
+			$this->set_module( $sModule );
+		}
+
+		$content = $this->_find_view( $view, $data, $this->_parser_enabled );
+
+		if ( !empty( $sModule ) ) {
+			$this->set_module( $sModuleReset );
+		}
+
+		if ( !$return ) {
+
+			return $this->_ci->output->set_output( $content );
+		}
+		else {
+
+			return $content;
+		}
+	}
+
+	/**
+	 * @param      $mCssFiles
 	 * @param bool $bReturn
 	 * @return Template
 	 */
-	public function add_js( $mJsFiles, $bReturn = FALSE )
+	public function add_css( $mCssFiles, $bReturn = FALSE )
 	{
-		$mJsFiles = (array)$mJsFiles;
-		if ( !empty( $mJsFiles ) ) {
+		$mCssFiles = (array)$mCssFiles;
+		if ( !empty( $mCssFiles ) ) {
 
-			foreach ( $mJsFiles as $sJsFile ) {
+			foreach ( $mCssFiles as $sCssFile ) {
 				// Find path to css file
-				$sJsPath = $this->find_resource_file( $sJsFile );
-
-				if ( !empty( $sJsPath ) ) {
-					$this->set_metadata( basename( $sJsFile ), $sJsPath, 'script', $bReturn );
+				$sCssPath = $this->find_resource_file( $sCssFile );
+				if ( !empty( $sCssPath ) ) {
+					$this->append_css( $sCssPath );
 				}
 			}
 		}
@@ -1108,13 +933,100 @@ class Template
 		return $this;
 	}
 
-	/**
-	 * @param $aVars
-	 * @return Template
-	 */
-	public function add_js_var( $aVars )
+	public function find_resource_file( $sFile = '' )
 	{
-		return $this;
+		if ( empty( $sFile ) ) {
+			return $this->get_theme_path( true ) . 'resources/';
+		}
+		$aModulesDirs = $this->_ci->config->item( 'module_path' );
+		$sResPaths    = $this->_ci->config->item( 'asset_paths' );
+		$aFileInfo    = pathinfo( $sFile );
+		$sResDir      = strtolower( $aFileInfo['extension'] );
+		$aSearchPaths = array();
+		$sViewPath    = $this->get_views_path();
+		$sViewTheme   = $this->_find_view_folder();
+
+		if ( in_array( $sResDir, array( 'png', 'jpg', 'gif' ) ) ) {
+			$sResDir = $sResPaths['core'] . $this->_ci->config->item( 'asset_img_dir' );
+		} elseif ( in_array( $sResDir, array( 'css', 'less', 'scss' ) ) ) {
+			$sResDir = $sResPaths['core'] . $this->_ci->config->item( 'asset_css_dir' );
+		} elseif( in_array( $sResDir, array( 'js' ) ) ) {
+			$sResDir = $sResPaths['core'] . $this->_ci->config->item( 'asset_js_dir' );
+		}
+
+		// If there is a path like a module path?
+		$sModule = strstr( $sFile, '/', true );
+		if ( !empty( $sModule ) ) {
+			$sModuleReset = $this->_module;
+			$this->set_module( $sModule );
+		}
+
+		// Loop a modules directories
+		foreach( $aModulesDirs as $module_dir ) {
+			if ( !empty( $this->_module) ) {
+				$aSearchPaths[] = $sViewTheme. $module_dir .'/'.$this->_module .'/'. $sResDir . basename( $sFile );
+			}
+			$aSearchPaths[] = $sViewTheme. $module_dir .'/'.$sResDir.$sFile;
+			$aSearchPaths[] = $sViewTheme. $module_dir .'/'.$sFile;
+
+			if ( !empty( $this->_module ) ) {
+				$aSearchPaths[] = $sViewPath. $module_dir .'/'.$this->_module .'/'. $sResDir . basename( $sFile );
+			}
+			$aSearchPaths[] = $sViewPath. $module_dir .'/'.$sResDir.$sFile;
+			$aSearchPaths[] = $sViewPath. $module_dir .'/'.$sFile;
+		}
+
+		// Search in themes directory
+		$aSearchPaths[] = $sViewPath . $sResDir . $sFile;
+
+		// Search in modules
+		foreach( $aModulesDirs as $module_dir ) {
+
+			if ( !empty( $this->_module ) ) {
+				$aSearchPaths[] = VIEWPATH . $module_dir . '/' . $this->_module . '/' . $sResDir . basename( $sFile );
+			}
+			$aSearchPaths[] = VIEWPATH . $module_dir . '/' . $sResDir . $sFile;
+
+			// Search in application/modules
+			if ( !empty( $this->_module ) ) {
+				$aSearchPaths[] = APPPATH . $module_dir . '/' . $this->_module . '/views/' . $sResDir . basename( $sFile );
+			}
+			$aSearchPaths[] = APPPATH . $module_dir . '/views/' . $sResDir . $sFile;
+		}
+
+		// Foreach paths and check if file exists
+		foreach( $aSearchPaths as $sPath ) {
+
+			if ( file_exists( $sPath ) ) {
+
+				if ( !empty( $sModule ) ) {
+					$this->set_module( $sModuleReset );
+				}
+				// Return relative path
+				$sPath = basename( APPPATH ) . '/'. str_replace( array( APPPATH, $sViewPath ), '', $sPath );
+				return $sPath;
+			}
+		}
+
+		// If not found try to search in default theme
+		$sCurrentTheme = $this->_theme;
+		$this->_ci->load->config('template');
+		if ( $sCurrentTheme != $this->_ci->config->item('theme') ) {
+
+			$this->set_theme( $this->_ci->config->item('theme') );
+			$sFoundFile = $this->find_resource_file( $sFile );
+
+			$this->set_theme( $sCurrentTheme );
+
+			if ( !empty( $sModule ) ) {
+				$this->set_module( $sModuleReset );
+			}
+
+			return $sFoundFile;
+		} else {
+			show_error('<pre>'.print_r($aSearchPaths,true).'</pre>');
+		}
+
 	}
 
 }
