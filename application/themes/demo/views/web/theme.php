@@ -15,6 +15,7 @@ $this
 //	->add_css( 'bootstrap-responsive.css' )
 //	->add_css( 'main.css' )
 	->add_css( 'bootstrap.css' )
+	->add_css( 'bootstrap-responsive.css' )
 	->add_css( 'main.css' )
 	->add_css( 'language_module/main.css' )
 	->add_css( 'defaults.css' )
