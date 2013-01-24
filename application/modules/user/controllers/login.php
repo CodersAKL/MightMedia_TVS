@@ -152,7 +152,7 @@ class login extends MY_Controller
 			$this->data['identity_label'] = __('Email');
 		}
 
-		$this->template->append_css('user:css/main.css');
+//		$this->template->append_css('user:css/main.css');
 		echo $this->template->view('user/login', $this->data);
 	}
 }

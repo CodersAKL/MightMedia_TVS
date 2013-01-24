@@ -26,6 +26,7 @@ class Profile extends MY_Controller
 	public function edit()
 	{
 		$this->template->build('user/profile/edit_view');
+		
 	}
 }
 

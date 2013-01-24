@@ -21,23 +21,4 @@
 		<?php echo anchor('user/forgot_password', __('Forgot your password?')) ;?>
 	<?php echo form_close();?>
 
-	<script type="text/javascript">
-		$(function(){
-			$( '#login_form' ).submit(function(){
-				var
-					url = $( this ).attr('action' ),
-					data = $( this ).serialize(),
-					method = $( this ).attr('method')
-				;
-				$.ajax({
-					url : url,
-					type: method,
-					data : data
-				} ).done( function( data ) {
-					$('#login_form_wrap' ).html( data );
-				} );
-				return false;
-			});
-		});
-	</script>
 </div>

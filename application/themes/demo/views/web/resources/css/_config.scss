@@ -1,0 +1,24 @@
+// Add percentage of white to a color
+@function light($color, $percent){
+	@return mix(white, $color, $percent);
+}
+
+// Add percentage of black to a color
+@function dark($color, $percent){
+	@return mix(black, $color, $percent);
+}
+
+/* COLORS */
+$color_blue: #0054A6 !default;
+$color_red: #CA2027 !default;
+$color_black: #000000 !default;
+$color_green: #008000 !default;
+$color_white: #ffffff !default;
+$color_orange: #FFAA50 !default;
+$color_mark: #FCF58B !default;
+$color_input_border: lighten( $color_black, 50% ) !default;
+$color_border: light( $color_black, 81% ) !default;
+$color_button_silver: light( $color_black, 91%) !default;
+$color_button_red: #CA2027 !default;
+$color_notice: #71b525 !default;
+$color_error: #CA2027 !default;

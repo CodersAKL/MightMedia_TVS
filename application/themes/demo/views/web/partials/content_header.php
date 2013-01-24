@@ -31,7 +31,7 @@
 				<!-- The drop down menu -->
 				<ul class="nav pull-right">
 
-					<?//=$this->load->controller('language_module/menu/index')?>
+					<?=$this->load->controller('language_module/menu/index')?>
 
 					<li class="divider-vertical"></li>
 					<li class="dropdown">

@@ -3,7 +3,7 @@
 	
 <div id="infoMessage"><?php echo $message;?></div>
 
-<?php echo form_open("user/auth/login");?>
+<?php echo form_open("user/login/small");?>
   	
   <p>
     <label for="identity">Email/Username:</label>

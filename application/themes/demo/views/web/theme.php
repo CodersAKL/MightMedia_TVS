@@ -14,11 +14,13 @@ $this
 //	->add_css( 'bootstrap.css' )
 //	->add_css( 'bootstrap-responsive.css' )
 //	->add_css( 'main.css' )
-	->add_css( 'user/main.css' )
 	->add_css( 'bootstrap.css' )
-	->append_js( 'application/themes/demo/views/web/resources/js/jquery.js' )
-	->append_js( 'application/themes/demo/views/web/resources/js/bootstrap.js' )
+	->add_css( 'main.css' )
+	->add_css( 'language_module/main.css' )
+	->add_css( 'defaults.css' )
+	->append_js( 'jquery.js' )
+	->append_js( 'bootstrap.js' )
 	->set_partial( 'header', 'partials/header' )
 	->set_partial( 'content_header', 'partials/content_header' )
 	->set_partial( 'footer', 'partials/footer' )
-	->set_layout( 'main_layout' );
+	->set_layout( 'main_layout', 'layouts' );

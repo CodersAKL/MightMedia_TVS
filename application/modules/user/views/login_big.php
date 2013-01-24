@@ -8,24 +8,25 @@
 <div id="infoMessage"><?php echo $message;?></div>
 
 <?php echo form_open( current_url(), 'class="form-horizontal"' ); ?>
-
 <div class="control-group">
-	<label class="control-label" for="identity"><?=$identity_label?></label>
+	<label class="control-label" for="<?=$identity['id']?>"><?=$identity_label?></label>
 	<div class="controls">
 		<div class="input-prepend">
 			<span class="add-on"><i class="icon-envelope"></i></span>
-			<?php echo form_input($identity, '', 'placeholder="'.$identity_label.'" class=""');?>
+			<?php echo form_input($identity, '', 'placeholder="'.__('e.g. info@example.com').'" class=""');?>
 		</div>
+		<span class="help-inline"><?php echo strip_tags( form_error('identity') ); ?></span>
 	</div>
 </div>
 <div class="control-group">
-	<label class="control-label" for="password"><?=__('Password')?></label>
-	<div class="controls">
+	<label class="control-label" for="<?=$password['id']?>"><?=__('Password')?></label>
+	<div class="controls<?=empty( $message )?'':' error' ?>">
 		<div class="input-prepend input-append">
 			<span class="add-on"><i class="icon-lock"></i></span>
 			<?php echo form_input($password, '', 'placeholder="'.__('Password').'"');?>
 			<span class="add-on pointer" Onmousedown="$(this).prev().get(0).type='text';$('i',this).toggleClass('icon-eye-open icon-eye-close')" Onmouseup="$(this).prev().get(0).type='password';$('i',this).toggleClass('icon-eye-open icon-eye-close')"><i class="icon-eye-close"></i></span>
 		</div>
+		<span class="help-inline"><?php echo strip_tags( form_error('password') ); ?></span>
 	</div>
 </div>
 <div class="control-group">

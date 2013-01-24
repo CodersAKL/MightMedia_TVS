@@ -3,10 +3,13 @@
 .project
 .settings
 .idea
+.komodotools
+.sass-cache
+nbproject/
+*.komodoproject
+*.kpf
 application/cache/*
 application/data/token_*.txt
 application/resources/compiled/*.css
 application/resources/compiled/*.js
 application/logs/log-*.php
-nbproject/
-.sass-cache

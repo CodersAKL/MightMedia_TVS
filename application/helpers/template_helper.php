@@ -49,3 +49,7 @@ function get_res_path( $sFile = NULL ) {
 
 	return base_url().$CI->template->find_resource_file( $sFile );
 }
+
+function spacer() {
+	return "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+}
