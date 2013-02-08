@@ -5,7 +5,7 @@
  *
  * These are the available Fizl config variables
  */
-$config['site_title']			= 'Greitai Documentation';
+$config['site_title']			= 'MightMedia TVS Documentation';
 $config['assets_folder']		= 'assets';
 $config['site_folder']			= 'content';
 $config['fizl_date_format']		= 'Y-m-d H:i:s';
