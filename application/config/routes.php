@@ -77,8 +77,10 @@ $route['admin/([a-zA-Z_-]+)'] = '$1/admin/index';
 $route['admin'] = 'admin';*/
 
 $route['^([a-z]{2})/user/reset_password/(:any)'] = 'user/reset_password/index/$2';
+$route['^([a-z]{2})/user/activate/(:any)'] = 'user/activate/index/$2';
 
 // Default
+$route['^([a-z]{2})/(:any)/(:any)/?'] = '$2/$3/index';
 $route['^([a-z]{2})/(:any)/?'] = '$2/index';
 $route['^([a-z]{2})/(.*)'] = '$2';
 $route['^([a-z]{2})'] = $route['default_controller'];

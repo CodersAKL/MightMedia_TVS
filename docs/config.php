@@ -5,7 +5,7 @@
  *
  * These are the available Fizl config variables
  */
-$config['site_title']			= 'Greitai Documentation';
+$config['site_title']			= 'MightMedia CMS Documentation';
 $config['assets_folder']		= 'assets';
 $config['site_folder']			= 'content';
 $config['fizl_date_format']		= 'Y-m-d H:i:s';
@@ -18,4 +18,4 @@ $config['fizl_date_format']		= 'Y-m-d H:i:s';
  */
  
 // The current PyroCMS version
-$config['pyrocms_version']		= '2.3';
+$config['cms_version']		= '2.3';
