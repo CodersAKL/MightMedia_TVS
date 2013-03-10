@@ -770,4 +770,9 @@ class Auth extends MY_Controller {
 		}
 	}
 
+	public function resend()
+	{
+		//$this->ion_auth->register();
+	}
+
 }
