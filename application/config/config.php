@@ -438,7 +438,7 @@ $config['locales'] = array(
 	'ru' => 'russian'
 );
 
-$config['site_name'] = 'Site Name';
+$config['site_name'] = 'MightMedia CMS';
 
 /* End of file config.php */
 /* Location: ./application/config/config.php */

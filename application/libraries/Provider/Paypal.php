@@ -23,17 +23,17 @@ class OAuth2_Provider_Paypal extends OAuth2_Provider
 
     public function url_authorize()
     {
-        return 'https://identity.x.com/xidentity/resources/authorize';
+        return 'https://www.paypal.com/webapps/auth/protocol/openidconnect/v1/authorize';
     }
 
     public function url_access_token()
     {
-        return 'https://identity.x.com/xidentity/oauthtokenservice';
+        return 'https://www.paypal.com/webapps/auth/protocol/openidconnect/v1/tokenservice';
     }
 
     public function get_user_info(OAuth2_Token_Access $token)
     {
-        $url = 'https://identity.x.com/xidentity/resources/profile/me?' . http_build_query(array(
+        $url = 'https://www.paypal.com/webapps/auth/protocol/openidconnect/v1/userinfo?' . http_build_query(array(
             'oauth_token' => $token->access_token
         ));
 

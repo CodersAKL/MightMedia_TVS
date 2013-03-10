@@ -3,7 +3,7 @@
 }
 
 /**
- * Created by MightMedia TVS
+ * Created by UAB "Interneto Partneris".
  * User: Vytenis
  * Date: 12.12.3
  * Time: 17.19
