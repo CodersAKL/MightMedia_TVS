@@ -178,7 +178,8 @@ function dbg( $sTitle, $sMessage, $sUser = 'developers' )
 function isDebugIp()
 {
 
-	$aAllowedIps = array( '82.135.195.164', '79.142.116.98' );
+	// Grab ips from config
+	$aAllowedIps = array(  );
 
 	if ( 0
 		|| ( in_array( $_SERVER['REMOTE_ADDR'], $aAllowedIps ) )
