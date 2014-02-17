@@ -3,12 +3,12 @@
 }
 
 /**
- * MightMedia TVS
+ * Created by Coders
  * User: Vytenis
  * Date: 1/3/13
  * Time: 10:46 PM
  * © 2013
- */ 
+ */
 class login extends MY_Controller
 {
 	var $data;

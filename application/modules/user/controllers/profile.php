@@ -3,12 +3,12 @@
 }
 
 /**
- * MightMedia TVS
+ * Created by Coders
  * User: Vytenis
  * Date: 1/3/13
  * Time: 10:41 PM
  * © 2013
- */ 
+ */
 class Profile extends MY_Controller
 {
     function __construct()
@@ -26,7 +26,7 @@ class Profile extends MY_Controller
 	public function edit()
 	{
 		$this->template->build('user/profile/edit_view');
-		
+
 	}
 }
 

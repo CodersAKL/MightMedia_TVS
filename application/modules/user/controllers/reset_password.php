@@ -3,12 +3,12 @@
 }
 
 /**
- * MightMedia TVS
+ * Created by Coders
  * User: Vytenis
  * Date: 1/6/13
  * Time: 11:06 PM
  * © 2013
- */ 
+ */
 class reset_password extends MY_Controller
 {
 	var $data;

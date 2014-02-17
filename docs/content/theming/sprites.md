@@ -6,7 +6,7 @@ Roles for naming:
 * Do not start a name with a number
 * Do not use spaces in file name instead use a "-" symbol
 * File names must be unique for all project.
-* Use full names if image is used in module ex.: user-module-edit.png witch is placed in 
+* Use full names if image is used in module ex.: user-module-edit.png witch is placed in
 
 <dfn>modules/user_module/views/resources/img/</dfn>
 
@@ -27,7 +27,7 @@ To generate just some of them
 	$<mask>-sprite-base-class: ".sprite";
 	@import "<mask>/**/*.png";
 
-	@each $file in logo-greitai-lt, button-edit {
+	@each $file in logo, button-edit {
 		.icons.flag.#{$file} {
 			@include <mask>-sprite($file);
 		}
@@ -40,5 +40,5 @@ To use just an sprite element in a class
 	@import "<mask>/**/*.png";
 
 	.header-logo {
-		@include <mask>-sprite("logo-greitai-lt");
+		@include <mask>-sprite("logo");
 	}

@@ -37,15 +37,15 @@ In Controller You can add an JS file or an inline javascript
 
 This will print lines
 
-	<link rel="stylesheet" href="http://dev/**/application/themes/default/views/web/resources/css/some_file.css" type="text/css" media="all" />
-	<script src="http://dev/**/application/themes/default/views/web/resources/js/some_file.js" type="text/javascript" ></script>
+	<link rel="stylesheet" href="//**/application/themes/default/views/web/resources/css/some_file.css" type="text/css" media="all" />
+	<script src="//**/application/themes/default/views/web/resources/js/some_file.js" type="text/javascript" ></script>
 
 Return full path to the curent theme resource direcotry use `<?=get_res_path()?>`
 
-	<img alt="Greitai.lt" src="<?=get_res_path()?>img/layout/logo.gif" />
+	<img alt="" src="<?=get_res_path()?>img/layout/logo.gif" />
 
 Result is
 
-	<img alt="Greitai.lt" src="http://dev/**/application/themes/default/views/web/resources/img/layout/logo.gif" />
+	<img alt="" src="//**/application/themes/default/views/web/resources/img/layout/logo.gif" />
 
 > Using this method No CSS and JS are compiled or combined

@@ -3,12 +3,12 @@
 }
 
 /**
- * MightMedia TVS
+ * Created by Coders
  * User: Vytenis
  * Date: 13.2.13
  * Time: 21.28
  * © 2013
- */ 
+ */
 class activate extends MY_Controller
 {
     function __construct()

@@ -3,12 +3,12 @@
 }
 
 /**
- * Created by MightMedia TVS
+ * Created by Coders
  * User: Vytenis
  * Date: 12.11.8
  * Time: 14.07
  * © 2012
- * 
+ *
  * @property template $template
  */
 class Menu extends MY_Controller
@@ -17,7 +17,7 @@ class Menu extends MY_Controller
 	public function index()
 	{
 		/*if ( ! $aData = $this->cache->get( 'aLanguages_' . APPPATH ) ) {
-		
+
 			$this->db->select('lang');
 			$this->db->where('agency_id', APPPATH);
 			$this->db->order_by('position');
@@ -30,7 +30,7 @@ class Menu extends MY_Controller
 
 		$this->load->view( 'language_module/menu_view', $aData );
 	}
-	
+
 }
 
 /* End of file menu.php */

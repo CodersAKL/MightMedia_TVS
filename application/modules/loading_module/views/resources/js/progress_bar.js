@@ -1,5 +1,5 @@
 /**
- * Created by UAB "Interneto Partneris".
+ * Created by "Coders".
  * User: Vytenis
  * Date: 13.2.1
  * Time: 10.16

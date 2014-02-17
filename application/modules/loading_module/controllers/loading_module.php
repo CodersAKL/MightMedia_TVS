@@ -3,7 +3,7 @@
 }
 
 /**
- * Created by UAB "Interneto Partneris".
+ * Created by "Coders".
  * User: Vytenis
  * Date: 12.12.3
  * Time: 17.15

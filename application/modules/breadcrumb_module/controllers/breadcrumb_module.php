@@ -3,12 +3,12 @@
 }
 
 /**
- * MightMedia TVS
+ * Created by Coders
  * User: Vytenis
  * Date: 1/5/13
  * Time: 10:46 PM
  * © 2013
- */ 
+ */
 class breadcrumb_module extends MY_Controller
 {
     function __construct()

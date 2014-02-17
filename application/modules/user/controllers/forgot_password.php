@@ -3,14 +3,14 @@
 }
 
 /**
- * MightMedia TVS
+ * Created by Coders
  * User: Vytenis
  * Date: 1/6/13
  * Time: 12:22 AM
  * © 2013
  *
  * @property Ion_auth $ion_auth
- */ 
+ */
 class forgot_password extends MY_Controller
 {
 	var $data;

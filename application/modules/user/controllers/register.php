@@ -3,12 +3,12 @@
 }
 
 /**
- * MightMedia TVS
+ * Created by Coders
  * User: Vytenis
  * Date: 1/5/13
  * Time: 9:17 PM
  * © 2013
- */ 
+ */
 class register extends MY_Controller
 {
 	var $data;

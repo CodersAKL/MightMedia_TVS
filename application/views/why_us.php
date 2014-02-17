@@ -3,7 +3,7 @@
 }
 
 /**
- * MightMedia TVS
+ * Created by Coders
  * User: Vytenis
  * Date: 1/3/13
  * Time: 11:53 PM

@@ -3,7 +3,7 @@
 }
 
 /**
- * Created by MightMedia TVS
+ * Created by "Coders"
  * User: FDisk
  * Date: 12/27/12
  * Time: 4:02 PM

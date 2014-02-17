@@ -3,12 +3,12 @@
 }
 
 /**
- * MightMedia TVS
+ * Created by Coders
  * User: Vytenis
  * Date: 1/6/13
  * Time: 12:29 AM
  * © 2013
- */ 
+ */
 class logout extends MY_Controller
 {
 	var $data;

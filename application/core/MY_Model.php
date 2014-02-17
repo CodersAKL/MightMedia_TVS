@@ -2,7 +2,7 @@
 	exit( 'No direct script access allowed' );
 }
 /**
- * Created by MightMedia TVS
+ * Created by Coders
  * User: FDisk
  * Date: 12/27/12
  * Time: 6:25 PM

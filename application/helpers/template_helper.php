@@ -3,7 +3,7 @@
 }
 
 /**
- * Created by MightMedia TVS
+ * Created by Coders
  * User: Vytenis
  * Date: 12.10.30
  * Time: 11.35
@@ -16,7 +16,7 @@
  * @return void
  */
 function add_css( $mFile = '' ) {
-	
+
 	$CI =& get_instance();
 
 	if ( !empty( $mFile ) ) {
@@ -30,7 +30,7 @@ function add_css( $mFile = '' ) {
  * @return void
  */
 function add_js( $mFile = '' ) {
-	
+
 	$CI =& get_instance();
 
 	if ( !empty( $mFile ) ) {
@@ -44,7 +44,7 @@ function add_js( $mFile = '' ) {
  * @return string
  */
 function get_res_path( $sFile = NULL ) {
-	
+
 	$CI =& get_instance();
 
 	return base_url().$CI->template->find_resource_file( $sFile );
