@@ -16,13 +16,20 @@
 	- Simple functionality
 	- Language: JavaScript/HTML
 	- Images
- 
+
 - Multi language support
 	- Remember language
 	- Language files editor native PHP or PO
 
 - Installation
+	- Install [VirtualBox v4.3](https://www.virtualbox.org/wiki/Download_Old_Builds_4_3)
+	- Install [Vagrant](http://www.vagrantup.com/downloads.html)
+	- Run `vagrant up`
+	- Run `vagrant provision`
+	- Go to [www.mightmedia.dev/install](www.mightmedia.dev/install)
 	- After install enable DB session
+
+
 
 ----------
 10:10 PM Thursday, August 23, 2012

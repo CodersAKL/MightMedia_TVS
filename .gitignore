@@ -5,6 +5,7 @@
 .idea
 .komodotools
 .sass-cache
+.vagrant/*
 nbproject/
 *.komodoproject
 *.kpf
@@ -13,3 +14,5 @@ application/data/token_*.txt
 application/resources/compiled/*.css
 application/resources/compiled/*.js
 application/logs/log-*.php
+adminer/index.php
+phpmyadmin/*
