@@ -16,6 +16,7 @@
 * Original Author name has been kept but that does not mean that the method has not been modified.
 *
 * Requirements: PHP5 or above
+ * @property CI_Session $session
 *
 */
 
@@ -63,7 +64,7 @@ class Ion_auth
 		$this->load->helper('cookie');
 
 		//Load the session
-		$this->load->library('session');
+		$this->load->driver('session');
 
 		$this->load->model('user/ion_auth_model');
 
@@ -391,12 +392,6 @@ class Ion_auth
 		//Destroy the session
 		$this->session->sess_destroy();
 
-		//Recreate the session
-		if (substr(CI_VERSION, 0, 1) == '2') 
-		{
-			$this->session->sess_create();
-		}
-
 		$this->set_message('logout_successful');
 		return true;
 	}
@@ -441,14 +436,14 @@ class Ion_auth
 	public function in_group($check_group, $id=false)
 	{
 		$this->ion_auth_model->trigger_events('in_group');
-		
+
 		$id || $id = $this->session->userdata('user_id');
 
 		if (!is_array($check_group))
 		{
 			$check_group = array($check_group);
 		}
-		
+
 		if (isset($this->_cache_user_in_group[$id]))
 		{
 			$groups_array = $this->_cache_user_in_group[$id];
@@ -480,5 +475,5 @@ class Ion_auth
 	{
 
 	}
-	
+
 }

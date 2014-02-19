@@ -7,7 +7,7 @@ class Auth extends MY_Controller {
 	{
 		parent::__construct();
 		$this->load->library('ion_auth');
-		$this->load->library('session');
+		$this->load->driver('session');
 		$this->load->library('form_validation');
 		$this->load->helper('url');
 		$this->lang->load('user/user' );
@@ -193,14 +193,14 @@ class Auth extends MY_Controller {
 			);
 
 			if ( $this->config->item('identity', 'ion_auth') == 'username' ){
-				$this->data['identity_label'] = 'Username';	
+				$this->data['identity_label'] = 'Username';
 			}
 			else
 			{
-				$this->data['identity_label'] = 'Email';	
+				$this->data['identity_label'] = 'Email';
 			}
-			
-			
+
+
 
 			//set any errors and display the form
 			$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
@@ -510,7 +510,7 @@ class Auth extends MY_Controller {
 		$user = $this->ion_auth->user($id)->row();
 		$groups=$this->ion_auth->groups()->result_array();
 		$currentGroups = $this->ion_auth->get_users_groups($id)->result();
-		
+
 		//process the phone number
 		if (isset($user->phone) && !empty($user->phone))
 		{
@@ -525,7 +525,7 @@ class Auth extends MY_Controller {
 		$this->form_validation->set_rules('phone3', 'Third Part of Phone', 'required|xss_clean|min_length[4]|max_length[4]');
 		$this->form_validation->set_rules('company', 'Company Name', 'required|xss_clean');
 		$this->form_validation->set_rules('groups', 'Groups', 'xss_clean');
-		
+
 		if (isset($_POST) && !empty($_POST))
 		{
 			// do we have a valid request?
@@ -540,18 +540,18 @@ class Auth extends MY_Controller {
 				'company'    => $this->input->post('company'),
 				'phone'      => $this->input->post('phone1') . '-' . $this->input->post('phone2') . '-' . $this->input->post('phone3'),
 			);
-			
+
 			//Update the groups user belongs to
 			$groupData = $this->input->post('groups');
-			
+
 			if (isset($groupData) && !empty($groupData)) {
-				 
+
 				$this->ion_auth->remove_from_group('', $id);
-				
-				foreach ($groupData as $grp) {					
+
+				foreach ($groupData as $grp) {
 					$this->ion_auth->add_to_group($grp, $id);
 				}
-				
+
 			}
 
 			//update the password if it was posted
