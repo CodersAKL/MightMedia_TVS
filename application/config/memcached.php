@@ -46,7 +46,7 @@ if( ENVIRONMENT == 'development' )
 }else{
 	$config = array(
 		'default' => array(
-			'hostname' => 'zeus.5wgxh2.0001.euw1.cache.amazonaws.com',
+			'hostname' => '',
 			'port'     => '11211',
 			'weight'   => '1',
 		),

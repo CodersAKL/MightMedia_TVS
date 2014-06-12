@@ -9,6 +9,8 @@
 - Modified [CodeIgniter 2.1 internationalization i18n](https://github.com/EllisLab/CodeIgniter/wiki/CodeIgniter-2.1-internationalization-i18n/ "CodeIgniter 2.1 internationalization i18n")
 - [Auth library](https://github.com/philsturgeon/codeigniter-oauth2)
 - [CRUD](https://github.com/segersjens/CodeIgniter-My-Model)
+- Vagrant in [phpStorm](http://blog.jetbrains.com/phpstorm/2013/08/vagrant-support-in-phpstorm/)
+
 # TODO #
 
 
@@ -28,6 +30,7 @@
 	- Run `vagrant provision`
 	- Go to [www.mightmedia.dev/install](www.mightmedia.dev/install)
 	- After install enable DB session
+	- Start SSH session with user: `vagrant` password: `vagrant` and run the command `sudo dpkg-reconfigure phpmyadmin` for some phpmyadmin bugs
 
 
 
