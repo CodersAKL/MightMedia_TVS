@@ -24,11 +24,7 @@
 	- Language files editor native PHP or PO
 
 - Installation
-	- Install [VirtualBox v4.3](https://www.virtualbox.org/wiki/Download_Old_Builds_4_3)
-	- Install [Vagrant](http://www.vagrantup.com/downloads.html)
-	- Run `vagrant up`
-	- Run `vagrant provision`
-	- Go to [www.mightmedia.dev/install](www.mightmedia.dev/install)
+	- Go to [localhost/install](http://localhost/install)
 	- After install enable DB session
 	- Start SSH session with user: `vagrant` password: `vagrant` and run the command `sudo dpkg-reconfigure phpmyadmin` for some phpmyadmin bugs
 
