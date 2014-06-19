@@ -1,6 +1,6 @@
 <hr />
 <footer class="footer container">
-	<div class="row-fluid">
+	<div class="col-md-12">
 		<div class="">
 			<p>
 				Page rendered in <strong>{elapsed_time}</strong> seconds.

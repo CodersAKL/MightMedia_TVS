@@ -8,8 +8,8 @@
 <div class="control-group">
 	<label class="control-label" for="email"><?=__('Email Address')?></label>
 	<div class="controls">
-		<div class="input-prepend">
-			<span class="add-on"><i class="icon-envelope"></i></span>
+		<div class="input-group">
+			<span class="input-group-addon"><i class="icon-envelope"></i></span>
 			<?php echo form_input($email, '', 'placeholder="'.__('Email Address').'" class=""');?>
 		</div>
 	</div>

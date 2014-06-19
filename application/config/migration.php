@@ -63,7 +63,7 @@ $config['migration_table'] = 'install';
 | in your code to have the latest migration.
 |
 */
-$config['migration_auto_latest'] = false;
+$config['migration_auto_latest'] = true;
 
 /*
 |--------------------------------------------------------------------------
@@ -75,7 +75,7 @@ $config['migration_auto_latest'] = false;
 | be upgraded / downgraded to.
 |
 */
-$config['migration_version'] = 2;
+$config['migration_version'] = 3;
 
 /*
 |--------------------------------------------------------------------------

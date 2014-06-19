@@ -12,11 +12,11 @@
 	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
 	<!-- Le fav and touch icons -->
-	<link rel="shortcut icon" href="assets/ico/favicon.ico" />
-	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png" />
-	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png" />
-	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png" />
-	<link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png" />
+	<link rel="shortcut icon" href="<?=get_res_path()?>img/favicon.ico" />
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="<?=get_res_path('apple-touch-icon-144-precomposed.png')?>" />
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="<?=get_res_path('apple-touch-icon-114-precomposed.png')?>'" />
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="<?=get_res_path('apple-touch-icon-72-precomposed.png')?>'" />
+	<link rel="apple-touch-icon-precomposed" href="<?=get_res_path('apple-touch-icon-57-precomposed.png')?>" />
 </head>
 
 <body>
@@ -24,12 +24,12 @@
 
 <div class="container">
 	<div class="row" data-spy="scroll" data-target=".bs-sidebar">
-		<div class="span12">
+		<div class="col-md-12">
 			<?=$this->load->controller('breadcrumb_module/breadcrumb_module/index');?>
 		</div>
 	</div>
 	<div class="row">
-		<div class="span3 sidebar-nav bs-sidebar">
+		<div class="col-md-3 sidebar-nav bs-sidebar">
 				<ul class="nav nav-list bs-sidenav">
 					<li class="nav-header">Frontend</li>
 					<li class="active"><a href="#">HTML 4.01</a></li>
@@ -47,11 +47,11 @@
 				</ul>
 			<!--/.well -->
 		</div>
-		<div class="span9">
-			<div class="row-fluid">
+		<div class="col-md-9">
+			<div class="col-md-12">
 				<?php echo $template['body']; ?>
 			</div>
-			<div class="row-fluid">
+			<div class="col-md-12">
 				<h3>Most recent</h3>
 
 				<div class="span4">

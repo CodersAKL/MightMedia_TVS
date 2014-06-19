@@ -32,6 +32,7 @@
 			<?endif?>
 		<?endforeach?>
 		<li class="divider"></li>
-		<li><a href="#">Translate to your language</a></li>
+		<li class="dropdown-header">Missing language?</li>
+		<li><a href="#">Translate to pref. language</a></li>
 	</ul>
 </li>

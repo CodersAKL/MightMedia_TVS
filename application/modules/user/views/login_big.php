@@ -11,8 +11,8 @@
 <div class="control-group">
 	<label class="control-label" for="<?=$identity['id']?>"><?=$identity_label?></label>
 	<div class="controls">
-		<div class="input-prepend">
-			<span class="add-on"><i class="icon-envelope"></i></span>
+		<div class="input-group">
+			<span class="input-group-addon"><i class="icon-envelope"></i></span>
 			<?php echo form_input($identity, '', 'placeholder="'.__('e.g. info@example.com').'" class=""');?>
 		</div>
 		<span class="help-inline"><?php echo strip_tags( form_error('identity') ); ?></span>
@@ -21,10 +21,10 @@
 <div class="control-group">
 	<label class="control-label" for="<?=$password['id']?>"><?=__('Password')?></label>
 	<div class="controls<?=empty( $message )?'':' error' ?>">
-		<div class="input-prepend input-append">
-			<span class="add-on"><i class="icon-lock"></i></span>
+		<div class="input-group input-append">
+			<span class="input-group-addon"><i class="icon-lock"></i></span>
 			<?php echo form_input($password, '', 'placeholder="'.__('Password').'"');?>
-			<span class="add-on pointer" Onmousedown="$(this).prev().get(0).type='text';$('i',this).toggleClass('icon-eye-open icon-eye-close')" Onmouseup="$(this).prev().get(0).type='password';$('i',this).toggleClass('icon-eye-open icon-eye-close')"><i class="icon-eye-close"></i></span>
+			<span class="input-group-addon pointer" Onmousedown="$(this).prev().get(0).type='text';$('i',this).toggleClass('icon-eye-open icon-eye-close')" Onmouseup="$(this).prev().get(0).type='password';$('i',this).toggleClass('icon-eye-open icon-eye-close')"><i class="icon-eye-close"></i></span>
 		</div>
 		<span class="help-inline"><?php echo strip_tags( form_error('password') ); ?></span>
 	</div>
@@ -39,10 +39,10 @@
 </div>
 
 <div class="form-actions">
-		<span class="span3">
+		<span class="col-md-3">
 			<?php echo form_submit( 'submit', __( 'Login' ), 'class="btn btn-primary btn-large"' );?>
 		</span>
-		<span class="span9">
+		<span class="col-md-9">
 			<?=anchor( 'user/forgot_password', __( 'Forgot your password?' ) )?><br/>
 			<?=anchor( 'user/register', __( 'Not a member yet? Register here!' ) )?>
 		</span>

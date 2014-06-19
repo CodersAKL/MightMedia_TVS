@@ -25,13 +25,13 @@
 
 <div class="container">
 	<div class="row" data-spy="scroll" data-target=".bs-sidebar">
-		<div class="span12">
+		<div class="col-md-12">
 			<?=$this->load->controller('breadcrumb_module/breadcrumb_module/index');?>
 		</div>
 	</div>
 	<div class="row">
-		<div class="span12">
-			<div class="row-fluid">
+		<div class="col-md-12">
+			<div class="row">
 				<?php echo $template['body']; ?>
 			</div>
 		</div>

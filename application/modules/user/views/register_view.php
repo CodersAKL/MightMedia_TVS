@@ -26,8 +26,8 @@
 	<div class="control-group">
 		<label class="control-label" for="email"><?=__('Email')?></label>
 		<div class="controls">
-			<div class="input-prepend">
-				<span class="add-on"><i class="icon-envelope"></i></span>
+			<div class="input-group">
+				<span class="input-group-addon"><i class="icon-envelope"></i></span>
 				<?php echo form_input($email, '', 'placeholder="'.__('Email').'"');?>
 			</div>
 		</div>
@@ -36,12 +36,12 @@
 	<div class="control-group">
 		<label class="control-label" for="phone1"><?=__('Phone')?></label>
 		<div class="controls">
-			<div class="input-prepend input-append">
-				<?php echo form_input($phone1, '', 'class="span2" placeholder="000"');?>
-				<span class="add-on">-</span>
-				<?php echo form_input($phone2, '', 'class="span2" placeholder="000"');?>
-				<span class="add-on">-</span>
-				<?php echo form_input($phone3, '', 'class="span3" placeholder="0000"');?>
+			<div class="input-group input-append">
+				<?php echo form_input($phone1, '', 'class="col-md-2" placeholder="000"');?>
+				<span class="input-group-addon">-</span>
+				<?php echo form_input($phone2, '', 'class="col-md-2" placeholder="000"');?>
+				<span class="input-group-addon">-</span>
+				<?php echo form_input($phone3, '', 'class="col-md-3" placeholder="0000"');?>
 			</div>
 		</div>
 	</div>
@@ -49,20 +49,20 @@
 	<div class="control-group">
 		<label class="control-label" for="password"><?=__('Password')?></label>
 		<div class="controls">
-			<div class="input-prepend input-append">
-				<span class="add-on"><i class="icon-lock"></i></span>
+			<div class="input-group input-append">
+				<span class="input-group-addon"><i class="icon-lock"></i></span>
 				<?php echo form_input($password, '', 'placeholder="'.__('Password').'"');?>
-				<span class="add-on pointer" Onmousedown="$(this).prev().get(0).type='text';$('i',this).toggleClass('icon-eye-open icon-eye-close')" Onmouseup="$(this).prev().get(0).type='password';$('i',this).toggleClass('icon-eye-open icon-eye-close')"><i class="icon-eye-close"></i></span>
+				<span class="input-group-addon pointer" Onmousedown="$(this).prev().get(0).type='text';$('i',this).toggleClass('icon-eye-open icon-eye-close')" Onmouseup="$(this).prev().get(0).type='password';$('i',this).toggleClass('icon-eye-open icon-eye-close')"><i class="icon-eye-close"></i></span>
 			</div>
 		</div>
 	</div>
 	<div class="control-group">
 		<label class="control-label" for="password_confirm"><?=__('Confirm Password')?></label>
 		<div class="controls">
-			<div class="input-prepend input-append">
-				<span class="add-on"><i class="icon-lock"></i></span>
+			<div class="input-group input-append">
+				<span class="input-group-addon"><i class="icon-lock"></i></span>
 				<?php echo form_input($password_confirm, '', 'placeholder="'.__('Confirm Password').'"');?>
-				<span class="add-on pointer" Onmousedown="$(this).prev().get(0).type='text';$('i',this).toggleClass('icon-eye-open icon-eye-close')" Onmouseup="$(this).prev().get(0).type='password';$('i',this).toggleClass('icon-eye-open icon-eye-close')"><i class="icon-eye-close"></i></span>
+				<span class="input-group-addon pointer" Onmousedown="$(this).prev().get(0).type='text';$('i',this).toggleClass('icon-eye-open icon-eye-close')" Onmouseup="$(this).prev().get(0).type='password';$('i',this).toggleClass('icon-eye-open icon-eye-close')"><i class="icon-eye-close"></i></span>
 			</div>
 		</div>
 	</div>

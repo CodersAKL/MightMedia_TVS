@@ -8,20 +8,20 @@
 <div class="control-group">
 	<label class="control-label" for="password">New Password (at least <?php echo $min_password_length;?> characters long):</label>
 	<div class="controls">
-		<div class="input-prepend input-append">
-			<span class="add-on"><i class="icon-lock"></i></span>
+		<div class="input-group input-append">
+			<span class="input-group-addon"><i class="icon-lock"></i></span>
 			<?php echo form_input($new_password, '', 'placeholder="'.__('Password').'"');?>
-			<span class="add-on pointer" Onmousedown="$(this).prev().get(0).type='text';$('i',this).toggleClass('icon-eye-open icon-eye-close')" Onmouseup="$(this).prev().get(0).type='password';$('i',this).toggleClass('icon-eye-open icon-eye-close')"><i class="icon-eye-close"></i></span>
+			<span class="input-group-addon pointer" Onmousedown="$(this).prev().get(0).type='text';$('i',this).toggleClass('icon-eye-open icon-eye-close')" Onmouseup="$(this).prev().get(0).type='password';$('i',this).toggleClass('icon-eye-open icon-eye-close')"><i class="icon-eye-close"></i></span>
 		</div>
 	</div>
 </div>
 <div class="control-group">
 	<label class="control-label" for="new_confirm"><?=__('Confirm New Password')?>:</label>
 	<div class="controls">
-		<div class="input-prepend input-append">
-			<span class="add-on"><i class="icon-lock"></i></span>
+		<div class="input-group input-append">
+			<span class="input-group-addon"><i class="icon-lock"></i></span>
 			<?php echo form_input($new_password_confirm, '', 'placeholder="'.__('Confirm Password').'"');?>
-			<span class="add-on pointer" Onmousedown="$(this).prev().get(0).type='text';$('i',this).toggleClass('icon-eye-open icon-eye-close')" Onmouseup="$(this).prev().get(0).type='password';$('i',this).toggleClass('icon-eye-open icon-eye-close')"><i class="icon-eye-close"></i></span>
+			<span class="input-group-addon pointer" Onmousedown="$(this).prev().get(0).type='text';$('i',this).toggleClass('icon-eye-open icon-eye-close')" Onmouseup="$(this).prev().get(0).type='password';$('i',this).toggleClass('icon-eye-open icon-eye-close')"><i class="icon-eye-close"></i></span>
 		</div>
 	</div>
 </div>
