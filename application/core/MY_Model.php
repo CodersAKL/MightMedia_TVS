@@ -1,108 +1,49 @@
-<?php if ( !defined( 'BASEPATH' ) ) {
-	exit( 'No direct script access allowed' );
-}
+<?php
 /**
- * Created by Coders
- * User: FDisk
- * Date: 12/27/12
- * Time: 6:25 PM
- * © 2012
+ * A base model with a series of CRUD functions (powered by CI's query builder),
+ * validation-in-model support, event callbacks and more.
+ *
+ * @link http://github.com/jamierumbelow/codeigniter-base-model
+ * @copyright Copyright (c) 2012, Jamie Rumbelow <http://jamierumbelow.net>
  */
-
-/**
- * @property CI_DB_active_record $db
- * @property CI_DB_forge         $dbforge
- * @property CI_Benchmark        $benchmark
- * @property CI_Calendar         $calendar
- * @property CI_Cart             $cart
- * @property CI_Config           $config
- * @property CI_Controller       $controller
- * @property CI_Email            $email
- * @property CI_Encrypt          $encrypt
- * @property CI_Exceptions       $exceptions
- * @property CI_Form_validation  $form_validation
- * @property CI_Ftp              $ftp
- * @property CI_Hooks            $hooks
- * @property CI_Image_lib        $image_lib
- * @property CI_Input            $input
- * @property CI_Lang             $lang
- * @property CI_Loader           $load
- * @property CI_Log              $log
- * @property CI_Model            $model
- * @property CI_Output           $output
- * @property CI_Pagination       $pagination
- * @property CI_Parser           $parser
- * @property CI_Profiler         $profiler
- * @property CI_Router           $router
- * @property CI_Session          $session
- * @property CI_Sha1             $sha1
- * @property CI_Table            $table
- * @property CI_Trackback        $trackback
- * @property CI_Typography       $typography
- * @property CI_Unit_test        $unit_test
- * @property CI_Upload           $upload
- * @property CI_URI              $uri
- * @property CI_User_agent       $user_agent
- * @property CI_Validation       $validation
- * @property CI_Xmlrpc           $xmlrpc
- * @property CI_Xmlrpcs          $xmlrpcs
- * @property CI_Zip              $zip
- * @property CI_Javascript       $javascript
- * @property CI_Jquery           $jquery
- * @property CI_Utf8             $utf8
- * @property CI_Security         $security
- * @property CI_Migration        $migration
- */
-
-/**
- * @name        CodeIgniter Base Model
- * @author         Jens Segers
- * @contributor    Jamie Rumbelow <http://jamierumbelow.net>
- * @link           http://www.jenssegers.be
- * @license        MIT License Copyright (c) 2012 Jens Segers
- *                 This model is based on Jamie Rumbelow's model with some personal modifications
- *                 Permission is hereby granted, free of charge, to any person obtaining a copy
- *                 of this software and associated documentation files (the "Software"), to deal
- *                 in the Software without restriction, including without limitation the rights
- *                 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *                 copies of the Software, and to permit persons to whom the Software is
- *                 furnished to do so, subject to the following conditions:
- *                 The above copyright notice and this permission notice shall be included in
- *                 all copies or substantial portions of the Software.
- *                 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *                 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *                 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *                 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *                 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *                 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- *                 THE SOFTWARE.
- */
-
-/*if ( !class_exists( 'CI_Model' ) ) {
-	require_once ( BASEPATH . 'core/Model.php' );
-}*/
 
 class MY_Model extends CI_Model
 {
 
-	/*
-	 * Your database table, if not set the name will be guessed
-	 */
-	protected $table = null;
+	/* --------------------------------------------------------------
+	 * VARIABLES
+	 * ------------------------------------------------------------ */
 
-	/*
-	 * The primary key name, by default set to 'id'
+	/**
+	 * This model's default database table. Automatically
+	 * guessed by pluralising the model name.
+	 */
+	protected $_table;
+
+	/**
+	 * The database connection object. Will be set to the default
+	 * connection. This allows individual models to use different DBs
+	 * without overwriting CI's global $this->db connection.
+	 */
+	public $_database;
+
+	/**
+	 * This model's default primary key or unique identifier.
+	 * Used by the get(), update() and delete() functions.
 	 */
 	protected $primary_key = 'id';
 
-	/*
-	 * The database table fields, used for filtering data arrays before inserting and updating
-	 * If not set, an additional query will be made to fetch these fields
+	/**
+	 * Support for soft deletes and this model's 'deleted' key
 	 */
-	protected $fields = array();
+	protected $soft_delete = FALSE;
+	protected $soft_delete_key = 'deleted';
+	protected $_temporary_with_deleted = FALSE;
+	protected $_temporary_only_deleted = FALSE;
 
-	/*
-	 * Callbacks, should contain an array of methods
+	/**
+	 * The various callbacks available to the model. Each are
+	 * simple lists of method names (methods will be run on $this).
 	 */
 	protected $before_create = array();
 	protected $after_create = array();
@@ -113,295 +54,745 @@ class MY_Model extends CI_Model
 	protected $before_delete = array();
 	protected $after_delete = array();
 
-	/*
-	 * Database result mode, choose between object and array
-	 * Depending on this value result() or result_array() will be used internally
-	 */
-	protected $result_mode = 'array';
+	protected $callback_parameters = array();
 
-	/*
-	 * Validation, should contain validation arrays like the form validation
+	/**
+	 * Protected, non-modifiable attributes
+	 */
+	protected $protected_attributes = array();
+
+	/**
+	 * Relationship arrays. Use flat strings for defaults or string
+	 * => array to customise the class name and primary key
+	 */
+	protected $belongs_to = array();
+	protected $has_many = array();
+
+	protected $_with = array();
+
+	/**
+	 * An array of validation rules. This needs to be the same format
+	 * as validation rules passed to the Form_validation library.
 	 */
 	protected $validate = array();
 
-	/*
-	 * Skip the validation
+	/**
+	 * Optionally skip the validation. Used in conjunction with
+	 * skip_validation() to skip data validation for any future calls.
 	 */
-	protected $skip_validation = false;
+	protected $skip_validation = FALSE;
 
 	/**
-	 * Magic function that passes unrecognized method calls to the database class for chaining
-	 * @param string $method
-	 * @param array  $params
-	 * @return void
+	 * By default we return our results as objects. If we need to override
+	 * this, we can, or, we could use the `as_array()` and `as_object()` scopes.
 	 */
-	public function __call( $method, $params )
-	{
-		if ( method_exists( $this->db, $method ) ) {
-			call_user_func_array( array( $this->db, $method ), $params );
+	protected $return_type = 'object';
+	protected $_temporary_return_type = NULL;
 
-			return $this;
-		}
+	/* --------------------------------------------------------------
+	 * GENERIC METHODS
+	 * ------------------------------------------------------------ */
+
+	/**
+	 * Initialise the model, tie into the CodeIgniter superobject and
+	 * try our best to guess the table name.
+	 */
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->load->helper('inflector');
+
+		$this->_fetch_table();
+
+		$this->_database = $this->db;
+
+		array_unshift($this->before_create, 'protect_attributes');
+		array_unshift($this->before_update, 'protect_attributes');
+
+		$this->_temporary_return_type = $this->return_type;
+	}
+
+	/* --------------------------------------------------------------
+	 * CRUD INTERFACE
+	 * ------------------------------------------------------------ */
+
+	/**
+	 * Fetch a single record based on the primary key. Returns an object.
+	 */
+	public function get($primary_value)
+	{
+		return $this->get_by($this->primary_key, $primary_value);
 	}
 
 	/**
-	 * Get a single record with matching WHERE parameters
-	 * @internal param string $key
-	 * @internal param string $val
-	 * @return object
+	 * Fetch a single record based on an arbitrary WHERE call. Can be
+	 * any valid value to $this->_database->where().
 	 */
-	public function get()
+	public function get_by()
 	{
-		$where = & func_get_args();
+		$where = func_get_args();
 
-		$where = $this->_callbacks( 'before_get', array( $where ) );
-		$this->_set_where( $where );
-
-		if ( $this->result_mode == 'object' ) {
-			$row = $this->db->get( $this->_table() )->row();
-		}
-		else {
-			$row = $this->db->get( $this->_table() )->row_array();
+		if ($this->soft_delete && $this->_temporary_with_deleted !== TRUE)
+		{
+			$this->_database->where($this->soft_delete_key, (bool)$this->_temporary_only_deleted);
 		}
 
-		$row = $this->_callbacks( 'after_get', array( $row ) );
+		$this->_set_where($where);
 
+		$this->trigger('before_get');
+
+		$row = $this->_database->get($this->_table)
+			->{$this->_return_type()}();
+		$this->_temporary_return_type = $this->return_type;
+
+		$row = $this->trigger('after_get', $row);
+
+		$this->_with = array();
 		return $row;
 	}
 
 	/**
-	 * Get all records from the database
-	 * @return array
+	 * Fetch an array of records based on an array of primary values.
+	 */
+	public function get_many($values)
+	{
+		$this->_database->where_in($this->primary_key, $values);
+
+		return $this->get_all();
+	}
+
+	/**
+	 * Fetch an array of records based on an arbitrary WHERE call.
+	 */
+	public function get_many_by()
+	{
+		$where = func_get_args();
+
+		$this->_set_where($where);
+
+		return $this->get_all();
+	}
+
+	/**
+	 * Fetch all the records in the table. Can be used as a generic call
+	 * to $this->_database->get() with scoped methods.
 	 */
 	public function get_all()
 	{
-		$where = & func_get_args();
+		$this->trigger('before_get');
 
-		$where = $this->_callbacks( 'before_get', array( $where ) );
-		$this->_set_where( $where );
-
-		if ( $this->result_mode == 'object' ) {
-			$result = $this->db->get( $this->_table() )->result();
-		}
-		else {
-			$result = $this->db->get( $this->_table() )->result_array();
+		if ($this->soft_delete && $this->_temporary_with_deleted !== TRUE)
+		{
+			$this->_database->where($this->soft_delete_key, (bool)$this->_temporary_only_deleted);
 		}
 
-		foreach ( $result as &$row ) {
-			$row = $this->_callbacks( 'after_get', array( $row ) );
+		$result = $this->_database->get($this->_table)
+			->{$this->_return_type(1)}();
+		$this->_temporary_return_type = $this->return_type;
+
+		foreach ($result as $key => &$row)
+		{
+			$row = $this->trigger('after_get', $row, ($key == count($result) - 1));
 		}
+
+		$this->_with = array();
+		return $result;
+	}
+
+	/**
+	 * Insert a new row into the table. $data should be an associative array
+	 * of data to be inserted. Returns newly created ID.
+	 */
+	public function insert($data, $skip_validation = FALSE)
+	{
+		if ($skip_validation === FALSE)
+		{
+			$data = $this->validate($data);
+		}
+
+		if ($data !== FALSE)
+		{
+			$data = $this->trigger('before_create', $data);
+
+			$this->_database->insert($this->_table, $data);
+			$insert_id = $this->_database->insert_id();
+
+			$this->trigger('after_create', $insert_id);
+
+			return $insert_id;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+
+	/**
+	 * Insert multiple rows into the table. Returns an array of multiple IDs.
+	 */
+	public function insert_many($data, $skip_validation = FALSE)
+	{
+		$ids = array();
+
+		foreach ($data as $key => $row)
+		{
+			$ids[] = $this->insert($row, $skip_validation, ($key == count($data) - 1));
+		}
+
+		return $ids;
+	}
+
+	/**
+	 * Updated a record based on the primary value.
+	 */
+	public function update($primary_value, $data, $skip_validation = FALSE)
+	{
+		$data = $this->trigger('before_update', $data);
+
+		if ($skip_validation === FALSE)
+		{
+			$data = $this->validate($data);
+		}
+
+		if ($data !== FALSE)
+		{
+			$result = $this->_database->where($this->primary_key, $primary_value)
+				->set($data)
+				->update($this->_table);
+
+			$this->trigger('after_update', array($data, $result));
+
+			return $result;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+
+	/**
+	 * Update many records, based on an array of primary values.
+	 */
+	public function update_many($primary_values, $data, $skip_validation = FALSE)
+	{
+		$data = $this->trigger('before_update', $data);
+
+		if ($skip_validation === FALSE)
+		{
+			$data = $this->validate($data);
+		}
+
+		if ($data !== FALSE)
+		{
+			$result = $this->_database->where_in($this->primary_key, $primary_values)
+				->set($data)
+				->update($this->_table);
+
+			$this->trigger('after_update', array($data, $result));
+
+			return $result;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+
+	/**
+	 * Updated a record based on an arbitrary WHERE clause.
+	 */
+	public function update_by()
+	{
+		$args = func_get_args();
+		$data = array_pop($args);
+
+		$data = $this->trigger('before_update', $data);
+
+		if ($this->validate($data) !== FALSE)
+		{
+			$this->_set_where($args);
+			$result = $this->_database->set($data)
+				->update($this->_table);
+			$this->trigger('after_update', array($data, $result));
+
+			return $result;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+
+	/**
+	 * Update all records
+	 */
+	public function update_all($data)
+	{
+		$data = $this->trigger('before_update', $data);
+		$result = $this->_database->set($data)
+			->update($this->_table);
+		$this->trigger('after_update', array($data, $result));
 
 		return $result;
 	}
 
 	/**
-	 * Get multiple records from the database with matching WHERE parameters
-	 * Alias for get_all, created for when get_all does not sound good enough
-	 * @internal param string $key
-	 * @internal param string $val
-	 * @return array
+	 * Delete a row from the table by the primary value
 	 */
-	public function get_many()
+	public function delete($id)
 	{
-		return $this->get_all();
+		$this->trigger('before_delete', $id);
+
+		$this->_database->where($this->primary_key, $id);
+
+		if ($this->soft_delete)
+		{
+			$result = $this->_database->update($this->_table, array( $this->soft_delete_key => TRUE ));
+		}
+		else
+		{
+			$result = $this->_database->delete($this->_table);
+		}
+
+		$this->trigger('after_delete', $result);
+
+		return $result;
 	}
 
 	/**
-	 * Insert a new record into the database
-	 * Returns the insert ID
-	 * @param array $data
-	 * @param bool  $skip_validation
-	 * @return integer
+	 * Delete a row from the database table by an arbitrary WHERE clause
 	 */
-	public function insert( $data, $skip_validation = false )
+	public function delete_by()
 	{
-		$valid = true;
+		$where = func_get_args();
 
-		if ( $skip_validation === false ) {
-			$valid = $this->_run_validation( $data );
+		$where = $this->trigger('before_delete', $where);
+
+		$this->_set_where($where);
+
+
+		if ($this->soft_delete)
+		{
+			$result = $this->_database->update($this->_table, array( $this->soft_delete_key => TRUE ));
+		}
+		else
+		{
+			$result = $this->_database->delete($this->_table);
 		}
 
-		if ( $valid ) {
-			$data = $this->_callbacks( 'before_create', array( $data ) );
+		$this->trigger('after_delete', $result);
 
-			$data = array_intersect_key( $data, array_flip( $this->_fields() ) );
-			$this->db->insert( $this->_table(), $data );
-
-			$this->_callbacks( 'after_create', array( $data, $this->db->insert_id() ) );
-
-			return $this->db->insert_id();
-		}
-		else {
-			return false;
-		}
+		return $result;
 	}
 
 	/**
-	 * Update a record, specified by an ID.
-	 * @param         $primary_value
-	 * @param array   $data
-	 * @param bool    $skip_validation
-	 * @internal param int $id
-	 * @return integer
+	 * Delete many rows from the database table by multiple primary values
 	 */
-	public function update( $primary_value, $data, $skip_validation = false )
+	public function delete_many($primary_values)
 	{
-		$valid = true;
+		$primary_values = $this->trigger('before_delete', $primary_values);
 
-		$data = $this->_callbacks( 'before_update', array( $data, $primary_value ) );
+		$this->_database->where_in($this->primary_key, $primary_values);
 
-		if ( $skip_validation === false ) {
-			$valid = $this->_run_validation( $data );
+		if ($this->soft_delete)
+		{
+			$result = $this->_database->update($this->_table, array( $this->soft_delete_key => TRUE ));
+		}
+		else
+		{
+			$result = $this->_database->delete($this->_table);
 		}
 
-		if ( $valid ) {
-			$data = array_intersect_key( $data, array_flip( $this->_fields() ) );
+		$this->trigger('after_delete', $result);
 
-			$result = $this->db->where( $this->primary_key, $primary_value )->set( $data )->update( $this->_table() );
-
-			$this->_callbacks( 'after_update', array( $data, $primary_value, $result ) );
-
-			return $this->db->affected_rows();
-		}
-		else {
-			return false;
-		}
+		return $result;
 	}
 
+
 	/**
-	 * Delete a row from the database based on a WHERE parameters
-	 * @internal param string $key
-	 * @internal param string $val
-	 * @return bool
+	 * Truncates the table
 	 */
-	public function delete()
+	public function truncate()
 	{
-		$where = & func_get_args();
+		$result = $this->_database->truncate($this->_table);
 
-		$where = $this->_callbacks( 'before_delete', array( $where ) );
-		$this->_set_where( $where );
-
-		$result = $this->db->delete( $this->_table() );
-
-		$this->_callbacks( 'after_delete', array( $where, $result ) );
-
-		return $this->db->affected_rows();
+		return $result;
 	}
 
-	/**
-	 * Count the number of rows based on a WHERE parameters
-	 * @internal param string $key
-	 * @internal param string $val
-	 * @return integer
-	 */
-	public function count_all_results()
-	{
-		$where = & func_get_args();
-		$this->_set_where( $where );
+	/* --------------------------------------------------------------
+	 * RELATIONSHIPS
+	 * ------------------------------------------------------------ */
 
-		return $this->db->count_all_results( $this->_table() );
-	}
-
-	/**
-	 * Return a count of every row in the table
-	 * @return integer
-	 */
-	public function count_all()
+	public function with($relationship)
 	{
-		return $this->db->count_all( $this->_table() );
-	}
+		$this->_with[] = $relationship;
 
-	/**
-	 * An easier limit function
-	 * @param integer $limit
-	 * @param integer $offset
-	 * @return \MY_Model
-	 */
-	public function limit( $limit = null, $offset = null )
-	{
-		if ( is_numeric( $limit ) && is_numeric( $offset ) ) {
-			$this->db->limit( $limit, $offset );
-		}
-		elseif ( is_numeric( $limit ) ) {
-			$this->db->limit( $limit );
+		if (!in_array('relate', $this->after_get))
+		{
+			$this->after_get[] = 'relate';
 		}
 
 		return $this;
 	}
 
-	/**
-	 * List all table fields
-	 * @return array $fields
-	 */
-	public function list_fields()
+	public function relate($row)
 	{
-		return $this->db->list_fields( $this->_table() );
+		if (empty($row))
+		{
+			return $row;
+		}
+
+		foreach ($this->belongs_to as $key => $value)
+		{
+			if (is_string($value))
+			{
+				$relationship = $value;
+				$options = array( 'primary_key' => $value . '_id', 'model' => $value . '_model' );
+			}
+			else
+			{
+				$relationship = $key;
+				$options = $value;
+			}
+
+			if (in_array($relationship, $this->_with))
+			{
+				$this->load->model($options['model'], $relationship . '_model');
+
+				if (is_object($row))
+				{
+					$row->{$relationship} = $this->{$relationship . '_model'}->get($row->{$options['primary_key']});
+				}
+				else
+				{
+					$row[$relationship] = $this->{$relationship . '_model'}->get($row[$options['primary_key']]);
+				}
+			}
+		}
+
+		foreach ($this->has_many as $key => $value)
+		{
+			if (is_string($value))
+			{
+				$relationship = $value;
+				$options = array( 'primary_key' => singular($this->_table) . '_id', 'model' => singular($value) . '_model' );
+			}
+			else
+			{
+				$relationship = $key;
+				$options = $value;
+			}
+
+			if (in_array($relationship, $this->_with))
+			{
+				$this->load->model($options['model'], $relationship . '_model');
+
+				if (is_object($row))
+				{
+					$row->{$relationship} = $this->{$relationship . '_model'}->get_many_by($options['primary_key'], $row->{$this->primary_key});
+				}
+				else
+				{
+					$row[$relationship] = $this->{$relationship . '_model'}->get_many_by($options['primary_key'], $row[$this->primary_key]);
+				}
+			}
+		}
+
+		return $row;
 	}
 
-	/**
-	 * Retrieve and generate a dropdown-friendly array of the data
-	 * in the table based on a key and a value.
-	 * @internal param string $key
-	 * @internal param string $value
-	 * @return array $options
-	 */
-	public function dropdown()
-	{
-		$args = & func_get_args();
+	/* --------------------------------------------------------------
+	 * UTILITY METHODS
+	 * ------------------------------------------------------------ */
 
-		if ( count( $args ) == 2 ) {
-			list( $key, $value ) = $args;
+	/**
+	 * Retrieve and generate a form_dropdown friendly array
+	 */
+	function dropdown()
+	{
+		$args = func_get_args();
+
+		if(count($args) == 2)
+		{
+			list($key, $value) = $args;
 		}
-		else {
-			$key   = $this->primary_key;
+		else
+		{
+			$key = $this->primary_key;
 			$value = $args[0];
 		}
 
-		$this->_callbacks( 'before_get', array( $key, $value ) );
+		$this->trigger('before_dropdown', array( $key, $value ));
 
-		if ( $this->result_mode == 'object' ) {
-			$result = $this->db->select( array( $key, $value ) )->get( $this->_table() )->result();
-
-			$options = array();
-			foreach ( $result as $row ) {
-				$row                   = $this->_callbacks( 'after_get', array( $row ) );
-				$options[$row->{$key}] = $row->{$value};
-			}
+		if ($this->soft_delete && $this->_temporary_with_deleted !== TRUE)
+		{
+			$this->_database->where($this->soft_delete_key, FALSE);
 		}
-		else {
-			$result = $this->db->select( array( $key, $value ) )->get( $this->_table() )->result_array();
 
-			$options = array();
-			foreach ( $result as $row ) {
-				$row                 = $this->_callbacks( 'after_get', array( $row ) );
-				$options[$row[$key]] = $row[$value];
-			}
+		$result = $this->_database->select(array($key, $value))
+			->get($this->_table)
+			->result();
+
+		$options = array();
+
+		foreach ($result as $row)
+		{
+			$options[$row->{$key}] = $row->{$value};
 		}
+
+		$options = $this->trigger('after_dropdown', $options);
 
 		return $options;
 	}
 
 	/**
-	 * Skip the insert validation for future calls
+	 * Fetch a count of rows based on an arbitrary WHERE call.
 	 */
-	public function skip_validation( $bool = true )
+	public function count_by()
 	{
-		$this->skip_validation = $bool;
+		if ($this->soft_delete && $this->_temporary_with_deleted !== TRUE)
+		{
+			$this->_database->where($this->soft_delete_key, (bool)$this->_temporary_only_deleted);
+		}
 
+		$where = func_get_args();
+		$this->_set_where($where);
+
+		return $this->_database->count_all_results($this->_table);
+	}
+
+	/**
+	 * Fetch a total count of rows, disregarding any previous conditions
+	 */
+	public function count_all()
+	{
+		if ($this->soft_delete && $this->_temporary_with_deleted !== TRUE)
+		{
+			$this->_database->where($this->soft_delete_key, (bool)$this->_temporary_only_deleted);
+		}
+
+		return $this->_database->count_all($this->_table);
+	}
+
+	/**
+	 * Tell the class to skip the insert validation
+	 */
+	public function skip_validation()
+	{
+		$this->skip_validation = TRUE;
 		return $this;
 	}
 
 	/**
-	 * Run the specific callbacks, each callback taking a $data
-	 * variable and returning it
+	 * Get the skip validation status
 	 */
-	private function _callbacks( $name, $params = array() )
+	public function get_skip_validation()
 	{
-		$data = ( isset( $params[0] ) ) ? $params[0] : false;
+		return $this->skip_validation;
+	}
 
-		if ( !empty( $this->$name ) ) {
-			foreach ( $this->$name as $method ) {
-				$data = call_user_func_array( array( $this, $method ), $params );
+	/**
+	 * Return the next auto increment of the table. Only tested on MySQL.
+	 */
+	public function get_next_id()
+	{
+		return (int) $this->_database->select('AUTO_INCREMENT')
+			->from('information_schema.TABLES')
+			->where('TABLE_NAME', $this->_table)
+			->where('TABLE_SCHEMA', $this->_database->database)->get()->row()->AUTO_INCREMENT;
+	}
+
+	/**
+	 * Getter for the table name
+	 */
+	public function table()
+	{
+		return $this->_table;
+	}
+
+	/* --------------------------------------------------------------
+	 * GLOBAL SCOPES
+	 * ------------------------------------------------------------ */
+
+	/**
+	 * Return the next call as an array rather than an object
+	 */
+	public function as_array()
+	{
+		$this->_temporary_return_type = 'array';
+		return $this;
+	}
+
+	/**
+	 * Return the next call as an object rather than an array
+	 */
+	public function as_object()
+	{
+		$this->_temporary_return_type = 'object';
+		return $this;
+	}
+
+	/**
+	 * Don't care about soft deleted rows on the next call
+	 */
+	public function with_deleted()
+	{
+		$this->_temporary_with_deleted = TRUE;
+		return $this;
+	}
+
+	/**
+	 * Only get deleted rows on the next call
+	 */
+	public function only_deleted()
+	{
+		$this->_temporary_only_deleted = TRUE;
+		return $this;
+	}
+
+	/* --------------------------------------------------------------
+	 * OBSERVERS
+	 * ------------------------------------------------------------ */
+
+	/**
+	 * MySQL DATETIME created_at and updated_at
+	 */
+	public function created_at($row)
+	{
+		if (is_object($row))
+		{
+			$row->created_at = date('Y-m-d H:i:s');
+		}
+		else
+		{
+			$row['created_at'] = date('Y-m-d H:i:s');
+		}
+
+		return $row;
+	}
+
+	public function updated_at($row)
+	{
+		if (is_object($row))
+		{
+			$row->updated_at = date('Y-m-d H:i:s');
+		}
+		else
+		{
+			$row['updated_at'] = date('Y-m-d H:i:s');
+		}
+
+		return $row;
+	}
+
+	/**
+	 * Serialises data for you automatically, allowing you to pass
+	 * through objects and let it handle the serialisation in the background
+	 */
+	public function serialize($row)
+	{
+		foreach ($this->callback_parameters as $column)
+		{
+			$row[$column] = serialize($row[$column]);
+		}
+
+		return $row;
+	}
+
+	public function unserialize($row)
+	{
+		foreach ($this->callback_parameters as $column)
+		{
+			if (is_array($row))
+			{
+				$row[$column] = unserialize($row[$column]);
+			}
+			else
+			{
+				$row->$column = unserialize($row->$column);
+			}
+		}
+
+		return $row;
+	}
+
+	/**
+	 * Protect attributes by removing them from $row array
+	 */
+	public function protect_attributes($row)
+	{
+		foreach ($this->protected_attributes as $attr)
+		{
+			if (is_object($row))
+			{
+				unset($row->$attr);
+			}
+			else
+			{
+				unset($row[$attr]);
+			}
+		}
+
+		return $row;
+	}
+
+	/* --------------------------------------------------------------
+	 * QUERY BUILDER DIRECT ACCESS METHODS
+	 * ------------------------------------------------------------ */
+
+	/**
+	 * A wrapper to $this->_database->order_by()
+	 */
+	public function order_by($criteria, $order = 'ASC')
+	{
+		if ( is_array($criteria) )
+		{
+			foreach ($criteria as $key => $value)
+			{
+				$this->_database->order_by($key, $value);
+			}
+		}
+		else
+		{
+			$this->_database->order_by($criteria, $order);
+		}
+		return $this;
+	}
+
+	/**
+	 * A wrapper to $this->_database->limit()
+	 */
+	public function limit($limit, $offset = 0)
+	{
+		$this->_database->limit($limit, $offset);
+		return $this;
+	}
+
+	/* --------------------------------------------------------------
+	 * INTERNAL METHODS
+	 * ------------------------------------------------------------ */
+
+	/**
+	 * Trigger an event and call its observers. Pass through the event name
+	 * (which looks for an instance variable $this->event_name), an array of
+	 * parameters to pass through and an optional 'last in interation' boolean
+	 */
+	public function trigger($event, $data = FALSE, $last = TRUE)
+	{
+		if (isset($this->$event) && is_array($this->$event))
+		{
+			foreach ($this->$event as $method)
+			{
+				if (strpos($method, '('))
+				{
+					preg_match('/([a-zA-Z0-9\_\-]+)(\(([a-zA-Z0-9\_\-\., ]+)\))?/', $method, $matches);
+
+					$method = $matches[1];
+					$this->callback_parameters = explode(',', $matches[3]);
+				}
+
+				$data = call_user_func_array(array($this, $method), array($data, $last));
 			}
 		}
 
@@ -409,88 +800,141 @@ class MY_Model extends CI_Model
 	}
 
 	/**
-	 * Runs validation on the passed data.
-	 * @return bool
+	 * Run validation on the passed data
 	 */
-	private function _run_validation( $data )
+	public function validate($data)
 	{
-		if ( $this->skip_validation ) {
-			return true;
+		if($this->skip_validation)
+		{
+			return $data;
 		}
 
-		if ( !empty( $this->validate ) ) {
-			foreach ( $data as $key => $val ) {
+		if(!empty($this->validate))
+		{
+			foreach($data as $key => $val)
+			{
 				$_POST[$key] = $val;
 			}
 
-			$this->load->library( 'form_validation' );
+			$this->load->library('form_validation');
 
-			if ( is_array( $this->validate ) ) {
-				$this->form_validation->set_rules( $this->validate );
+			if(is_array($this->validate))
+			{
+				$this->form_validation->set_rules($this->validate);
 
-				return $this->form_validation->run();
+				if ($this->form_validation->run() === TRUE)
+				{
+					return $data;
+				}
+				else
+				{
+					return FALSE;
+				}
 			}
-			else {
-				return $this->form_validation->run( $this->validate );
+			else
+			{
+				if ($this->form_validation->run($this->validate) === TRUE)
+				{
+					return $data;
+				}
+				else
+				{
+					return FALSE;
+				}
 			}
 		}
-		else {
-			return true;
-		}
-	}
-
-	/**
-	 * Sets WHERE depending on the number of parameters, has 4 modes:
-	 * 1. ($id) primary key value mode
-	 * 2. (array("name"=>$name)) associative array mode
-	 * 3. ("name", $name) custom key/value mode
-	 * 4. ("id", array(1, 2, 3)) where in mode
-	 */
-	private function _set_where( $params )
-	{
-		if ( count( $params ) == 1 ) {
-			if ( !is_array( $params[0] ) && !strstr( $params[0], "'" ) ) {
-				$this->db->where( $this->primary_key, $params[0] ); // 1.
-			}
-			else {
-				$this->db->where( $params[0] ); // 2.
-			}
-		}
-		elseif ( count( $params ) == 2 ) {
-			if ( is_array( $params[1] ) ) {
-				$this->db->where_in( $params[0], $params[1] ); // 4.
-			}
-			else {
-				$this->db->where( $params[0], $params[1] ); // 3.
-			}
+		else
+		{
+			return $data;
 		}
 	}
 
 	/**
-	 * Return or fetch the database fields
+	 * Guess the table name by pluralising the model name
 	 */
-	private function _fields()
+	private function _fetch_table()
 	{
-		if ( $this->_table() && empty( $this->fields ) ) {
-			$this->fields = $this->db->list_fields( $this->_table() );
+		if ($this->_table == NULL)
+		{
+			$this->_table = plural(preg_replace('/(_m|_model)?$/', '', strtolower(get_class($this))));
 		}
-
-		return $this->fields;
 	}
 
 	/**
-	 * Return or guess the database table
+	 * Guess the primary key for current table
 	 */
-	private function _table()
+	private function _fetch_primary_key()
 	{
-		if ( $this->table == null ) {
-			$this->load->helper( 'inflector' );
-			$class       = preg_replace( '#((_m|_model)$|$(m_))?#', '', strtolower( get_class( $this ) ) );
-			$this->table = plural( strtolower( $class ) );
+		if($this->primary_key == NULl)
+		{
+			$this->primary_key = $this->_database->query("SHOW KEYS FROM `".$this->_table."` WHERE Key_name = 'PRIMARY'")->row()->Column_name;
 		}
+	}
 
-		return $this->table;
+	/**
+	 * Set WHERE parameters, cleverly
+	 */
+	protected function _set_where($params)
+	{
+		if (count($params) == 1 && is_array($params[0]))
+		{
+			foreach ($params[0] as $field => $filter)
+			{
+				if (is_array($filter))
+				{
+					$this->_database->where_in($field, $filter);
+				}
+				else
+				{
+					if (is_int($field))
+					{
+						$this->_database->where($filter);
+					}
+					else
+					{
+						$this->_database->where($field, $filter);
+					}
+				}
+			}
+		}
+		else if (count($params) == 1)
+		{
+			$this->_database->where($params[0]);
+		}
+		else if(count($params) == 2)
+		{
+			if (is_array($params[1]))
+			{
+				$this->_database->where_in($params[0], $params[1]);
+			}
+			else
+			{
+				$this->_database->where($params[0], $params[1]);
+			}
+		}
+		else if(count($params) == 3)
+		{
+			$this->_database->where($params[0], $params[1], $params[2]);
+		}
+		else
+		{
+			if (is_array($params[1]))
+			{
+				$this->_database->where_in($params[0], $params[1]);
+			}
+			else
+			{
+				$this->_database->where($params[0], $params[1]);
+			}
+		}
+	}
+
+	/**
+	 * Return the method name for the current return type
+	 */
+	protected function _return_type($multi = FALSE)
+	{
+		$method = ($multi) ? 'result' : 'row';
+		return $this->_temporary_return_type == 'array' ? $method . '_array' : $method;
 	}
 }
-/* End of file welcome.php */
-/* Location: ./models/MY_Model.php */

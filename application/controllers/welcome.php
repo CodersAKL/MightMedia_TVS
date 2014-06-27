@@ -46,7 +46,7 @@ class Welcome extends CI_Controller {
 	{
 //		$aData['sForm'] = $this->load->controller('user_module/form');
 
-		$aTemplateData['sLanguageMenu'] = $this->load->controller('language_module/menu/index');
+//		$aTemplateData['sLanguageMenu'] = $this->load->controller('language_module/menu/index');
 
 		$this->template
 			->add_css( 'user/main.css' )

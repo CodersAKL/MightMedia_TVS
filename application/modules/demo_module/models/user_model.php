@@ -9,9 +9,10 @@
  * Time: 13.34
  * © 2012
  */
-class User_model extends CI_Model
+class User_model extends MY_Model
 {
 	private $sUserName = NULL;
+	protected $primary_key = 'id';
 
 	function __construct()
 	{
