@@ -1,34 +1,57 @@
-<?php
-
-if ( !defined( 'BASEPATH' ) )
+<?php if ( !defined( 'BASEPATH' ) ) {
 	exit( 'No direct script access allowed' );
+}
 /**
  * CodeIgniter
- *
- * An open source application development framework for PHP 4.3.2 or newer
- *
- * @package     CodeIgniter
- * @author      Rick Ellis
+ * An open source application development framework
+ * @package     CodeIgniter * @author Rick Ellis
  * @copyright   Copyright (c) 2006, EllisLab, Inc.
  * @license     http://www.codeignitor.com/user_guide/license.html
- * @link        http://www.codeigniter.com
- * @since       Version 1.0
- * @filesource
+ * @link        http://www.codeigniter.com * @since Version 1.0
  */
-// ------------------------------------------------------------------------
+
+// ----------------------------------------------------------------------
 /**
- * MY Parser Class
- * http://ellislab.com/forums/viewthread/68878/P45/#744970
- *
- * Added a feature so when a template is passed, if all the variable
- * replacement tags are not replaced they are removed from the
- * returned output. Thus making the returned string cleaner.
- *
- * @package       CodeIgniter
- * @subpackage    Libraries
- * @category      Parser
- * @author        Adam Price
- */
+ * Library:  Extended Parser Class (2008-2010)
+ * Features: Parse templates, loaded as a view, and/or parse strings;
+ *           Nested simple conditionals {if *}x{else}y{/if}.
+ *           Nested conditionals (introduced in version 0.5.0);
+ *           Array-element access; Successive same array usage;
+ *           {Ignore} tag-pair protects a section from strip_vars but tags inside
+ *           it are parsed. {Ignore_pre} is saved early on, and not parsed at all.
+ *           You can use multiple ignore and ignore_pre tag-pairs.
+ * Tips:     - Use Parse() to load a standard view with the php being processed.
+ *           Parse_string() allows you, for instance, to build an email-message
+ *           with simple template logic, or a partial view.
+ *           - The cleanup unused tags option (strip_vars) is optional and should
+ *           IMO be avoided. Better is to set all variables, be it empty. The parse
+ *           will then automatically replace them with empties. Currently strip_vars
+ *           generates a php error on various curly-brackets like inside javascript.
+ *           For the time being, either protect javascript with ignore, or don't
+ *           strip tags. Another reason to not strip_vars is, it also removes tags
+ *           that might be in your data, like an article discussing parser {tags}.
+ * Version:  0.5.1
+ * Changes:  0.5.1 small typo's and bugs
+ *           0.5.0 gdmac. nested conditionals. option (default) to convert
+ *                 delimiters inside data to hmtl-entities.
+ *           0.4.1 gdmac. fixme1 fixed, process all tag-pairs before singles.
+ *                 changed: remove ignore tags, even when strip_tags==false
+ *           0.4 gdmac. Mashup of parser versions, ignore tag, extra code and debug
+ *           0.3 rafsoaken. cleanup, test-suite, parse, array, booleans etc.
+ *           0.2 isaiahdw. conditionals
+ *           0.1 adamp1. cleanup unused tags and tag-pairs
+ * Todo:     - To get this going, we need some nice documentation with it
+ *           - set_options and better error-reporting and handling (malformed tags).
+ *           - fix for stripping tags on curly brackets like in javascript
+ *           - option to check for empty (next to isset)
+ *           - conditional combinations {if {is_admin}==1 AND {username}==Tim}
+ *           - general optimization and debugging
+ * Install:  Put in /application/libraries/ as parser.php instead as MY_parser.php
+ *           Since most methods of the class changed, it made sense to not extend
+ *           the default parser anymore.
+ * Discuss:  http://codeigniter.com/forums/viewthread/68878/P45/
+ * usage:    See the parser_test controller for some examples
+ *  */
 class MY_Parser extends CI_Parser
 {
 
@@ -36,13 +59,17 @@ class MY_Parser extends CI_Parser
 	var $_ignore = array();
 	var $_template;
 	var $_conditionals;
+	var $_data;
+
 	var $l_delim = '{';
 	var $r_delim = '}';
-	var $options = array
+
+	var $options
+		= array
 		(
-		// convert delimiters in data to entities. { = &#123; } = &#125;
-		'convert_delimiters' => array(false, '&#123;', '&#125;')
-	);
+			// convert delimiters in data to entities. { = &#123; } = &#125;
+			'convert_delimiters' => array( true, '&#123;', '&#125;' )
+		);
 
 	// --------------------------------------------------------------------
 	// Loads a view (and parses the php). Then parses pseudo-variables contained
@@ -50,43 +77,48 @@ class MY_Parser extends CI_Parser
 	// Param return: output or return as string. Param strip_vars, removes
 	// unused pseudo-variables.
 	//
-	function parse( $template, $data, $return = FALSE, $strip_vars = FALSE )
+	function parse( $template, $data, $return = false, $strip_vars = false )
 	{
-		$this->CI = & get_instance();
-		$template = $this->CI->load->view( $template, $data, TRUE );
+		$this->CI =& get_instance();
+		$template = $this->CI->load->view( $template, $data, true );
+
 		return $this->parse_string( $template, $data, $return, $strip_vars );
 	}
 
 	// --------------------------------------------------------------------
 	// Parse a string as a template
 	//
-	function parse_string( $template, $data, $return = TRUE, $strip_vars = FALSE )
+	function parse_string( $template, $data, $return = true, $strip_vars = false )
 	{
 		if ( $template == '' ) {
-			return FALSE;
+			return false;
 		}
 		// have a local references to $template and $data in the class
-		$this->CI = & get_instance();
-		$this->_template = & $template;
-		$this->_data = & $data;
-		$this->_ignore = array(); // start empty on
+		$this->CI        =& get_instance();
+		$this->_template =& $template;
+		$this->_data     =& $data;
+		$this->_ignore   = array(); // start empty on
+
 		// store ignore_pre tag data early
 		$this->_store_ignored( 'ignore_pre' );
 
 		// first round process tag data, pairs first
 		foreach ( $data as $key => $val ) {
-			if ( is_array( $val ) )
+			if ( is_array( $val ) ) {
 				$template = $this->_parse_pair( $key, $val, $template );
+			}
 		}
 		foreach ( $data as $key => $val ) {
-			if ( is_array( $val ) == false )
+			if ( is_array( $val ) == false ) {
 				$template = $this->_parse_single( $key, $val, $template );
+			}
 		}
 
 		// parse array elements
 		foreach ( $data as $key => $val ) {
-			if ( is_array( $val ) )
+			if ( is_array( $val ) ) {
 				$template = $this->_parse_array_elems( $key, $val, $template );
+			}
 		}
 
 		// Check for conditional statements
@@ -102,10 +134,14 @@ class MY_Parser extends CI_Parser
 		// Strip empty pseudo-variables
 		if ( $strip_vars ) {
 			// Todo: Javascript with curly brackets most times generates an error
-			if ( preg_match_all( "(" . $this->l_delim . "([^" . $this->r_delim . "/]*)" . $this->r_delim . ")", $template, $m ) ) {
+			$reg = "(" . $this->l_delim . "(.*)" . $this->r_delim . ")";
+			if ( preg_match_all( $reg, $template, $m ) ) {
 				foreach ( $m[1] as $value ) {
-					$template = preg_replace( '#' . $this->l_delim . $value . $this->r_delim . '(.+)' . $this->l_delim . '/' . $value . $this->r_delim . '#sU', "", $template );
-					// preg_replace('#'.$this->l_delim.$value.$this->r_delim.'(.+)'.$this->l_delim.'/'.$value.$this->r_delim.'#sU', "", $template);
+					$value    = preg_quote( $value, '/' );
+					$template = preg_replace(
+						'#' . $this->l_delim . $value . $this->r_delim . '(.+)' . $this->l_delim . '/' . $value
+						. $this->r_delim . '#sU', "", $template
+					);
 					$template = str_replace( "{" . $value . "}", "", $template );
 				}
 			}
@@ -115,7 +151,7 @@ class MY_Parser extends CI_Parser
 			$this->_restore_ignored();
 		}
 
-		if ( $return == FALSE ) {
+		if ( $return == false ) {
 			$this->CI->output->append_output( $template );
 		}
 
@@ -129,6 +165,7 @@ class MY_Parser extends CI_Parser
 		foreach ( $this->_ignore as $key => $item ) {
 			$this->_template = str_replace( $item['id'], $item['txt'], $this->_template );
 		}
+
 		// data stored in $this->_template
 		return true;
 	}
@@ -137,7 +174,7 @@ class MY_Parser extends CI_Parser
 	//
 	function _store_ignored( $name )
 	{
-		if ( FALSE === ($matches = $this->_match_pair( $this->_template, $name )) ) {
+		if ( false === ( $matches = $this->_match_pair( $this->_template, $name ) ) ) {
 			return false;
 		}
 
@@ -145,7 +182,7 @@ class MY_Parser extends CI_Parser
 			// store $tagpair[1] and replace $tagpair[0] in template with unique identifier
 			$this->_ignore[$name . $key] = array(
 				'txt' => $tagpair[1],
-				'id' => '__' . $name . $key . '__'
+				'id'  => '__' . $name . $key . '__'
 			);
 			// strip it and place a temporary string
 			$this->_template = str_replace( $tagpair[0], $this->_ignore[$name . $key]['id'], $this->_template );
@@ -158,11 +195,12 @@ class MY_Parser extends CI_Parser
 	//
 	function _parse_array_elems( $name, $arr, $template )
 	{
-		foreach ( $arr as $arrkey => $arrval ) {
-			if ( !is_array( $arrval ) ) {
-				$template = $this->_parse_single( "$name $arrkey", $arrval, $template );
+		foreach ( $arr as $arrKey => $arrVal ) {
+			if ( !is_array( $arrVal ) ) {
+				$template = $this->_parse_single( "$name $arrKey", $arrVal, $template );
 			}
 		}
+
 		return $template;
 	}
 
@@ -177,67 +215,72 @@ class MY_Parser extends CI_Parser
 			return false;
 		}
 
-		$found_ifs = array();
+		$found_ifs  = array();
 		$found_open = strpos( $template, '{if' );
 		while ( $found_open !== false ) {
 			$found_ifs[] = $found_open;
-			$found_open = strpos( $template, '{if', $found_open + 3 );
+			$found_open  = strpos( $template, '{if', $found_open + 3 );
 		}
-		// print_r($found_ifs);
+
 		// -----------------------------------------------------------------------------
 		// find all nested ifs. Yeah!
 		for ( $key = 0; $key < sizeof( $found_ifs ); ++$key ) {
-			$open_tag = $found_ifs[$key];
+			$open_tag    = $found_ifs[$key];
 			$found_close = strpos( $template, '{/if}', $open_tag );
-			/* msg */ if ( $found_close === false ) {
-				echo("\n Error. No matching /if found for opening tag at: $open_tag");
+			/*msg*/
+			if ( $found_close === false ) {
+				echo( "\n Error. No matching /if found for opening tag at: $open_tag" );
 				exit();
 			}
-			$new_open = $open_tag;
+			$new_open  = $open_tag;
 			$new_close = $found_close;
 			// -------------------------------------------------------------------------
 			// find new {if  inside a chunk, if found find next close tag
-			$i = 0; // fail safe, for now test 100 nested ifs maximum :-)
+			$i            = 0; // fail safe, for now test 100 nested ifs maximum :-)
 			$found_blocks = array();
 			do {
 				// does it have an open_tag inside?
-				$chunk = substr( $template, $new_open + 3, $new_close - $new_open - 3 );
+				$chunk      = substr( $template, $new_open + 3, $new_close - $new_open - 3 );
 				$found_open = strpos( $chunk, '{if' );
 
 				if ( $found_open !== false ) {
 					$new_close = $new_close + 5;
 					$new_close = strpos( $template, '{/if}', $new_close );
-					/* msg */ if ( $new_close === false ) {
-						echo("\n Error. No matching /if found for opening tag at: $found_open");
+					/* msg */
+					if ( $new_close === false ) {
+						echo( "\n Error. No matching /if found for opening tag at: $found_open" );
 						exit();
 					}
-					$new_open = $new_open + $found_open + 3;
+					$new_open       = $new_open + $found_open + 3;
 					$found_blocks[] = $new_open;
 				}
 				$i++;
-			} while ( $found_open !== FALSE && ($i < 100) );
+			} while ( $found_open !== false && ( $i < 100 ) );
 
 			// store it
-			$length = $new_close - $open_tag + 5; // + 5 to catch closing tag
-			$chunk = substr( $template, $open_tag, $length );
+			$length                  = $new_close - $open_tag + 5; // + 5 to catch closing tag
+			$chunk                   = substr( $template, $open_tag, $length );
 			$conditionals[$open_tag] = array
-				(
-				'start' => $open_tag,
-				'stop' => $open_tag + $length,
-				'raw_code' => $chunk,
+			(
+				'start'        => $open_tag,
+				'stop'         => $open_tag + $length,
+				'raw_code'     => $chunk,
 				'found_blocks' => $found_blocks
 			);
-		}// end for all found ifs
+		}
+		// end for all found ifs
 		// walk thru conditionals[] and extract condition_string and replace nested
 		$regexp = '#{if (.*)}(.*){/if}#sU';
 		foreach ( $conditionals as $key => $conditional ) {
-			$found_blocks = $conditional['found_blocks'];
+			$found_blocks         = $conditional['found_blocks'];
 			$conditional['parse'] = $conditional['raw_code'];
 			if ( !empty( $found_blocks ) ) {
 				foreach ( $found_blocks as $num ) {
 					// it contains another conditional, replace with unique identifier for later
-					$unique = "__pparse{$num}__";
-					$conditional['parse'] = str_replace( $conditionals[$num]['raw_code'], $unique, $conditional['parse'] );
+					$unique               = "__pparse{$num}__";
+					$conditional['parse'] = str_replace(
+						$conditionals[$num]['raw_code'], $unique, $conditional['parse']
+					);
 				}
 			}
 			$conditionals[$key]['parse'] = $conditional['parse'];
@@ -246,9 +289,10 @@ class MY_Parser extends CI_Parser
 				// echo "\n"; print_r($preg_parts);
 				$raw_code = $preg_parts[0][0];
 				$cond_str = $preg_parts[1][0] !== '' ? $preg_parts[1][0] : '';
-				$insert = $preg_parts[2][0] !== '' ? $preg_parts[2][0] : '';
+				$insert   = $preg_parts[2][0] !== '' ? $preg_parts[2][0] : '';
 
-				/* msg */ if ( $raw_code !== $conditional['parse'] ) {
+				/* msg */
+				if ( $raw_code !== $conditional['parse'] ) {
 					echo "\n Error. raw_code differs from first run!\n$raw_code\n{$conditional['raw_code']}";
 					exit;
 				}
@@ -262,16 +306,18 @@ class MY_Parser extends CI_Parser
 				}
 				// store condition string and insert
 				$conditionals[$key]['cond_str'] = $cond_str;
-				$conditionals[$key]['insert'] = $insert;
-			} else {
+				$conditionals[$key]['insert']   = $insert;
+			}
+			else {
 				/* msg */
 				echo "\n Error in conditionals (preg parse) No conditional found or some was not closed properly";
 				exit();
 				// todo
 				$conditionals[$key]['cond_str'] = '';
-				$conditionals[$key]['insert'] = '';
+				$conditionals[$key]['insert']   = '';
 			}
 		}
+
 		return $conditionals;
 	}
 
@@ -279,16 +325,16 @@ class MY_Parser extends CI_Parser
 	//
 	function _parse_conditionals( $template )
 	{
-		if ( empty( $this->_conditionals ) ) {
+		if ( empty ( $this->_conditionals ) ) {
 			return $template;
 		}
 
-		$conditionals = & $this->_conditionals;
+		$conditionals =& $this->_conditionals;
 
 		foreach ( $conditionals as $key => $conditional ) {
 			$raw_code = $conditional['raw_code'];
 			$cond_str = $conditional['cond_str'];
-			$insert = $conditional['insert'];
+			$insert   = $conditional['insert'];
 
 			if ( $cond_str !== '' AND !empty( $insert ) ) {
 				// Get the two values
@@ -307,7 +353,8 @@ class MY_Parser extends CI_Parser
 
 					if ( is_int( $cond[0] ) && is_int( $cond[1] ) ) {
 						$delim = "";
-					} else {
+					}
+					else {
 						$delim = "'";
 					}
 
@@ -316,33 +363,39 @@ class MY_Parser extends CI_Parser
 					eval( $to_eval );
 				} else { // single value
 					// name isset() or number. Boolean data is 0 or 1
-					$result = (isset( $this->_data[trim( $cond_str )] ) OR (intval( $cond_str ) AND ( bool ) $cond_str));
+					$result = ( isset( $this->_data[trim( $cond_str )] ) OR ( intval( $cond_str )
+							AND (bool)$cond_str ) );
 				}
-			} else {
+			}
+			else {
 				$result = false;
 			}
 
 			// split insert text if needed. Can be '' or 'foo', or 'foo{else}bar'
 			$insert = explode( '{else}', $insert, 2 );
 
-			if ( $result == TRUE ) {
+			if ( $result == true ) {
 				$conditionals[$key]['insert'] = $insert[0];
-			} else { // result = false
-				$conditionals[$key]['insert'] = (isset( $insert['1'] ) ? $insert['1'] : '');
+			}
+			else { // result = false
+				$conditionals[$key]['insert'] = ( isset( $insert['1'] ) ? $insert['1'] : '' );
 			}
 
 			// restore raw_code from nested conditionals in this one
 			foreach ( $conditional['found_blocks'] as $num ) {
 				$unique = "__pparse{$num}__";
 				if ( strpos( $conditional['insert'], $unique ) ) {
-					$conditionals[$key]['insert'] = str_replace( $unique, $conditionals[$num]['raw_code'], $conditionals[$key]['insert'] );
+					$conditionals[$key]['insert'] = str_replace(
+						$unique, $conditionals[$num]['raw_code'], $conditionals[$key]['insert']
+					);
 				}
 			}
 		}
 		// end foreach conditionals.
 		// replace all rawcodes with inserts in the template
-		foreach ( $conditionals as $conditional )
+		foreach ( $conditionals as $conditional ) {
 			$template = str_replace( $conditional['raw_code'], $conditional['insert'], $template );
+		}
 
 		return $template; // thank you, have a nice day!
 	}
@@ -351,14 +404,20 @@ class MY_Parser extends CI_Parser
 	// Parse a single key/value
 	function _parse_single( $key, $val, $string )
 	{
-		if ( is_bool( $val ) ) {
-			$val = intval( $val ); // boolean numbers
+		if ( empty( $val ) ) {
+			return $string;
 		}
-		$convert = & $this->options['convert_delimiters'];
+		if ( is_bool( $val ) ) {
+			$val = intval( $val );
+		} // boolean numbers
+		$convert =& $this->options['convert_delimiters'];
 		// convert delimiters in data
 		if ( $convert[0] ) {
-			$val = str_replace( array($this->l_delim, $this->r_delim), array($convert[1], $convert[2]), $val );
+			$val = str_replace(
+				array( $this->l_delim, $this->r_delim ), array( $convert[1], $convert[2] ), $val
+			);
 		}
+
 		return str_replace( $this->l_delim . $key . $this->r_delim, $val, $string );
 	}
 
@@ -367,7 +426,7 @@ class MY_Parser extends CI_Parser
 	// Parses tag pairs:  {some_tag} string... {/some_tag}
 	function _parse_pair( $variable, $data, $string )
 	{
-		if ( FALSE === ($matches = $this->_match_pair( $string, $variable )) ) {
+		if ( false === ( $matches = $this->_match_pair( $string, $variable ) ) ) {
 			return $string;
 		}
 
@@ -384,12 +443,12 @@ class MY_Parser extends CI_Parser
 						if ( !is_array( $val ) ) {
 							$temp = $this->_parse_single( $key, $val, $temp );
 						} else {
-//							$temp = $this->_parse_pair( $key, array($key => $val), $temp );
-							$temp = $this->_parse_pair($key, $val, $temp);
+							$temp = $this->_parse_pair( $key, $val, $temp );
 						}
 					}
 					$str .= $temp;
-				} else {
+				}
+				else {
 					$singles[$rowkey] = $row;
 				}
 			}
@@ -400,6 +459,7 @@ class MY_Parser extends CI_Parser
 			}
 			$string = str_replace( $m['0'], $str, $string );
 		}
+
 		return $string;
 	}
 
@@ -408,8 +468,12 @@ class MY_Parser extends CI_Parser
 	//
 	function _match_pair( $string, $variable )
 	{
-		if ( !preg_match_all( "|" . $this->l_delim . $variable . $this->r_delim . "(.+)" . $this->l_delim . '/' . $variable . $this->r_delim . "|sU", $string, $match, PREG_SET_ORDER ) ) {
-			return FALSE;
+		$reg = "|" . preg_quote( $this->l_delim . $variable . $this->r_delim ) . "(.+)" . preg_quote(
+				$this->l_delim . '/' . $variable . $this->r_delim
+			) . "|sU";
+
+		if ( !preg_match_all( $reg, $string, $match, PREG_SET_ORDER ) ) {
+			return false;
 		}
 
 		return $match;
@@ -425,3 +489,4 @@ class MY_Parser extends CI_Parser
 	}
 
 }
+// end class

@@ -20,8 +20,12 @@ class Language_model extends MY_Model
          parent::__construct();
      }
 
+	/**
+	 * @return array
+	 */
 	public function languages( )
 	{
+		$aReturn = [];
 		$oResults = $this->get_all();
 		if ( !empty( $oResults ) ) {
 			foreach( $oResults as $oValue ) {

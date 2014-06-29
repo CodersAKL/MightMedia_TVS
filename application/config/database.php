@@ -78,11 +78,11 @@ $active_record = true;
 
 $db['production']  = array(
 	'dsn'      => '',
-	'hostname' => 'localhost',
+	'hostname' => 'mysql:host=localhost',
 	'username' => 'root',
 	'password' => 'root',
 	'database' => '',
-	'dbdriver' => 'mysqli',
+	'dbdriver' => 'pdo',
 	'dbprefix' => 'mm_',
 	'pconnect' => true,
 	'db_debug' => false,
@@ -98,11 +98,11 @@ $db['production']  = array(
 );
 $db['development'] = array(
 	'dsn'      => '',
-	'hostname' => 'localhost',
+	'hostname' => 'mysql:host=localhost',
 	'username' => 'root',
 	'password' => '',
 	'database' => 'mightmedia',
-	'dbdriver' => 'mysqli',
+	'dbdriver' => 'pdo',
 	'dbprefix' => 'mm_',
 	'pconnect' => true,
 	'db_debug' => true,

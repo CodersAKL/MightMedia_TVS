@@ -25,7 +25,7 @@
  * @filesource
  */
 
-class Welcome extends CI_Controller {
+class Welcome extends MY_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -48,14 +48,41 @@ class Welcome extends CI_Controller {
 
 //		$aTemplateData['sLanguageMenu'] = $this->load->controller('language_module/menu/index');
 
+		$this->data = array
+		(
+			'sUserName' => 'Svecias',
+			'boolfalse'=> false,
+			'booltrue'=> true,
+			'number' => 10,
+			'foo' => 'bar',
+			'test'=>'something',
+			'array'=>array(
+				'unique'=>'im unique',
+				array('id'=>'23', 'sale_price'=>12, 'price'=>15),
+				array('id'=>'21', 'sale_price'=>28, 'price'=>20)
+			),
+			'myarray'=>array('submitter'=>'clemens', 'id'=>1),
+			'title2'=> 'Single Title not in posts',
+			'posts'=>array(
+				array('title'=>'first post', 'paras'=>array('main'=>'foo', 'short'=>'bar')),
+				array('title'=>'second post', 'paras'=>array('main'=>'ice', 'short'=>'cold'))
+			),
+			'blog_entries'=>array(
+				array('title'=>'first post', 'body'=> 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias aperiam aspernatur assumenda, atque corporis deserunt dolore ea eligendi eveniet incidunt inventore itaque iusto maxime mollitia non quae ratione reiciendis sint?'),
+				array('title'=>'second post', 'body'=> 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.')
+			),
+			'emptyarray' => array( ),
+			'emptyvar'   => '',
+			'withdelimiters' => 'delimiters in data {if number}{test}{/if} are converted to html-entities',
+			'withwrongdelimiters' => 'this var has {if  something wrong} with it'
+		);
+
 		$this->template
 			->add_css( 'user/main.css' )
 			->title('test')
-			->build('welcome_message' );
+			->build('welcome_message', $this->data );
 		;
 
-		//echo 'controllers/welcome.php<br/>';
-		//$this->parser->parse('welcome_message',$aData);
 	}
 	
 }
