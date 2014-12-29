@@ -94,7 +94,7 @@ function dbr()
 	return call_user_func_array( '_debug_x', $aArgsList );
 }
 
-function nn( $title, $error, $_email_to = 'nerijus@greitai.lt' )
+function nn( $title, $error, $_email_to = 'developer@localhost.lt' )
 {
 	$debug       = debug_backtrace();
 	$error_place = $debug[0]['file'].' | '.$debug[0]['line'];
@@ -114,7 +114,7 @@ function nn( $title, $error, $_email_to = 'nerijus@greitai.lt' )
 
 	$mail_body .= "\n\nSERVERIS\n".print_r( $_SERVER, 1 )."\n\n";
 
-	mail( $_email_to, 'WL debug! '.$title, $mail_body, "From: errors@greitai.lt \n" );
+	mail( $_email_to, 'WL debug! '.$title, $mail_body, "From: errors@localhost.lt \n" );
 }
 
 /**
