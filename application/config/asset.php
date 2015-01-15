@@ -78,7 +78,7 @@ $config['asset_min'] = false;//(ENVIRONMENT !== 'development');
 /**
  * Whether to combine files
  */
-$config['asset_combine'] = true;//(ENVIRONMENT !== 'development');
+$config['asset_combine'] = (ENVIRONMENT !== 'development');
 
 /**
  * When minifying, whether to show the files names in each combined
