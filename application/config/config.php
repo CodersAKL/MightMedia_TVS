@@ -440,5 +440,6 @@ $config['locales'] = array(
 
 $config['site_name'] = 'MightMedia CMS';
 
+date_default_timezone_set('Europe/Vilnius');
 /* End of file config.php */
 /* Location: ./application/config/config.php */

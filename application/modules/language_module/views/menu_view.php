@@ -21,7 +21,7 @@
 
 	<ul class="dropdown-menu">
 		<!-- dropdown language links -->
-		<?foreach($languages as $sLang => $sLanguage):?>
+		<?php foreach($languages as $sLang => $sLanguage):?>
 			<?if( $sLang != LANG ):?>
 				<li>
 					<a href="<?=site_url( $this->lang->switch_uri( $sLang ) );?>" title="<?=__( 'In_'.strtoupper( $sLang ) )?>">
@@ -30,7 +30,7 @@
 					</a>
 				</li>
 			<?endif?>
-		<?endforeach?>
+		<?php endforeach;?>
 		<li class="divider"></li>
 		<li class="dropdown-header">Missing language?</li>
 		<li><a href="#">Translate to pref. language</a></li>

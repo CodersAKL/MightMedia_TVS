@@ -25,8 +25,8 @@
 			<div class="navbar-collapse collapse">
 
 				<ul class="nav navbar-nav">
-					<li<?if($this->uri->segment(2) == 'user'):?> class="active"<?endif?>><a href="<?=site_url('user')?>"><?=__('Why us?')?></a></li>
-					<li<?if($this->uri->segment(2) == 'blog'):?> class="active"<?endif?>><a href="<?=site_url('blog')?>"><?=__('Blog')?></a></li>
+					<li<?php if($this->uri->segment(2) == 'user'):?> class="active"<?php endif;?>><a href="<?=site_url('user')?>"><?=__('Why us?')?></a></li>
+					<li<?php if($this->uri->segment(2) == 'blog'):?> class="active"<?php endif;?>><a href="<?=site_url('blog')?>"><?=__('Blog')?></a></li>
 				</ul>
 
 				<!-- The drop down menu -->
