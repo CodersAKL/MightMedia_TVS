@@ -73,12 +73,12 @@ $config['asset_cache_path'] = 'resources/compiled/';
 /**
  * Whether to minify files.
  */
-$config['asset_min'] = (ENVIRONMENT !== 'development');
+$config['asset_min'] = false;//(ENVIRONMENT !== 'development');
 
 /**
  * Whether to combine files
  */
-$config['asset_combine'] = (ENVIRONMENT !== 'development');
+$config['asset_combine'] = true;//(ENVIRONMENT !== 'development');
 
 /**
  * When minifying, whether to show the files names in each combined
