@@ -208,7 +208,7 @@ if ( ! function_exists('get_mimes'))
 	 *
 	 * @return	array
 	 */
-	function &get_mimes()
+	function get_mimes()
 	{
 		$CI = CodeIgniter::instance();
 		return $CI->config->get('mimes.php');
