@@ -331,7 +331,7 @@ if ( ! function_exists('get_mime_by_extension'))
 
 		if ( ! is_array($mimes))
 		{
-			$mimes =& get_mimes();
+			$mimes = get_mimes();
 
 			if (empty($mimes))
 			{
