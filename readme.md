@@ -1,4 +1,5 @@
-# Used third party libraries #
+# Used third party libraries # [![Stories in Ready](https://badge.waffle.io/CodersAKL/MightMedia_TVS.png?label=ready&title=Ready)](http://waffle.io/CodersAKL/MightMedia_TVS)
+
 
 ----------
 
