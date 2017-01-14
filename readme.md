@@ -1,6 +1,5 @@
 # Used third party libraries # [![Stories in Ready](https://badge.waffle.io/CodersAKL/MightMedia_TVS.png?label=ready&title=Ready)](http://waffle.io/CodersAKL/MightMedia_TVS) [![Gitter](http://img.shields.io/badge/chat-%23CodersAKL-blue.svg?style=plastic)](https://gitter.im/CodersAKL)
 
-
 ----------
 
 - Modified [HMVC CodeIgniter](https://github.com/EllisLab/CodeIgniter/pull/1818 "CodeIgniter") for real HMVC
