@@ -100,7 +100,7 @@ $db['development'] = array(
 	'dsn'      => '',
 	'hostname' => 'mysql:host=localhost',
 	'username' => 'root',
-	'password' => '',
+	'password' => 'usbw',
 	'database' => 'mightmedia',
 	'dbdriver' => 'pdo',
 	'dbprefix' => 'mm_',
