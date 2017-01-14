@@ -1,7 +1,5 @@
-# Used third party libraries # [![Stories in Ready](https://badge.waffle.io/CodersAKL/MightMedia_TVS.png?label=ready&title=Ready)](http://waffle.io/CodersAKL/MightMedia_TVS) [![Gitter](http://img.shields.io/badge/chat-%23CodersAKL-blue.svg?style=plastic)](https://gitter.im/CodersAKL)
+# Used third party libraries # [![Stories in Ready](https://badge.waffle.io/CodersAKL/MightMedia_TVS.png?label=ready&title=Ready)](http://waffle.io/CodersAKL/MightMedia_TVS) [![Gitter](http://img.shields.io/badge/chat-%23CodersAKL-blue.svg?style=plastic)](https://gitter.im/CodersAKL/support)
 
-
-----------
 
 - Modified [HMVC CodeIgniter](https://github.com/EllisLab/CodeIgniter/pull/1818 "CodeIgniter") for real HMVC
 - Modified [Template engine](https://github.com/philsturgeon/codeigniter-template/) the best solution for multi themes and HMVC support.
