@@ -8,3 +8,4 @@ Homestead.yaml
 .env
 /.docker/data/
 !/.docker/data/.gitkeep
+*.log
