@@ -18,3 +18,7 @@
 
 After new module run
 `$ composer dump-autoload`
+
+# For developing in Windows
+ 1. Skip installing and running [hosts manager](https://github.com/iamluc/docker-hostmanager)
+ 1. Access website by entering the localhost url

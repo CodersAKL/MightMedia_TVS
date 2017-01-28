@@ -3,7 +3,7 @@ web:
     build: .docker/
     volumes:
         - ./:/var/www/html
-        - $SSH_AUTH_SOCK:/tmp/agent.sock
+#        - $SSH_AUTH_SOCK:/tmp/agent.sock
     env_file:
         - .env
     environment:
@@ -16,7 +16,7 @@ web:
         - db
 db:
     container_name: ${SERVER_NAME}_db
-    image: mariadb:10.1
+    image: mysql
     user: ${DOCKER_UID}
     environment:
         DOMAIN_NAME: ${SERVER_NAME}-db.dev
