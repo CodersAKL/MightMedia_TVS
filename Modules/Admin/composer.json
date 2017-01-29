@@ -1,0 +1,9 @@
+{
+    "name": "nwidart/admin",
+    "description": "",
+    "autoload": {
+        "psr-4": {
+            "Modules\\Admin\\": ""
+        }
+    }
+}
