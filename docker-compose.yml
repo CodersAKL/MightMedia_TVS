@@ -16,18 +16,21 @@ web:
         - db
 db:
     container_name: ${SERVER_NAME}_db
-    image: mysql
+    image: mysql:5
     user: ${DOCKER_UID}
     environment:
         DOMAIN_NAME: ${SERVER_NAME}-db.dev
         MYSQL_DATABASE: ${DB_DATABASE}
         MYSQL_USER: ${DB_USERNAME}
         MYSQL_PASSWORD: ${DB_PASSWORD}
-        MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+        MYSQL_ROOT_PASSWORD: root
         MYSQL_ALLOW_EMPTY_PASSWORD: 1
     volumes:
         - ./.docker/data:/var/lib/mysql
         - ./:/var/www/html
+        - ./.docker:/etc/mysql/conf.d
+    ports:
+        - ${DB_PORT}:${DB_PORT}
 mail:
     container_name: ${SERVER_NAME}_mail
     image: helder/mailcatcher
