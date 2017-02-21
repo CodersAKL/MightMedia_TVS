@@ -23,3 +23,5 @@ After new module run
  1. Skip installing and running [hosts manager](https://github.com/iamluc/docker-hostmanager)
  1. Instead of `yarn` use `npm install`
  1. Access website by entering the localhost url
+
+Welcome
